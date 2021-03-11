@@ -15,6 +15,8 @@ class DashboardController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return view('app');
+        return view('app', [
+            'title' => 'Dashboard'
+        ]);
     }
 }

@@ -4,9 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Store;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreRequest;
 
 class StoreController extends Controller
 {
+    /**
+     * Get named route
+     *
+     */
+    private function getRoute() {
+        return 'store';
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +23,21 @@ class StoreController extends Controller
      */
     public function index()
     {
-        //
+        if (request()->ajax()) {
+            $store = Store::latest()->get();
+            return datatables()->of($store)
+                        ->addColumn('action', function($data){
+                            $button = '<a href="'.route('store.edit', $data).'" class="btn btn-sm btn-info mr-1"><i class="fa fa-cog"></i></a>';
+                            $button .= '<a href="#" class="btn btn-sm btn-danger delete" data-id="'.$data->id.'"><i class="fa fa-trash"></i></a>';
+
+                            return $button;
+                        })
+                        ->addIndexColumn()
+                        ->make(true);
+        }
+        return view('pages.store.index', [
+            'title' => 'Daftar Cabang'
+        ]);
     }
 
     /**
@@ -24,7 +47,12 @@ class StoreController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.store.form', [
+            'store'         => new Store,
+            'title'         => 'Tambah Cabang',
+            'submitButton'  => 'Tambah',
+            'action'        => $this->getRoute().'.create'
+        ]);
     }
 
     /**
@@ -33,9 +61,19 @@ class StoreController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        //
+        $newStore = $request->all();
+        try {
+            $store = Store::create($newStore);
+            if ($store) {
+                return redirect()->route($this->getRoute())->with('success', 'Cabang berhasil ditambah.');
+            } else {
+                return redirect()->route($this->getRoute())->with('error', 'Terjadi kesalahan.');
+            }
+        } catch (\Throwable $th) {
+            return redirect()->route($this->getRoute())->with('error', $th->getMessage());
+        }
     }
 
     /**
@@ -46,7 +84,7 @@ class StoreController extends Controller
      */
     public function show(Store $store)
     {
-        //
+
     }
 
     /**
@@ -57,7 +95,12 @@ class StoreController extends Controller
      */
     public function edit(Store $store)
     {
-        //
+        return view('pages.store.form', [
+            'store'         => $store,
+            'title'         => 'Edit Cabang',
+            'submitButton'  => 'Simpan',
+            'action'        => $this->getRoute().'.edit'
+        ]);
     }
 
     /**
@@ -67,9 +110,16 @@ class StoreController extends Controller
      * @param  \App\Models\Store  $store
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Store $store)
+    public function update(StoreRequest $request, Store $store)
     {
-        //
+        $newStore = $request->all();
+        try {
+            $store->update($newStore);
+            
+            return redirect()->route($this->getRoute())->with('success', 'Simpan data berhasil.');
+        } catch (\Throwable $th) {
+            return redirect()->route($this->getRoute())->with('error', $th->getMessage());
+        }
     }
 
     /**
@@ -78,8 +128,9 @@ class StoreController extends Controller
      * @param  \App\Models\Store  $store
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Store $store)
+    public function destroy(Request $request)
     {
-        //
+        $store = Store::findOrFail($request->id);
+        $store->delete();
     }
 }
