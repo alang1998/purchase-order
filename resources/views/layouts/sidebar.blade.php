@@ -35,7 +35,7 @@
 
       <li class="menu-group">Pengaturan</li>
       <li class="panel">
-        <li><a href=""><i class="ti-panel"></i><span class="title">Perusahaan</span></a></li>
+        <li><a href="{{ route('company') }}"><i class="ti-panel"></i><span class="title">Perusahaan</span></a></li>
         <li><a href="{{ route('role') }}"><i class="ti-panel"></i><span class="title">Wewenang</span></a></li>
       </li>
     </ul>

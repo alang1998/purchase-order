@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\RoleController;
@@ -76,4 +77,13 @@ Route::group(['prefix' => 'brand'], function(){
     Route::get('edit/{brand}', [BrandController::class, 'edit'])->name('brand.edit');
     Route::put('edit/{brand}', [BrandController::class, 'update']);
     Route::delete('delete', [BrandController::class, 'destroy'])->name('brand.delete');
+});
+
+Route::group(['prefix' => 'company'], function(){
+    Route::get('/', [CompanyController::class, 'index'])->name('company');
+    Route::get('create', [CompanyController::class, 'create'])->name('company.create');
+    Route::post('create', [CompanyController::class, 'store']);
+    Route::get('edit/{company}', [CompanyController::class, 'edit'])->name('company.edit');
+    Route::put('edit/{company}', [CompanyController::class, 'update']);
+    Route::delete('delete', [CompanyController::class, 'destroy'])->name('company.delete');
 });

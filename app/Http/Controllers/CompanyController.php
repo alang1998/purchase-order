@@ -3,10 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
+    /**
+     * Get named route
+     *
+     */
+    private function getRoute() {
+        return 'company';
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +23,9 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+        return view('pages.company.index', [
+            'title' => 'Perusahaan'
+        ]);
     }
 
     /**
@@ -24,7 +35,12 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.company.form', [
+            'company'           => new Company,
+            'title'             => 'Tambah Perusahaan',
+            'submitButton'        => 'Tambah',
+            'action'            => $this->getRoute().'.create'
+        ]);
     }
 
     /**
@@ -35,7 +51,39 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $company = Company::create([
+                'name'              => $request->name,
+                'address'           => $request->address,
+                'phone'             => $request->phone,
+                'fax'               => $request->fax,
+                'email'             => $request->email,
+                'person_in_charge'  => $request->person_in_charge,
+                'logo'              => $this->uploadLogo($request->logo),
+                'stamp'             => $this->uploadCap($request->stamp)
+            ]);
+            if ($company) {
+                return redirect()->route($this->getRoute())->with('success', 'Perusahaan berhasil ditambah.');
+            } else {
+                return redirect()->route($this->getRoute())->with('error', 'Terjadi kesalahan');
+            }
+        } catch (\Throwable $th) {
+            return redirect()->route($this->getRoute())->with('error', $th->getMessage());
+        }
+    }    
+
+    public function uploadLogo($logo){
+        $filename = time().'-'.Str::random(10).'.'.$logo->getClientOriginalExtension();
+        $logo->move(public_path('upload/logo'), $filename);
+
+        return $filename;
+    }
+
+    public function uploadCap($cap){
+        $filename = time().'-'.Str::random(10).'.'.$cap->getClientOriginalExtension();
+        $cap->move(public_path('upload/cap'), $filename);
+
+        return $filename;
     }
 
     /**
