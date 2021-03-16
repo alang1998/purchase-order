@@ -71,7 +71,10 @@
               <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Logo</label>
                 <div class="col-sm-9">
-                  <input type="file" name="logo" class="form-control-file" id="companyLogo" placeholder="" autocomplete="off" required>
+                  <input type="file" name="logo" class="form-control-file" id="companyLogo" placeholder="" autocomplete="off" {{ $company->id ? '' : 'required' }}>
+                  @if ($company->id)
+                    <input type="hidden" name="oldLogo" id="hiddenCompanyLogo" value="{{ $company->logo }}" class="form-control">
+                  @endif
                   @error('logo')
                     <div class="mt-2 text-danger">{{ $message }}</div>
                   @enderror
@@ -80,7 +83,11 @@
               <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Cap</label>
                 <div class="col-sm-9">
-                  <input type="file" name="stamp" class="form-control-file" id="companyStamp" placeholder="" autocomplete="off" required>
+                  <input type="file" name="stamp" class="form-control-file" id="companyStamp" placeholder="" autocomplete="off" {{ $company->id ? '' : 'required' }}>
+                  @if ($company->id)
+                    <input type="hidden" name="oldStamp" id="hiddenCompanyStamp" value="{{ $company->stamp }}" class="form-control">                    
+                    <span class="text-danger">* Tidak perlu input gambar jika tidak ingin mengubah Logo / Cap</span>
+                  @endif
                   @error('stamp')
                     <div class="mt-2 text-danger">{{ $message }}</div>
                   @enderror

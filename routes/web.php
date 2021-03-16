@@ -8,6 +8,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UnitController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -86,4 +87,13 @@ Route::group(['prefix' => 'company'], function(){
     Route::get('edit/{company}', [CompanyController::class, 'edit'])->name('company.edit');
     Route::put('edit/{company}', [CompanyController::class, 'update']);
     Route::delete('delete', [CompanyController::class, 'destroy'])->name('company.delete');
+});
+
+Route::group(['prefix' => 'pengguna'], function(){
+    Route::get('/', [UserController::class, 'index'])->name('pengguna');
+    Route::get('create', [UserController::class, 'create'])->name('pengguna.create');
+    Route::post('create', [UserController::class, 'store']);
+    Route::get('edit/{pengguna}', [UserController::class, 'edit'])->name('pengguna.edit');
+    Route::put('edit/{pengguna}', [UserController::class, 'update']);
+    Route::delete('delete', [UserController::class, 'destroy'])->name('pengguna.delete');
 });

@@ -5,20 +5,18 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <a href="{{ route('company.create') }}" class="btn btn-sm btn-info">Tambah</a>
+          <a href="{{ route('pengguna.create') }}" class="btn btn-sm btn-info">Tambah</a>
         </div>
         <div class="card-body">
           <div class="table-responsive">
-            <table class="table tableCompany" width="100%">
+            <table class="table tableUser" width="100%">
               <thead>
                 <tr>
                   <th>#</th>
                   <th>Nama</th>
-                  <th>Alamat</th>
-                  <th>Telepon</th>
-                  <th>FAX</th>
-                  <th>Email</th>
-                  <th>PIC</th>
+                  <th>Username</th>
+                  <th>Role</th>
+                  <th>TTD</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -32,28 +30,23 @@
 
 @push('scripts')
   <script>
-    $('.tableCompany').DataTable({
-      processing: true,
-      serverSide: true,
-      ajax: {
-        url: "{{ route('company') }}",
-        type: 'GET',
-      },
-      columns: [
-        { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-        { data: 'name', name: 'name' },
-        { data: 'address', name: 'address' },
-        { data: 'phone', name: 'phone' },
-        { data: 'fax', name: 'fax' },
-        { data: 'email', name: 'email' },
-        { data: 'person_in_charge', name: 'person_in_charge' },
-        { data: 'action', name: 'action' }
-      ]
+    $('.tableUser').DataTable({
+      // processing: true,
+      // serverSide: true,
+      // ajax: {
+      //   url: "{{ route('unit') }}",
+      //   type: 'GET',
+      // },
+      // columns: [
+      //   { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+      //   { data: 'name', name: 'name' },
+      //   { data: 'action', name: 'action' }
+      // ]
     })
 
     $(document).on('click', '.delete', function(e){
       var id = $(this).data('id');
-      var url = "{{ route('company.delete') }}";
+      var url = "{{ route('unit.delete') }}";
 
       Swal.fire({
         title: 'Are you sure?',
@@ -82,7 +75,7 @@
               ).then((res) => {
                 console.log(res);
                 if (res.value) {
-                  $('.tableCompany').DataTable().ajax.reload()
+                  $('.tableUser').DataTable().ajax.reload()
                 }
               })
             } 

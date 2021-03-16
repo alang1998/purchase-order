@@ -6,7 +6,7 @@
       </li>
       <li class="menu-group">Master</li>
       <li class="panel">
-        <li><a href="#" class=""><i class="ti-user"></i> <span class="title">User</span></a></li>
+        <li><a href="{{ route('pengguna') }}" class=""><i class="ti-user"></i> <span class="title">Pengguna</span></a></li>
         <li><a href="{{ route('region') }}" class=""><i class="ti-location-arrow"></i> <span class="title">Wilayah</span></a></li>
         <li><a href="{{ route('store') }}" class=""><i class="ti-home"></i> <span class="title">Cabang</span></a></li>
         <li><a href="{{ route('supplier') }}" class=""><i class="ti-truck"></i> <span class="title">Supplier</span></a></li>

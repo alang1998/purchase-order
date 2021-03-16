@@ -23,6 +23,19 @@ class CompanyController extends Controller
      */
     public function index()
     {
+        if (request()->ajax()) {
+            $company = Company::get();
+            return datatables()->of($company)
+                    ->addColumn('action', function($data){
+                        $button = '<a href="'.route('company.edit', $data).'" class="btn btn-sm btn-info mr-1"><i class="fa fa-cog"></i></a>';
+                        $button .= '<a href="" class="btn btn-sm btn-primary mr-1"><i class="fa fa-search"></i></a>';
+                        $button .= '<a href="#" class="btn btn-sm btn-danger delete" data-id="'.$data->id.'"><i class="fa fa-trash"></i></a>';
+
+                        return $button;                        
+                    })
+                    ->addIndexColumn()
+                    ->make(true);
+        }
         return view('pages.company.index', [
             'title' => 'Perusahaan'
         ]);
@@ -60,7 +73,7 @@ class CompanyController extends Controller
                 'email'             => $request->email,
                 'person_in_charge'  => $request->person_in_charge,
                 'logo'              => $this->uploadLogo($request->logo),
-                'stamp'             => $this->uploadCap($request->stamp)
+                'stamp'             => $this->uploadStamp($request->stamp)
             ]);
             if ($company) {
                 return redirect()->route($this->getRoute())->with('success', 'Perusahaan berhasil ditambah.');
@@ -79,7 +92,7 @@ class CompanyController extends Controller
         return $filename;
     }
 
-    public function uploadCap($cap){
+    public function uploadStamp($cap){
         $filename = time().'-'.Str::random(10).'.'.$cap->getClientOriginalExtension();
         $cap->move(public_path('upload/cap'), $filename);
 
@@ -105,7 +118,12 @@ class CompanyController extends Controller
      */
     public function edit(Company $company)
     {
-        //
+        return view('pages.company.form', [
+            'company'           => $company,
+            'title'             => 'Edit Perusahaan',
+            'submitButton'      => 'Simpan',
+            'action'            => $this->getRoute().'.edit'
+        ]);
     }
 
     /**
@@ -117,7 +135,34 @@ class CompanyController extends Controller
      */
     public function update(Request $request, Company $company)
     {
-        //
+        $logo = $request->oldLogo;
+        $stamp = $request->oldStamp;
+        try {
+
+            if ($request->hasFile('logo')) {
+                unlink(public_path('upload/logo/'.$request->oldLogo));
+                $logo = $this->uploadLogo($request->logo);
+            }
+            if ($request->hasFile('stamp')) {
+                unlink(public_path('upload/cap/'.$request->oldStamp));
+                $stamp = $this->uploadStamp($request->stamp);
+            }
+    
+            $company->update([
+                'name'              => $request->name,
+                'address'           => $request->address,
+                'phone'             => $request->phone,
+                'fax'               => $request->fax,
+                'email'             => $request->email,
+                'person_in_charge'  => $request->person_in_charge,
+                'logo'              => $logo,
+                'stamp'             => $stamp
+            ]);
+
+            return redirect()->route($this->getRoute())->with('success', 'Perusahaan berhasil ditambahkan');
+        } catch (\Throwable $th) {
+            return redirect()->route($this->getRoute())->with('error', $th->getMessage());
+        }
     }
 
     /**
@@ -126,8 +171,9 @@ class CompanyController extends Controller
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Company $company)
+    public function destroy(Request $request)
     {
-        //
+        $company = Company::findOrFail($request->id);
+        $company->delete();
     }
 }
