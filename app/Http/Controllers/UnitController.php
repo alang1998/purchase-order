@@ -147,4 +147,17 @@ class UnitController extends Controller
         $unit = Unit::findOrFail($request->id);
         $unit->delete();
     }
+
+    public function getUnit(Request $request)
+    {        
+        if($request->has('q')){
+            $search = $request->q;
+        }else{
+            $search = '';
+        }
+
+        $data = Unit::where('name', 'like', '%'.$search.'%')->get();
+        
+        return response()->json($data);
+    }
 }

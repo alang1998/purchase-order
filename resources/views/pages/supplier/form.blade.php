@@ -96,7 +96,7 @@
 
 @push('scripts')
   <script>    
-      $('#supplierRegion').select2({
+    $('#supplierRegion').select2({
       placeholder: 'Pilih wilayah',
       allowClear: true,
       ajax: {

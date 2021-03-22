@@ -17,7 +17,7 @@
           <ul class="submenu">
             <li><a href="{{ route('unit') }}" class=""><i class="ti-package"></i>Unit</a></li>
             <li><a href="{{ route('brand') }}" class=""><i class="ti-package"></i>Merk</a></li>
-            <li><a href="" class=""><i class="ti-package"></i>Produk</a></li>
+            <li><a href="{{ route('item') }}" class=""><i class="ti-package"></i>Produk</a></li>
           </ul>
         </div>
         </li>        
