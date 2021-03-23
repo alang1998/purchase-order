@@ -8,12 +8,12 @@
     <div id="navbar-menu">
       <ul class="nav navbar-nav align-items-center">
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="ti-user mr-2"></i>Welcome, <span>Alang Pandu</span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="ti-user"></i><span class="ml-1">Welcome, {{ auth()->user()->name }}</span></a>
           <ul class="dropdown-menu dropdown-menu-right logged-user-menu">
             <li><a href="#"><i class="ti-user"></i> <span>My Profile</span></a></li>
             <li><a href="appviews-inbox.html"><i class="ti-email"></i> <span>Message</span></a></li>
             <li><a href="#"><i class="ti-settings"></i> <span>Settings</span></a></li>
-            <li><a href="page-lockscreen.html"><i class="ti-power-off"></i> <span>Logout</span></a></li>
+            <li><a href="{{ route('logout') }}"><i class="ti-power-off"></i> <span>Logout</span></a></li>
           </ul>
         </li>
       </ul>

@@ -85,6 +85,7 @@ class UserController extends Controller
         try {
             $newUser['password'] = bcrypt('123456');
             $newUser['signature'] = $this->uploadTtd($request->signature);
+            $newUser['status'] = '1';
     
             $user = User::create($newUser);
     
