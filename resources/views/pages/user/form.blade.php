@@ -9,7 +9,7 @@
             <a href="{{ route('pengguna') }}" class="btn btn-sm btn-info">Kembali</a>
           </div>
           <div class="card-body">
-            <form action="{{ route($action, $user) }}" method="POST">
+            <form action="{{ route($action, $user) }}" method="POST" enctype="multipart/form-data" novalidate>
               @csrf
               @if ($user->id)
                 @method('put')
@@ -47,7 +47,7 @@
                   <select name="role_id" id="userRole" class="form-control">
                     <option value="">== Pilih ==</option>
                     @foreach ($roles as $role)
-                      <option value="{{ $role->id }}">{{ $role->name }}</option>
+                      <option value="{{ $role->id }}" {{ old('role_id') ? 'selected' : ($user->role_id == $role->id ? 'selected' : '') }}>{{ $role->name }}</option>
                     @endforeach
                   </select>
                   @error('role_id')
@@ -58,7 +58,11 @@
               <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Tanda Tangan Digital</label>
                 <div class="col-sm-9">
-                  <input type="file" name="signature" class="form-control-file" id="userSignature" placeholder="" autocomplete="off" value="{{ old('signature') ?? $user->signature }}" required>
+                  <input type="file" name="signature" class="form-control-file" id="userSignature" required>
+                  @if ($user->id)
+                    <input type="hidden" name="oldSignature" id="userOldSignature" class="form-control" value="{{ $user->signature }}">
+                    <span class="text-danger">* Tidak perlu input gambar jika tidak ingin mengubah TTD</span>
+                  @endif
                   @error('signature')
                     <div class="mt-2 text-danger">{{ $message }}</div>
                   @enderror

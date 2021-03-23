@@ -93,7 +93,7 @@ Route::group(['prefix' => 'pengguna'], function(){
     Route::get('/', [UserController::class, 'index'])->name('pengguna');
     Route::get('create', [UserController::class, 'create'])->name('pengguna.create');
     Route::post('create', [UserController::class, 'store']);
-    Route::get('edit/{pengguna}', [UserController::class, 'edit'])->name('pengguna.edit');
-    Route::put('edit/{pengguna}', [UserController::class, 'update']);
+    Route::get('edit/{user}', [UserController::class, 'edit'])->name('pengguna.edit');
+    Route::put('edit/{user}', [UserController::class, 'update']);
     Route::delete('delete', [UserController::class, 'destroy'])->name('pengguna.delete');
 });

@@ -31,22 +31,25 @@
 @push('scripts')
   <script>
     $('.tableUser').DataTable({
-      // processing: true,
-      // serverSide: true,
-      // ajax: {
-      //   url: "{{ route('unit') }}",
-      //   type: 'GET',
-      // },
-      // columns: [
-      //   { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-      //   { data: 'name', name: 'name' },
-      //   { data: 'action', name: 'action' }
-      // ]
+      processing: true,
+      serverSide: true,
+      ajax: {
+        url: "{{ route('pengguna') }}",
+        type: 'GET',
+      },
+      columns: [
+        { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+        { data: 'name', name: 'name' },
+        { data: 'username', name: 'username' },
+        { data: 'role', name: 'role' },
+        { data: 'ttd', name: 'ttd' },
+        { data: 'action', name: 'action' }
+      ]
     })
 
     $(document).on('click', '.delete', function(e){
       var id = $(this).data('id');
-      var url = "{{ route('unit.delete') }}";
+      var url = "{{ route('pengguna.delete') }}";
 
       Swal.fire({
         title: 'Are you sure?',
