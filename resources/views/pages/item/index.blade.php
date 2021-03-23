@@ -5,23 +5,24 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <a href="{{ route('supplier.create') }}" class="btn btn-sm btn-info">Tambah</a>
+          <a href="{{ route('item.create') }}" class="btn btn-sm btn-info">Tambah</a>
         </div>
         <div class="card-body">
-          {{-- <div class=""> --}}
-            <table class="table tableSupplier table-responsive" width="100%">
+          <div class="table-responsive">
+            <table class="table tableItem" width="100%">
               <thead>
                 <tr>
                   <th>#</th>
                   <th>Kode</th>
+                  <th>Merk</th>
                   <th>Nama</th>
-                  <th>Wilayah</th>
-                  <th>PIC</th>
-                  <th width="20%">Aksi</th>
+                  <th>Berat</th>
+                  <th>Kemasan</th>
+                  <th>Aksi</th>
                 </tr>
               </thead>
             </table>
-          {{-- </div> --}}
+          </div>
         </div>
       </div>
     </div>
@@ -30,26 +31,27 @@
 
 @push('scripts')
   <script>
-    $('.tableSupplier').DataTable({
+    $('.tableItem').DataTable({
       processing: true,
       serverSide: true,
       ajax: {
-        url: "{{ route('supplier') }}",
+        url: "{{ route('item') }}",
         type: 'GET',
       },
       columns: [
         { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-        { data: 'supplier_code', name: 'supplier_code' },
+        { data: 'item_code', name: 'item_code' },
+        { data: 'brand', name: 'brand' },
         { data: 'name', name: 'name' },
-        { data: 'region', name: 'region' },
-        { data: 'person_in_charge', name: 'person_in_charge' },
+        { data: 'weight', name: 'weight' },
+        { data: 'unit', name: 'unit' },
         { data: 'action', name: 'action' }
       ]
     })
 
     $(document).on('click', '.delete', function(e){
       var id = $(this).data('id');
-      var url = "{{ route('supplier.delete') }}";
+      var url = "{{ route('item.delete') }}";
 
       Swal.fire({
         title: 'Are you sure?',
@@ -78,7 +80,7 @@
               ).then((res) => {
                 console.log(res);
                 if (res.value) {
-                  $('.tableSupplier').DataTable().ajax.reload()
+                  $('.tableItem').DataTable().ajax.reload()
                 }
               })
             } 

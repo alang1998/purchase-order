@@ -3,6 +3,7 @@
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StoreController;
@@ -51,6 +52,8 @@ Route::group(['prefix' => 'unit'], function(){
     Route::get('edit/{unit}', [UnitController::class, 'edit'])->name('unit.edit');
     Route::put('edit/{unit}', [UnitController::class, 'update']);
     Route::delete('delete', [UnitController::class, 'destroy'])->name('unit.delete');
+
+    Route::get('getUnits', [UnitController::class, 'getUnit'])->name('api.getUnit');
 });
 
 Route::group(['prefix' => 'cabang'], function(){
@@ -71,13 +74,15 @@ Route::group(['prefix' => 'supplier'], function(){
     Route::delete('delete', [SupplierController::class, 'destroy'])->name('supplier.delete');
 });
 
-Route::group(['prefix' => 'brand'], function(){
+Route::group(['prefix' => 'merk'], function(){
     Route::get('/', [BrandController::class, 'index'])->name('brand');
     Route::get('create', [BrandController::class, 'create'])->name('brand.create');
     Route::post('create', [BrandController::class, 'store']);
     Route::get('edit/{brand}', [BrandController::class, 'edit'])->name('brand.edit');
     Route::put('edit/{brand}', [BrandController::class, 'update']);
     Route::delete('delete', [BrandController::class, 'destroy'])->name('brand.delete');
+
+    Route::get('getBrands', [BrandController::class, 'getBrand'])->name('api.getBrand');
 });
 
 Route::group(['prefix' => 'company'], function(){
@@ -96,4 +101,13 @@ Route::group(['prefix' => 'pengguna'], function(){
     Route::get('edit/{user}', [UserController::class, 'edit'])->name('pengguna.edit');
     Route::put('edit/{user}', [UserController::class, 'update']);
     Route::delete('delete', [UserController::class, 'destroy'])->name('pengguna.delete');
+});
+
+Route::group(['prefix' => 'produk'], function(){
+    Route::get('/', [ItemController::class, 'index'])->name('item');
+    Route::get('create', [ItemController::class, 'create'])->name('item.create');
+    Route::post('create', [ItemController::class, 'store']);
+    Route::get('edit/{item}', [ItemController::class, 'edit'])->name('item.edit');
+    Route::put('edit/{item}', [ItemController::class, 'update']);
+    Route::delete('delete', [ItemController::class, 'destroy'])->name('item.delete');
 });

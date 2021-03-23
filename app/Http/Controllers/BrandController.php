@@ -23,7 +23,7 @@ class BrandController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $brand = Brand::latest()->get();
+            $brand = Brand::orderBy('brand_code', 'asc')->get();
             return datatables()->of($brand)
                         ->addColumn('action', function($data){
                             $button = '<a href="'.route('brand.edit', $data).'" class="btn btn-sm btn-info mr-1"><i class="fa fa-cog"></i></a>';
@@ -130,5 +130,18 @@ class BrandController extends Controller
     {
         $brand = Brand::findOrFail($request->id);
         $brand->delete();
+    }
+
+    public function getBrand(Request $request)
+    {        
+        if($request->has('q')){
+            $search = $request->q;
+        }else{
+            $search = '';
+        }
+
+        $data = Brand::where('name', 'like', '%'.$search.'%')->orWhere('brand_code', 'LIKE', '%'.$search.'%')->get();
+        
+        return response()->json($data);
     }
 }
