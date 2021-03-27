@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CompanyController extends Controller
 {
@@ -87,14 +88,14 @@ class CompanyController extends Controller
 
     public function uploadLogo($logo){
         $filename = time().'-'.Str::random(10).'.'.$logo->getClientOriginalExtension();
-        $logo->move(public_path('upload/logo'), $filename);
+        Storage::disk('public')->putFileAs('company/logo/', $logo, $filename);
 
         return $filename;
     }
 
     public function uploadStamp($cap){
         $filename = time().'-'.Str::random(10).'.'.$cap->getClientOriginalExtension();
-        $cap->move(public_path('upload/cap'), $filename);
+        Storage::disk('public')->putFileAs('company/stamp/', $cap, $filename);
 
         return $filename;
     }
@@ -140,12 +141,22 @@ class CompanyController extends Controller
         try {
 
             if ($request->hasFile('logo')) {
-                unlink(public_path('upload/logo/'.$request->oldLogo));
-                $logo = $this->uploadLogo($request->logo);
+                $exists = Storage::disk('public')->exists('company/logo/'.$request->oldLogo);
+                if ($exists) {
+                    Storage::disk('public')->delete('company/logo/'.$request->oldLogo);
+                    $logo = $this->uploadLogo($request->logo);                    
+                } else {
+                    $logo = $this->uploadLogo($request->logo);                    
+                }
             }
             if ($request->hasFile('stamp')) {
-                unlink(public_path('upload/cap/'.$request->oldStamp));
-                $stamp = $this->uploadStamp($request->stamp);
+                $exists = Storage::disk('public')->exists('company/logo/'.$request->oldStamp);
+                if ($exists) {
+                    Storage::disk('public')->delete('company/logo/'.$request->oldStamp);
+                    $stamp = $this->uploadStamp($request->stamp);                    
+                } else {
+                    $stamp = $this->uploadStamp($request->stamp);                    
+                }
             }
     
             $company->update([
@@ -174,6 +185,12 @@ class CompanyController extends Controller
     public function destroy(Request $request)
     {
         $company = Company::findOrFail($request->id);
+        if (Storage::disk('public')->exists('company/logo/'.$company->logo)) {
+            Storage::disk('public')->delete('company/logo/'.$company->logo);
+        }
+        if (Storage::disk('public')->exists('company/stamp/'.$company->stamp)) {
+            Storage::disk('public')->delete('company/stamp/'.$company->stamp);
+        }
         $company->delete();
     }
 }

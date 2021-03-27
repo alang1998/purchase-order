@@ -29,7 +29,7 @@ Route::post('/postlogin', [LoginController::class, 'postlogin'])->name('login.po
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
-// Route::middleware('auth')->group(function(){
+Route::middleware('auth')->group(function(){
     Route::get('/', DashboardController::class)->name('dashboard');
 
     Route::group(['prefix' => 'wilayah'], function(){
@@ -118,4 +118,4 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
         Route::put('edit/{item}', [ItemController::class, 'update']);
         Route::delete('delete', [ItemController::class, 'destroy'])->name('item.delete');
     });
-// });
+});

@@ -18,8 +18,8 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'name'          => 'admin',
-                'password'      => 'admin',
-                'username'      => bcrypt('admin'),
+                'username'      => 'admin',
+                'password'      => bcrypt('admin'),
                 'role_id'       => '1',
                 'status'        => '1',
                 'created_at' => Carbon::now()->format("Y-m-d H:i:s"),

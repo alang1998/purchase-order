@@ -40,9 +40,10 @@ class UserController extends Controller
                         return $data->role->name;
                     })
                     ->addColumn('ttd', function($data){
-                        $url = asset('upload/ttd/'.$data->signature);
-                        $img = '<img src="'.$url.'" alt="TTD-'.$data->signature.'" width="50px">';
-
+                        $contents = asset('storage/signature/'.$data->signature);
+                        if ($contents) {
+                            $img = '<img src="'.$contents.'" alt="TTD-'.$data->signature.'" width="50px">';                            
+                        }
                         return $img;
                     })
                     ->addIndexColumn()
@@ -87,7 +88,6 @@ class UserController extends Controller
             $newUser['password'] = bcrypt('123456');
             $newUser['signature'] = $this->uploadTtd($request->signature);
             $newUser['status'] = '1';
-    
             $user = User::create($newUser);
     
             if ($user) {
@@ -101,11 +101,10 @@ class UserController extends Controller
     }
 
     public function uploadTtd($ttd){
-        $filename = time().'-'.Str::random(10).'.'.$ttd->getClientOriginalExtension();
-        Storage::disk('local')->put('img/user-signature/'.$filename, $filename);
-        // $ttd->move(public_path('upload/ttd'), $filename);
+        $fileName = time().'-'.Str::random(10).'.'.$ttd->getClientOriginalExtension();
+        Storage::disk('public')->putFileAs('signature/', $ttd, $fileName);
 
-        return $filename;
+        return $fileName;
     }
 
     /**
@@ -148,8 +147,13 @@ class UserController extends Controller
         $newUser = $request->all();
         try {
             if ($request->hasFile('signature')) {
-                unlink(public_path('upload/ttd/'.$request->oldSignature));
-                $newUser['signature'] = $this->uploadTtd($request->signature);
+                $exists = Storage::disk('public')->exists('signature/'.$request->oldSignature);
+                if ($exists) {
+                    Storage::disk('public')->delete('signature/'.$request->oldSignature);
+                    $newUser['signature'] = $this->uploadTtd($request->signature);                    
+                } else {
+                    $newUser['signature'] = $this->uploadTtd($request->signature);                    
+                }
             } else {
                 $newUser['signature'] = $request->oldSignature;
             }
@@ -170,7 +174,11 @@ class UserController extends Controller
      */
     public function destroy(Request $request)
     {
-        $user = User::findOrFail($request->id);
+        $user = User::findOrFail($request->id);        
+        $exists = Storage::disk('public')->exists('signature/'.$user->signature);
+        if ($exists) {
+            Storage::disk('public')->delete('signature/'.$user->signature);
+        }
         $user->delete();
     }
 }
