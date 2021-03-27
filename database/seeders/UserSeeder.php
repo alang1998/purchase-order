@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -16,11 +17,13 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
-                'name',
-                'username',
-                'password',
-                'role_id',
-                'status'
+                'name'          => 'admin',
+                'password'      => 'admin',
+                'username'      => bcrypt('admin'),
+                'role_id'       => '1',
+                'status'        => '1',
+                'created_at' => Carbon::now()->format("Y-m-d H:i:s"),
+                'updated_at' => Carbon::now()->format("Y-m-d H:i:s")
             ]
         ]);
     }
