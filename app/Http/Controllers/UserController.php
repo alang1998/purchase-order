@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -101,7 +102,8 @@ class UserController extends Controller
 
     public function uploadTtd($ttd){
         $filename = time().'-'.Str::random(10).'.'.$ttd->getClientOriginalExtension();
-        $ttd->move(public_path('upload/ttd'), $filename);
+        Storage::disk('local')->put('img/user-signature/'.$filename, $filename);
+        // $ttd->move(public_path('upload/ttd'), $filename);
 
         return $filename;
     }
