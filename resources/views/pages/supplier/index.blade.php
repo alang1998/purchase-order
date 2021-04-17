@@ -9,7 +9,7 @@
         </div>
         <div class="card-body">
           {{-- <div class=""> --}}
-            <table class="table tableSupplier table-responsive" width="100%">
+            <table class="table tableSupplier" width="100%">
               <thead>
                 <tr>
                   <th>#</th>

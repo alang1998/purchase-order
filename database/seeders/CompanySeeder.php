@@ -16,12 +16,14 @@ class CompanySeeder extends Seeder
     {
         DB::table('companies')->insert([
             [
-                'name',
-                'address',
-                'phone',
-                'fax',
-                'email',
-                'person_in_charge',
+                'name'              => 'PT. CITRA WARNA JAYA ABADI',
+                'address'           => 'JL. TEUKU UMAR BARAT NO. 343, KEROBOKAN, BADUNG',
+                'phone'             => '(0361) 735115',
+                'fax'               => '-',
+                'email'             => 'admin@cwabali.com',
+                'person_in_charge'  => 'Hendri',
+                'logo'              => null,
+                'stamp'             => null
             ],
         ]);
     }

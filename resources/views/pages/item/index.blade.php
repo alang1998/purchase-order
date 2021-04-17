@@ -6,6 +6,7 @@
       <div class="card">
         <div class="card-header">
           <a href="{{ route('item.create') }}" class="btn btn-sm btn-info">Tambah</a>
+          <a href="" class="btn btn-sm btn-success" id="importProduk">Import Produk</a>
         </div>
         <div class="card-body">
           <div class="table-responsive">
@@ -29,6 +30,43 @@
   </div>
 @endsection
 
+@section('modal')
+  {{-- Modal --}}  
+  <div class="modal fade" id="modalImportProduk" tabindex="-1" role="dialog" aria-labelledby="modalImportProdukLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalImportProdukLabel">Import Data Excel</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="#" method="POST" enctype="multipart/form-data">
+          @csrf
+          <div class="modal-body">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              Pastikan merk sudah ada dimasukkan kedalam data master dan kode merk sama dengan di excel, jika berbeda data tidak akan masuk ke sistem.
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div class="form-group">
+              <label for="file">Pilih file excel</label>
+              <input type="file" name="file" id="file" class="form-control" required>
+              <small>* format file excel dapat di download <a href="#">disini</a></small>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Import</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+@endsection
+
 @push('scripts')
   <script>
     $('.tableItem').DataTable({
@@ -47,6 +85,11 @@
         { data: 'unit', name: 'unit' },
         { data: 'action', name: 'action' }
       ]
+    })
+
+    $('#importProduk').on('click', function(e){
+      $('#modalImportProduk').modal('show');
+      e.preventDefault();
     })
 
     $(document).on('click', '.delete', function(e){

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -16,8 +17,22 @@ class RegionSeeder extends Seeder
     {
         DB::table('regions')->insert([
             [
-                'region_code' => 'code',
-                'name'        => 'name'
+                'region_code' => 'PLM',
+                'name'        => 'PALEMBANG',
+                'created_at'  => Carbon::now()->format("Y-m-d H:i:s"),
+                'updated_at'  => Carbon::now()->format("Y-m-d H:i:s")
+            ],
+            [
+                'region_code' => 'MLG',
+                'name'        => 'MALANG',
+                'created_at'  => Carbon::now()->format("Y-m-d H:i:s"),
+                'updated_at'  => Carbon::now()->format("Y-m-d H:i:s")
+            ],
+            [
+                'region_code' => 'TGR',
+                'name'        => 'TANGERANG',
+                'created_at'  => Carbon::now()->format("Y-m-d H:i:s"),
+                'updated_at'  => Carbon::now()->format("Y-m-d H:i:s")
             ],
         ]);
     }

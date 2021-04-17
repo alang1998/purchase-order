@@ -13,14 +13,13 @@
   {{-- <link href="assets/plugins/jqvmap/jqvmap.min.css" rel="stylesheet" type="text/css" /> --}}
 
   <!-- Bootstrap Tour css -->
-  <link href="{{ asset('assets/plugins/bootstrap-tour/bootstrap-tour-standalone.min.css') }}" rel="stylesheet" type="text/css" />
+  {{-- <link href="{{ asset('assets/plugins/bootstrap-tour/bootstrap-tour-standalone.min.css') }}" rel="stylesheet" type="text/css" /> --}}
 
   <!-- App css -->
   <link href="{{ asset('assets/css/bootstrap-custom.min.cs') }}s" rel="stylesheet" type="text/css" />
   <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('assets/plugins/select2/select2.min.css') }}" rel="stylesheet">
-
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
@@ -44,25 +43,31 @@
     <div id="app">
       <div class="main">
         <div class="main-content">
+
           @include('layouts.breadcrumb')
+
           <div class="container-fluid">
+
             @include('layouts.alert')
+
             @yield('content')
+
           </div>
+          
         </div>
       </div>
     </div>
     <!-- END MAIN -->
-
+    
     <div class="clearfix"></div>
     
     <!-- footer -->
     @include('layouts.footer')
     <!-- end footer -->
-
+    
   </div>
   <!-- END WRAPPER -->
-
+  @yield('modal')
   <!-- Vendor -->
   <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
 
@@ -71,30 +76,14 @@
   <script src="{{ asset('assets/plugins/jquery.maskedinput/jquery.maskedinput.js') }}"></script>
   <script src="{{ asset('assets/plugins/jquery-jeditable/jquery.jeditable.masked.min.js') }}"></script>
   <script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script> <!-- required by datepicker plugin -->
-  <script src="{{ asset('assets/plugins/jquery-jeditable/jquery.jeditable.datepicker.min.js') }}"></script>
-  {{-- <script src="assets/plugins/jqvmap/jquery.vmap.min.js"></script>
-  <script src="assets/plugins/jqvmap/maps/jquery.vmap.world.js"></script>
-  <script src="assets/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-  <script src="assets/plugins/flot/jquery.canvaswrapper.js"></script> --}}
-  {{-- <script src="assets/plugins/flot/jquery.colorhelpers.js"></script> --}}
-  {{-- <script src="assets/plugins/flot/jquery.flot.js"></script>
-  <script src="assets/plugins/flot/jquery.flot.saturated.js"></script>
-  <script src="assets/plugins/flot/jquery.flot.browser.js"></script>
-  <script src="assets/plugins/flot/jquery.flot.drawSeries.js"></script>
-  <script src="assets/plugins/flot/jquery.flot.uiConstants.js"></script>
-  <script src="assets/plugins/flot/jquery.flot.resize.js"></script>
-  <script src="assets/plugins/flot/jquery.flot.legend.js"></script>
-  <script src="assets/plugins/flot/jquery.flot.hover.js"></script>
-  <script src="assets/plugins/flot/jquery.flot.time.js"></script> --}}
-  {{-- <script src="assets/plugins/jquery.flot.tooltip/jquery.flot.tooltip.min.js"></script> --}}
+  <script src="{{ asset('assets/plugins/jquery-jeditable/jquery.jeditable.datepicker.min.js') }}"></script> --}}
   <script src="{{ asset('assets/plugins/justgage/raphael.min.js') }}"></script>
-  <script src="{{ asset('assets/plugins/justgage/justgage.min.js') }}"></script>
   <script src="{{ asset('assets/plugins/datatables.net/jquery.dataTables.min.js') }}"></script>
   <script src="{{ asset('assets/plugins/datatables.net-bs4/dataTables.bootstrap4.min.js') }}"></script>
   <script src="{{ asset('assets/plugins/jquery.appear/jquery.appear.js') }}"></script>
   <script src="{{ asset('assets/plugins/jquery-sparkline/jquery.sparkline.min.js') }}"></script>
   <script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
-  <script src="{{ asset('assets/plugins/bootstrap-tour/bootstrap-tour-standalone.js') }}"></script>
+  {{-- <script src="{{ asset('assets/plugins/bootstrap-tour/bootstrap-tour-standalone.js') }}"></script> --}}
   <script src="{{ asset('assets/plugins/sweetalert2/sweetalert2.all.min.js') }}"></script>
   <script src="{{ asset('assets/plugins/select2/select2.min.js') }}"></script>
 
