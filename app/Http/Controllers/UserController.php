@@ -30,8 +30,8 @@ class UserController extends Controller
             $user = User::latest()->get();
             return datatables()->of($user)
                     ->addColumn('action', function($data){
-                        $button = '<a href="'.route('pengguna.edit', $data).'" class="btn btn-sm btn-info mr-1"><i class="fa fa-cog"></i></a>';
-                        $button .= '<a href="" class="btn btn-sm btn-primary mr-1"><i class="fa fa-search"></i></a>';
+                        $button = '<a href="" class="btn btn-sm btn-danger mr-1"><i class="fa fa-times-circle"></i></a>';
+                        $button .= '<a href="'.route('pengguna.edit', $data).'" class="btn btn-sm btn-info mr-1"><i class="fa fa-cog"></i></a>';
                         $button .= '<a href="#" class="btn btn-sm btn-danger delete" data-id="'.$data->id.'"><i class="fa fa-trash"></i></a>';
 
                         return $button;
@@ -46,11 +46,15 @@ class UserController extends Controller
                         }
                         return $img;
                     })
+                    ->addColumn('status', function($data){
+                        return user_status($data->status);
+                    })
                     ->addIndexColumn()
                     ->rawColumns([
                         'ttd',
                         'action',
-                        'role'
+                        'role',
+                        'status'
                     ])
                     ->make(true);
         }
