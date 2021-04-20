@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ItemRequest;
-use App\Models\Brand;
 use App\Models\Item;
 use App\Models\Unit;
+use App\Models\Brand;
 use Illuminate\Http\Request;
+use App\Imports\ProductImport;
+use App\Http\Requests\ItemRequest;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ItemController extends Controller
 {
@@ -153,4 +155,20 @@ class ItemController extends Controller
         $item = Item::findOrFail($request->id);
         $item->delete();
     }
+
+    public function importItems(Request $request)
+    {
+        $this->validate($request, [
+            'file' => 'required|mimes:csv,xlsx,xls'
+        ]);
+
+        $file = $request->file('file');
+        $fileName = date('Y-m-d').'-items.'.$file->getClientOriginalExtension();
+        $file->move(public_path('import/items'), $fileName);
+
+        Excel::import(new ProductImport, public_path('/import/items/'.$fileName));
+
+        return redirect()->route($this->getRoute())->with('success', 'Import data berhasil.');
+    }
+
 }

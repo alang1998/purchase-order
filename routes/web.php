@@ -108,6 +108,9 @@ Route::middleware('auth')->group(function(){
         Route::get('edit/{user}', [UserController::class, 'edit'])->name('pengguna.edit');
         Route::put('edit/{user}', [UserController::class, 'update']);
         Route::delete('delete', [UserController::class, 'destroy'])->name('pengguna.delete');
+
+        Route::get('active/{user}', [UserController::class, 'active'])->name('pengguna.active');
+
     });
     
     Route::group(['prefix' => 'produk'], function(){
@@ -117,5 +120,7 @@ Route::middleware('auth')->group(function(){
         Route::get('edit/{item}', [ItemController::class, 'edit'])->name('item.edit');
         Route::put('edit/{item}', [ItemController::class, 'update']);
         Route::delete('delete', [ItemController::class, 'destroy'])->name('item.delete');
+
+        Route::post('import', [ItemController::class, 'importItems'])->name('item.import');
     });
 });

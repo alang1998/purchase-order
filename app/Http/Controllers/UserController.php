@@ -30,7 +30,7 @@ class UserController extends Controller
             $user = User::latest()->get();
             return datatables()->of($user)
                     ->addColumn('action', function($data){
-                        $button = '<a href="" class="btn btn-sm btn-danger mr-1"><i class="fa fa-times-circle"></i></a>';
+                        $button = '<a href="'.route('pengguna.active', $data).'" class="btn btn-sm mr-1 '.($data->status == 0 ? 'btn-success' : 'btn-danger').' " title="'.($data->status == 0 ? 'Active' : 'Nonactive').'"><i class="fa '.($data->status == 0 ? 'fa-check-circle' : 'fa-times-circle').'"></i></a>';
                         $button .= '<a href="'.route('pengguna.edit', $data).'" class="btn btn-sm btn-info mr-1"><i class="fa fa-cog"></i></a>';
                         $button .= '<a href="#" class="btn btn-sm btn-danger delete" data-id="'.$data->id.'"><i class="fa fa-trash"></i></a>';
 
@@ -184,5 +184,22 @@ class UserController extends Controller
             Storage::disk('public')->delete('signature/'.$user->signature);
         }
         $user->delete();
+    }
+
+    public function active(User $user)
+    {
+        try {            
+            if ($user->status == 0) {
+                $user->status = '1';
+            } else {
+                $user->status = '0';
+            }
+            $user->save();
+            
+            return redirect()->route($this->getRoute())->with($user->status == 0 ? 'error' : 'success', $user->name.' telah '.($user->status == 0 ? 'dinonaktifkan' : 'diaktifkan'));
+        } catch (\Throwable $th) {
+            return redirect()->route($this->getRoute())->with('danger', $th->getMessage());
+        }
+
     }
 }

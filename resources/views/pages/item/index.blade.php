@@ -17,7 +17,7 @@
                   <th>Kode</th>
                   <th>Merk</th>
                   <th>Nama</th>
-                  <th>Berat</th>
+                  <th>Berat (Kg)</th>
                   <th>Kemasan</th>
                   <th>Aksi</th>
                 </tr>
@@ -41,11 +41,11 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="#" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('item.import') }}" method="POST" enctype="multipart/form-data">
           @csrf
           <div class="modal-body">
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
-              Pastikan merk sudah ada dimasukkan kedalam data master dan kode merk sama dengan di excel, jika berbeda data tidak akan masuk ke sistem.
+              Pastikan merk sudah dimasukkan kedalam data master dan kode merk sama dengan di excel, jika berbeda data tidak akan masuk ke sistem.
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
