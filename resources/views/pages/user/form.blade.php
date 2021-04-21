@@ -9,7 +9,7 @@
             <a href="{{ route('pengguna') }}" class="btn btn-sm btn-info">Kembali</a>
           </div>
           <div class="card-body">
-            <form action="{{ route($action, $user) }}" method="POST" enctype="multipart/form-data" novalidate>
+            <form action="{{ route($action, $user) }}" method="POST" enctype="multipart/form-data">
               @csrf
               @if ($user->id)
                 @method('put')

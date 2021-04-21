@@ -12,6 +12,7 @@ use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PurchaseOrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -122,5 +123,10 @@ Route::middleware('auth')->group(function(){
         Route::delete('delete', [ItemController::class, 'destroy'])->name('item.delete');
 
         Route::post('import', [ItemController::class, 'importItems'])->name('item.import');
+    });
+
+    Route::group(['prefix' => 'purchase_order'], function(){
+        Route::get('/', [PurchaseOrderController::class, 'index'])->name('purchase_order');
+        Route::get('create', [PurchaseOrderController::class, 'create'])->name('purchase_order.create');
     });
 });

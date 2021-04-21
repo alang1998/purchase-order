@@ -8,13 +8,23 @@ use Illuminate\Http\Request;
 class PurchaseOrderController extends Controller
 {
     /**
+     * Get named route
+     *
+     */
+    private function getRoute() {
+        return 'purchase_order';
+    }
+    
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        return view('pages.purchase_order.index', [
+            'title' => 'Daftar Purchase Order'
+        ]);
     }
 
     /**
@@ -24,7 +34,12 @@ class PurchaseOrderController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.purchase_order.form', [
+            'purchase_order'    => new PurchaseOrder,
+            'title'             => 'Tambah Purchase Order',
+            'submitButton'      => 'Tambah',
+            'action'            => $this->getRoute().'.create',
+        ]);
     }
 
     /**
