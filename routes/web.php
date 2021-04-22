@@ -71,6 +71,8 @@ Route::middleware('auth')->group(function(){
         Route::get('edit/{store}', [StoreController::class, 'edit'])->name('store.edit');
         Route::put('edit/{store}', [StoreController::class, 'update']);
         Route::delete('delete', [StoreController::class, 'destroy'])->name('store.delete');
+
+        Route::get('getStores', [StoreController::class, 'getStores'])->name('api.getStores');
     });
     
     Route::group(['prefix' => 'supplier'], function(){
@@ -80,6 +82,8 @@ Route::middleware('auth')->group(function(){
         Route::get('edit/{supplier}', [SupplierController::class, 'edit'])->name('supplier.edit');
         Route::put('edit/{supplier}', [SupplierController::class, 'update']);
         Route::delete('delete', [SupplierController::class, 'destroy'])->name('supplier.delete');
+
+        Route::get('getSuppliers', [SupplierController::class, 'getSuppliers'])->name('api.getSuppliers');
     });
     
     Route::group(['prefix' => 'merk'], function(){
@@ -111,7 +115,6 @@ Route::middleware('auth')->group(function(){
         Route::delete('delete', [UserController::class, 'destroy'])->name('pengguna.delete');
 
         Route::get('active/{user}', [UserController::class, 'active'])->name('pengguna.active');
-
     });
     
     Route::group(['prefix' => 'produk'], function(){
@@ -123,6 +126,7 @@ Route::middleware('auth')->group(function(){
         Route::delete('delete', [ItemController::class, 'destroy'])->name('item.delete');
 
         Route::post('import', [ItemController::class, 'importItems'])->name('item.import');
+        Route::get('getItems', [ItemController::class, 'getItems'])->name('api.getItems');
     });
 
     Route::group(['prefix' => 'purchase_order'], function(){

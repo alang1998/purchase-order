@@ -157,4 +157,17 @@ class SupplierController extends Controller
         $supplier = Supplier::findOrFail($request->id);
         $supplier->delete();
     }
+
+    public function getSuppliers(Request $request)
+    {        
+        if($request->has('q')){
+            $search = $request->q;
+        }else{
+            $search = '';
+        }
+
+        $data = Supplier::where('name', 'like', '%'.$search.'%')->orWhere('supplier_code', 'LIKE', '%'.$search.'%')->get();
+        
+        return response()->json($data);
+    }
 }

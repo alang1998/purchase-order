@@ -133,4 +133,17 @@ class StoreController extends Controller
         $store = Store::findOrFail($request->id);
         $store->delete();
     }
+
+    public function getStores(Request $request)
+    {        
+        if($request->has('q')){
+            $search = $request->q;
+        }else{
+            $search = '';
+        }
+
+        $data = Store::where('name', 'like', '%'.$search.'%')->get();
+        
+        return response()->json($data);
+    }
 }

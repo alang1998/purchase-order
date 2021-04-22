@@ -171,4 +171,17 @@ class ItemController extends Controller
         return redirect()->route($this->getRoute())->with('success', 'Import data berhasil.');
     }
 
+    public function getItems(Request $request)
+    {        
+        if($request->has('q')){
+            $search = $request->q;
+        }else{
+            $search = '';
+        }
+
+        $data = Item::where('name', 'like', '%'.$search.'%')->orWhere('item_code', 'LIKE', '%'.$search.'%')->get();
+        
+        return response()->json($data);
+    }
+
 }

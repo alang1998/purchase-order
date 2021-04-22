@@ -34,6 +34,12 @@ class RegionSeeder extends Seeder
                 'created_at'  => Carbon::now()->format("Y-m-d H:i:s"),
                 'updated_at'  => Carbon::now()->format("Y-m-d H:i:s")
             ],
+            [
+                'region_code' => 'SLW',
+                'name'        => 'SULAWESI',
+                'created_at'  => Carbon::now()->format("Y-m-d H:i:s"),
+                'updated_at'  => Carbon::now()->format("Y-m-d H:i:s")
+            ],
         ]);
     }
 }
