@@ -49,6 +49,7 @@ class PurchaseOrderController extends Controller
         $supplier = Supplier::find($supplier_id);
 
         if ($supplier) {
+
             $supplier_code = $supplier->supplier_code.'-'.$supplier->region->region_code;
             $month = $this->romanNumerals(date('n'));
             $year = date('Y');
@@ -77,7 +78,8 @@ class PurchaseOrderController extends Controller
                     default:
                         $num = $row[0];
                         break;
-                }                
+                }
+                
                 $number = $num.'/'.$key;
             } else {
                 $number = '0001/'.$key;
