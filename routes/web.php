@@ -134,5 +134,7 @@ Route::middleware('auth')->group(function(){
         Route::get('create', [PurchaseOrderController::class, 'create'])->name('purchase_order.create');
 
         Route::get('getOrderNumber', [PurchaseOrderController::class, 'orderNumber'])->name('purchase_order.getOrderNumber');
+        Route::get('getDetailSupplier', [PurchaseOrderController::class, 'detailSupplier'])->name('purchase_order.getDetailSupplier');
+        Route::get('getItemsOrder', [PurchaseOrderController::class, 'getItemsOrder'])->name('purchase_order.getItemsOrder');
     });
 });

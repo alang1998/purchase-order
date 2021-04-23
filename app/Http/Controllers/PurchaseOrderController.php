@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
 use App\Models\PurchaseOrder;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
@@ -41,6 +42,23 @@ class PurchaseOrderController extends Controller
             'submitButton'      => 'Tambah',
             'action'            => $this->getRoute().'.create',
         ]);
+    }
+
+    public function detailSupplier()
+    {
+        $supplier = Supplier::with('region')->findOrFail(request('supplier_id'));
+        if ($supplier) {
+            return response()->json([
+                'status'    => 200,
+                'supplier'  => $supplier,
+                'message'   => 'Success'
+            ]);
+        } else {
+            return response()->json([
+                'status'   => 400,
+                'message'  => 'Failed'
+            ]);
+        }
     }
 
     public function orderNumber()
@@ -102,6 +120,25 @@ class PurchaseOrderController extends Controller
     {        
         $roman = array('0', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII');
         return $roman[$month];
+    }
+
+    public function getItemsOrder()
+    {
+        $item = Item::with('unit', 'brand')->find(request('item_id'));
+        if ($item) {
+            $item->price = 0;
+            
+            return response()->json([
+                'status'    => 200,
+                'item'      => $item,
+                'message'   => 'Success'  
+            ]);
+        } else {
+            return response()->json([
+                'status'    => 400,
+                'message'   => 'Fail'  
+            ]);
+        }
     }
 
     /**

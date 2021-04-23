@@ -172,16 +172,21 @@ class ItemController extends Controller
     }
 
     public function getItems(Request $request)
-    {        
-        if($request->has('q')){
-            $search = $request->q;
-        }else{
-            $search = '';
+    {
+        $keywords = trim($request->a);
+        if (empty($keywords)) {
+            return response()->json([]);
         }
 
-        $data = Item::where('name', 'like', '%'.$search.'%')->orWhere('item_code', 'LIKE', '%'.$search.'%')->get();
-        
-        return response()->json($data);
+        $datas = Item::where('name', 'like', '%'.$keywords.'%')->orWhere('item_code', 'LIKE', '%'.$keywords.'%')->get();
+
+        $formatted_users = [];
+
+        foreach ($datas as $data) {
+            $formatted_users[] = ['id' => $data->id, 'text' => ' ['.$data->item_code.'] '.$data->name];
+        }
+
+        return response()->json($formatted_users);
     }
 
 }
