@@ -132,5 +132,7 @@ Route::middleware('auth')->group(function(){
     Route::group(['prefix' => 'purchase_order'], function(){
         Route::get('/', [PurchaseOrderController::class, 'index'])->name('purchase_order');
         Route::get('create', [PurchaseOrderController::class, 'create'])->name('purchase_order.create');
+
+        Route::get('getOrderNumber', [PurchaseOrderController::class, 'orderNumber'])->name('purchase_order.getOrderNumber');
     });
 });

@@ -50,7 +50,7 @@
                 </div>
                 <div class="col-md-6 col-sm-12">
                   <div class="form-group">
-                    <label for="nomer">Tanggal Order</label>
+                    <label for="orderDate">Tanggal Order</label>
                     <input type="date" name="order_date" id="orderDate" class="form-control" value="{{ date('Y-m-d') }}" readonly>
                     <small class="text-secondary">Terisi secara otomatis dan tidak dapat diubah.</small>
                     
@@ -60,7 +60,7 @@
                   </div>
 
                   <div class="form-group">
-                    <label for="nomer">Nomor Order</label>
+                    <label for="orderNumber">Nomor Order</label>
                     <input type="text" name="order_number" id="orderNumber" class="form-control" readonly>
                     <small class="text-secondary">Terisi secara otomatis dan tidak dapat diubah.</small>
                     
@@ -189,7 +189,6 @@
         dataType: 'json',
         delay: 250,
         processResults: function(data){
-          console.log(data);
           return {
             results: $.map(data, function(item){
               return {
@@ -211,7 +210,6 @@
         dataType: 'json',
         delay: 250,
         processResults: function(data){
-          console.log(data);
           return {
             results: $.map(data, function(item){
               return {
@@ -244,6 +242,29 @@
         },
         cache: true
       }
+    });
+  </script>
+
+  <script>
+    $('#supplier').on('change', function(){
+      let supplier_id = $(this).val();
+
+      // Get order number
+      $.ajax({
+        type: 'GET',
+        url: "{{ route('purchase_order.getOrderNumber') }}",
+        data: {
+          'supplier_id': supplier_id,
+        },
+        success:function(result){
+          if (result.status === 200) {
+            $('#orderNumber').val(result.orderNumber);            
+          } else {
+            alert(result.message);
+          }
+        }
+      })
+
     });
   </script>
 @endpush
