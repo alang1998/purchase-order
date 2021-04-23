@@ -257,7 +257,7 @@
           'supplier_id': supplier_id,
         },
         success:function(result){
-          if (result.status === 200) {
+          if (result.status == 200) {
             $('#orderNumber').val(result.orderNumber);            
           } else {
             alert(result.message);
