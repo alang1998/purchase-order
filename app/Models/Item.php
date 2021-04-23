@@ -20,4 +20,9 @@ class Item extends Model
     {
         return $this->belongsTo(Unit::class);
     }
+
+    public function suppliers()
+    {
+        return $this->belongsToMany(Supplier::class);
+    }
 }

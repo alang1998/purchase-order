@@ -15,4 +15,9 @@ class Supplier extends Model
     {
         return $this->belongsTo(Region::class);
     }
+
+    public function items()
+    {
+        return $this->belongsToMany(Item::class);
+    }
 }
