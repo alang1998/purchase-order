@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class DetailPurchaseOrder extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+    public $timestamps = false;
+
+    public function orders()
+    {
+        return $this->belongsTo(PurchaseOrder::class);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetailPurchaseOrder;
 use App\Models\Item;
 use App\Models\PurchaseOrder;
 use App\Models\Supplier;
@@ -124,10 +125,17 @@ class PurchaseOrderController extends Controller
 
     public function getItemsOrder()
     {
-        $item = Item::with('unit', 'brand')->find(request('item_id'));
+        $supplier = Supplier::with('items')->find(request('supplier_id'));
+        $item = Item::with('unit', 'brand', 'suppliers')->find(request('item_id'));
+        if ($supplier && $item) {
+            $res = $supplier->items()->where('item_id', $item->id)->first();
+            if ($res) {
+                $price = $res->pivot->price;
+            }
+        }
+
         if ($item) {
-            $item->price = 0;
-            
+            $item->price = $price ?? 0;            
             return response()->json([
                 'status'    => 200,
                 'item'      => $item,
@@ -149,7 +157,45 @@ class PurchaseOrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $supplier = Supplier::find(request('supplier_id'));
+        try {   
+
+            if ($supplier) {
+                $syncData = [];
+
+                foreach($request->input('item_id') as $key => $id) { 
+                    $syncData[$id] = [ 'price' => $request->input('price')[$key] ];
+                }
+
+                $supplier->items()->sync($syncData, false);
+
+                $newOrder = PurchaseOrder::create([
+                    'order_number'  => $request->order_number,
+                    'order_date'    => $request->order_date,
+                    'note'          => $request->note,
+                    'status'        => '0',
+                    'user_id'       => auth()->user()->id,
+                    'supplier_id'   => $request->supplier_id,
+                    'store_id'      => $request->store_id
+                ]);
+                
+                for ($i=0; $i < count($request->item); $i++) {
+                    DetailPurchaseOrder::create([
+                        'order_id'  => $newOrder->id,
+                        'item_id'   => $request->item_id[$i],
+                        'quantity'  => $request->quantity[$i],
+                        'price'     => $request->price[$i]
+                    ]);
+                }
+            }
+
+            return redirect()->route($this->getRoute())->with('success', $newOrder->order_number.' berhasil dibuat.');
+
+        } catch (\Throwable $th) {
+            
+            return redirect()->route($this->getRoute().'.create')->with('error', $th->getMessage());
+
+        }
     }
 
     /**

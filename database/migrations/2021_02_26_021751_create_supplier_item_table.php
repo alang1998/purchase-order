@@ -13,7 +13,7 @@ class CreateSupplierItemTable extends Migration
      */
     public function up()
     {
-        Schema::create('supplier_item', function (Blueprint $table) {
+        Schema::create('item_supplier', function (Blueprint $table) {
             $table->foreignId('supplier_id');
             $table->foreignId('item_id');
             $table->double('price');

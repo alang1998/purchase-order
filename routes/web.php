@@ -132,6 +132,7 @@ Route::middleware('auth')->group(function(){
     Route::group(['prefix' => 'purchase_order'], function(){
         Route::get('/', [PurchaseOrderController::class, 'index'])->name('purchase_order');
         Route::get('create', [PurchaseOrderController::class, 'create'])->name('purchase_order.create');
+        Route::post('create', [PurchaseOrderController::class, 'store']);
 
         Route::get('getOrderNumber', [PurchaseOrderController::class, 'orderNumber'])->name('purchase_order.getOrderNumber');
         Route::get('getDetailSupplier', [PurchaseOrderController::class, 'detailSupplier'])->name('purchase_order.getDetailSupplier');
