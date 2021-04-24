@@ -18,7 +18,7 @@
                 <div class="form-group">
                   <label for="supplier">Supplier</label>
                   <select name="supplier_id" id="supplier" class="form-control" required>
-
+                    <option value="">Pilih Supplier</option>
                   </select>
                   <small class="text-secondary">Cari supplier berdasarkan kode atau nama.</small>
                   
@@ -56,7 +56,7 @@
                 <div class="form-group">
                   <label for="store">Penerima</label>
                   <select name="store_id" id="store" class="form-control" required>
-                    
+                    <option value="">Pilih Cabang</option>
                   </select>
                   <small class="text-secondary">Barang PO akan dikirim ke cabang yang dipilih.</small>
 
@@ -98,7 +98,7 @@
                     <div class="form-row mb-2 formChange" data-classquantity="dataQuantity1" data-classprice="dataPrice1" data-classweight="dataWeight1" data-classtotal="dataTotal1" data-classtotaltonase="dataTotalTonase1">
                       <div class="col-md-5">
                         <select name="item_id[]" id="itemId1" class="item form-control" data-setprice="price1" data-setunit="setUnit1" data-setweight="setWeight1" required>
-
+                          <option value="">Pilih Barang</option>
                         </select>
 
                         {{-- error --}}
@@ -157,7 +157,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="note">Catatan</label>
-                  <textarea name="note" id="" cols="30" rows="5" class="form-control"></textarea>
+                  <textarea name="note" id="" cols="30" rows="5" class="form-control" required></textarea>
                 </div>
               </div>
               <div class="col-md-3">
@@ -320,7 +320,6 @@
             'supplier_id' : supplierId
           },
           success:function(result){
-            console.log(result);
             if (result.status == 200) {             
               let total            = 0;
               let tonase           = 0;
@@ -340,9 +339,6 @@
               
               $('.grandTotal').val(grandTotal);
               $('.grandTotalTonase').val(grandTotalTonase);
-
-              console.log(grandTotal);
-
             }
           }
         })

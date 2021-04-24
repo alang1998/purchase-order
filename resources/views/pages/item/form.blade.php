@@ -9,7 +9,7 @@
             <a href="{{ route('item') }}" class="btn btn-sm btn-info">Kembali</a>
           </div>
           <div class="card-body">
-            <form action="{{ route($action, $item) }}" method="POST" novalidate>
+            <form action="{{ route($action, $item) }}" method="POST">
               @csrf
               @if ($item->id)
                 @method('put')

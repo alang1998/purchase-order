@@ -39,6 +39,7 @@ class PurchaseOrderController extends Controller
     {
         return view('pages.purchase_order.form', [
             'purchase_order'    => new PurchaseOrder,
+            'suppliers'          => Supplier::get(),
             'title'             => 'Tambah Purchase Order',
             'submitButton'      => 'Tambah',
             'action'            => $this->getRoute().'.create',
