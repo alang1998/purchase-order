@@ -20,6 +20,7 @@
   <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('assets/plugins/select2/select2.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/plugins/datatables.net-bs4/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
@@ -76,14 +77,13 @@
   <script src="{{ asset('assets/plugins/jquery.maskedinput/jquery.maskedinput.js') }}"></script>
   <script src="{{ asset('assets/plugins/jquery-jeditable/jquery.jeditable.masked.min.js') }}"></script>
   <script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script> <!-- required by datepicker plugin -->
-  <script src="{{ asset('assets/plugins/jquery-jeditable/jquery.jeditable.datepicker.min.js') }}"></script> --}}
+  <script src="{{ asset('assets/plugins/jquery-jeditable/jquery.jeditable.datepicker.min.js') }}"></script>
   <script src="{{ asset('assets/plugins/justgage/raphael.min.js') }}"></script>
   <script src="{{ asset('assets/plugins/datatables.net/jquery.dataTables.min.js') }}"></script>
   <script src="{{ asset('assets/plugins/datatables.net-bs4/dataTables.bootstrap4.min.js') }}"></script>
   <script src="{{ asset('assets/plugins/jquery.appear/jquery.appear.js') }}"></script>
   <script src="{{ asset('assets/plugins/jquery-sparkline/jquery.sparkline.min.js') }}"></script>
   <script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
-  {{-- <script src="{{ asset('assets/plugins/bootstrap-tour/bootstrap-tour-standalone.js') }}"></script> --}}
   <script src="{{ asset('assets/plugins/sweetalert2/sweetalert2.all.min.js') }}"></script>
   <script src="{{ asset('assets/plugins/select2/select2.min.js') }}"></script>
 

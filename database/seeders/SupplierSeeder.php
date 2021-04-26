@@ -20,7 +20,7 @@ class SupplierSeeder extends Seeder
               "supplier_code"       => "RH-P",
               "name"                => "T - PT RAJAWALI HYOTO PALEMBANG",
               "address"             => "JL SUKABANGUN 1 NO.1390-A",
-              "phone"               => "'085267111090",
+              "phone"               => "085267111090",
               "email"               => "",
               "person_in_charge"    => "Bp. Jumardiansyah",
               "region_id"           => 1,

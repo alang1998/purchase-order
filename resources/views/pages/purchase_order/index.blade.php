@@ -15,10 +15,10 @@
                   <th>#</th>
                   <th>Nomer</th>
                   <th>Tanggal</th>
-                  <th>Supplier</th>
+                  <th>Pembuat</th>
+                  <th>Penerima</th>
                   <th>Total</th>
                   <th>Status</th>
-                  <th>Pembuat</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -41,10 +41,11 @@
       },
       columns: [
         { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-        { data: 'name', name: 'name' },
-        { data: 'username', name: 'username' },
-        { data: 'role', name: 'role' },
-        { data: 'ttd', name: 'ttd' },
+        { data: 'order_number', name: 'order_number' },
+        { data: 'order_date', name: 'order_date' },
+        { data: 'user', name: 'user' },
+        { data: 'store', name: 'store' },
+        { data: 'total', name: 'total' },
         { data: 'status', name: 'status' },
         { data: 'action', name: 'action' }
       ]
@@ -52,7 +53,7 @@
 
     $(document).on('click', '.delete', function(e){
       var id = $(this).data('id');
-      var url = "";
+      var url = "{{ route('purchase_order.delete') }}";
 
       Swal.fire({
         title: 'Are you sure?',
@@ -79,7 +80,6 @@
                 'Your file has been deleted.',
                 'success'
               ).then((res) => {
-                console.log(res);
                 if (res.value) {
                   $('.tablePurchaseOrder').DataTable().ajax.reload()
                 }

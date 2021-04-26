@@ -133,6 +133,10 @@ Route::middleware('auth')->group(function(){
         Route::get('/', [PurchaseOrderController::class, 'index'])->name('purchase_order');
         Route::get('create', [PurchaseOrderController::class, 'create'])->name('purchase_order.create');
         Route::post('create', [PurchaseOrderController::class, 'store']);
+        Route::get('edit/{purchase_order}', [PurchaseOrderController::class, 'edit'])->name('purchase_order.edit');
+        Route::put('edit/{purchase_order}', [PurchaseOrderController::class, 'update']);
+        Route::get('show/{purchase_order}', [PurchaseOrderController::class, 'show'])->name('purchase_order.show');
+        Route::delete('delete', [PurchaseOrderController::class, 'destroy'])->name('purchase_order.delete');
 
         Route::get('getOrderNumber', [PurchaseOrderController::class, 'orderNumber'])->name('purchase_order.getOrderNumber');
         Route::get('getDetailSupplier', [PurchaseOrderController::class, 'detailSupplier'])->name('purchase_order.getDetailSupplier');

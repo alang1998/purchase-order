@@ -5,10 +5,10 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <a href="" class="btn btn-sm btn-info">Kembali</a>
+          <a href="{{ route('purchase_order') }}" class="btn btn-sm btn-info">Kembali</a>
         </div>
         <div class="card-body">
-          <form action="{{ route('purchase_order.create') }}" method="POST" enctype="multipart/form-data">
+          <form action="{{ route($action, $purchase_order) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @if ($purchase_order->id)
               @method('put')
@@ -18,7 +18,11 @@
                 <div class="form-group">
                   <label for="supplier">Supplier</label>
                   <select name="supplier_id" id="supplier" class="form-control" required>
-                    <option value="">Pilih Supplier</option>
+                    @if ($purchase_order->supplier_id)
+                      <option value="{{ $purchase_order->supplier_id }}">{{ $purchase_order->supplier->supplier_code.' - '.$purchase_order->supplier->name }}</option>
+                    @else
+                      <option value="">Pilih Supplier</option>
+                    @endif
                   </select>
                   <small class="text-secondary">Cari supplier berdasarkan kode atau nama.</small>
                   
@@ -35,7 +39,7 @@
               <div class="col-md-6 col-sm-12">
                 <div class="form-group">
                   <label for="orderDate">Tanggal Order</label>
-                  <input type="date" name="order_date" id="orderDate" class="form-control" value="{{ date('Y-m-d') }}" readonly>
+                  <input type="date" name="order_date" id="orderDate" class="form-control" value="{{ $purchase_order->order_date ?? date('Y-m-d') }}" readonly>
                   <small class="text-secondary">Terisi secara otomatis dan tidak dapat diubah.</small>
                   
                   @error('order_number')
@@ -45,7 +49,7 @@
 
                 <div class="form-group">
                   <label for="orderNumber">Nomor Order</label>
-                  <input type="text" name="order_number" id="orderNumber" class="form-control" readonly>
+                  <input type="text" name="order_number" id="orderNumber" class="form-control" value="{{ $purchase_order->order_number }}" readonly>
                   <small class="text-secondary">Terisi secara otomatis dan tidak dapat diubah.</small>
                   
                   @error('order_number')
@@ -56,6 +60,9 @@
                 <div class="form-group">
                   <label for="store">Penerima</label>
                   <select name="store_id" id="store" class="form-control" required>
+                    @if ($purchase_order->store_id)
+                      <option value="{{ $purchase_order->store_id }}">{{ $purchase_order->store->name }}</option>
+                    @endif
                     <option value="">Pilih Cabang</option>
                   </select>
                   <small class="text-secondary">Barang PO akan dikirim ke cabang yang dipilih.</small>
@@ -92,61 +99,133 @@
                 <div id="formPlus">
                   @php
                     $i = 1;
+                    $x = 0;
                   @endphp
-                  <div id="row1">
-                    <input type="hidden" name="item[]" value="{{ $i }}">
-                    <div class="form-row mb-2 formChange" data-classquantity="dataQuantity1" data-classprice="dataPrice1" data-classweight="dataWeight1" data-classtotal="dataTotal1" data-classtotaltonase="dataTotalTonase1">
-                      <div class="col-md-5">
-                        <select name="item_id[]" id="itemId1" class="item form-control" data-setprice="price1" data-setunit="setUnit1" data-setweight="setWeight1" required>
-                          <option value="">Pilih Barang</option>
-                        </select>
+                  @if ($purchase_order->id)
+                    @php
+                      $grandTotal = 0;
+                      $grandTotalTonase = 0;
+                    @endphp
+                    @foreach ($purchase_order->detail_orders as $detail_order)                   
+                      <div id="row{{ $i }}">
+                        <input type="hidden" name="item[]" value="{{ $i }}">
+                        <div class="form-row mb-2 formChange" data-classquantity="dataQuantity{{ $i }}" data-classprice="dataPrice{{ $i }}" data-classweight="dataWeight{{ $i }}" data-classtotal="dataTotal{{ $i }}" data-classtotaltonase="dataTotalTonase{{ $i }}">
+                          <div class="col-md-5">
+                            <select name="item_id[]" id="itemId{{ $i }}" class="item form-control" data-setprice="price{{ $i }}" data-setunit="setUnit{{ $i }}" data-setweight="setWeight{{ $i }}" required>
+                              <option value="{{ $detail_order->item_id }}" selected>{{ '['.$detail_order->item->item_code.'] '.$detail_order->item->name }}</option>
+                            </select>
+
+                            {{-- error --}}
+                            @error('store_id')
+                              <div class="mt-2 text-danger">{{ $message }}</div>
+                            @enderror
+                          </div>
+                          <div class="col-md-1">
+                            <input type="number" name="quantity[]" class="form-control dataQuantity{{ $i }}" placeholder="Jumlah" value="{{ $detail_order->quantity }}" required>
+
+                            {{-- error --}}
+                            @error('quantity')
+                              <div class="mt-2 text-danger">{{ $message }}</div>
+                            @enderror
+                          </div>
+                          <div class="col-md-1">
+                            <input type="text" name="unit[]" class="form-control dataUnit{{ $i }} setUnit{{ $i }}" placeholder="" value="{{ $detail_order->item->unit->name }}" readonly>
+
+                            {{-- error --}}
+                            @error('store_id')
+                              <div class="mt-2 text-danger">{{ $message }}</div>
+                            @enderror
+                          </div>
+                          <div class="col-md-2">
+                            <input type="number" name="price[]" id="price{{ $i }}" class="form-control price{{ $i }} dataPrice{{ $i }}" placeholder="Harga" value="{{ $detail_order->price }}" required>
+
+                            {{-- error --}}
+                            @error('store_id')
+                              <div class="mt-2 text-danger">{{ $message }}</div>
+                            @enderror
+                          </div>
+                          <input type="hidden" name="weight[]" id="weight{{ $i }}" class="form-control setWeight{{ $i }} dataWeight{{ $i }}" placeholder="Berat" value="{{ $detail_order->item->weight }}" required>
+
+                          {{-- error --}}
+                          @error('weight')
+                            <div class="mt-2 text-danger">{{ $message }}</div>
+                          @enderror
+                          <div class="col-md-3">
+                            <div class="input-group">
+                              <input type="number" name="total[]" class="form-control total dataTotal{{ $i }}" placeholder="Total" value="{{ $detail_order->quantity * $detail_order->price }}" readonly>                            
+                              <input type="hidden" name="totalTonase[]" class="form-control totalTonase dataTotalTonase{{ $i }}" placeholder="Total Tonase" value="{{ $detail_order->quantity * $detail_order->item->weight }}" readonly>
+                              <div class="input-group-append">
+                                <button class="btn fa {{ ++$x === count($purchase_order->detail_orders) ? 'btn-success fa-plus btnPlus' : 'btn-danger fa-minus btnRemove' }}" type="button" id="btnPlus{{ $i }}"></button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      @php
+                        $i++; 
+                        $grandTotal += ($detail_order->quantity*$detail_order->price);   
+                        $grandTotalTonase += ($detail_order->quantity*$detail_order->item->weight);   
+                      @endphp
+                    @endforeach
+                    @php
+                      $i--;    
+                    @endphp
+                  @else
+                    <div id="row1">
+                      <input type="hidden" name="item[]" value="{{ $i }}">
+                      <div class="form-row mb-2 formChange" data-classquantity="dataQuantity1" data-classprice="dataPrice1" data-classweight="dataWeight1" data-classtotal="dataTotal1" data-classtotaltonase="dataTotalTonase1">
+                        <div class="col-md-5">
+                          <select name="item_id[]" id="itemId1" class="item form-control" data-setprice="price1" data-setunit="setUnit1" data-setweight="setWeight1" required>
+                            <option value="">Pilih Barang</option>
+                          </select>
+
+                          {{-- error --}}
+                          @error('store_id')
+                            <div class="mt-2 text-danger">{{ $message }}</div>
+                          @enderror
+                        </div>
+                        <div class="col-md-1">
+                          <input type="number" name="quantity[]" class="form-control dataQuantity1" placeholder="Jumlah" required>
+
+                          {{-- error --}}
+                          @error('quantity')
+                            <div class="mt-2 text-danger">{{ $message }}</div>
+                          @enderror
+                        </div>
+                        <div class="col-md-1">
+                          <input type="text" name="unit[]" class="form-control dataUnit1 setUnit1" placeholder="" readonly>
+
+                          {{-- error --}}
+                          @error('store_id')
+                            <div class="mt-2 text-danger">{{ $message }}</div>
+                          @enderror
+                        </div>
+                        <div class="col-md-2">
+                          <input type="number" name="price[]" id="price1" class="form-control price1 dataPrice1" placeholder="Harga" required>
+
+                          {{-- error --}}
+                          @error('store_id')
+                            <div class="mt-2 text-danger">{{ $message }}</div>
+                          @enderror
+                        </div>
+                        <input type="hidden" name="weight[]" id="weight1" class="form-control setWeight1 dataWeight1" placeholder="Berat" required>
 
                         {{-- error --}}
-                        @error('store_id')
+                        @error('weight')
                           <div class="mt-2 text-danger">{{ $message }}</div>
                         @enderror
-                      </div>
-                      <div class="col-md-1">
-                        <input type="number" name="quantity[]" class="form-control dataQuantity1" placeholder="Jumlah" required>
-
-                        {{-- error --}}
-                        @error('quantity')
-                          <div class="mt-2 text-danger">{{ $message }}</div>
-                        @enderror
-                      </div>
-                      <div class="col-md-1">
-                        <input type="text" name="unit[]" class="form-control dataUnit1 setUnit1" placeholder="" readonly>
-
-                        {{-- error --}}
-                        @error('store_id')
-                          <div class="mt-2 text-danger">{{ $message }}</div>
-                        @enderror
-                      </div>
-                      <div class="col-md-2">
-                        <input type="number" name="price[]" id="price1" class="form-control price1 dataPrice1" placeholder="Harga" required>
-
-                        {{-- error --}}
-                        @error('store_id')
-                          <div class="mt-2 text-danger">{{ $message }}</div>
-                        @enderror
-                      </div>
-                      <input type="hidden" name="weight[]" id="weight1" class="form-control setWeight1 dataWeight1" placeholder="Berat" required>
-
-                      {{-- error --}}
-                      @error('weight')
-                        <div class="mt-2 text-danger">{{ $message }}</div>
-                      @enderror
-                      <div class="col-md-3">
-                        <div class="input-group">
-                          <input type="number" name="total[]" class="form-control total dataTotal1" placeholder="Total" readonly>                            
-                          <input type="hidden" name="totalTonase[]" class="form-control totalTonase dataTotalTonase1" placeholder="Total Tonase" readonly>
-                          <div class="input-group-append">
-                            <button class="btn btn-success fa fa-plus btnPlus" type="button" id="btnPlus1"></button>
+                        <div class="col-md-3">
+                          <div class="input-group">
+                            <input type="number" name="total[]" class="form-control total dataTotal1" placeholder="Total" readonly>                            
+                            <input type="hidden" name="totalTonase[]" class="form-control totalTonase dataTotalTonase1" placeholder="Total Tonase" readonly>
+                            <div class="input-group-append">
+                              <button class="btn btn-success fa fa-plus btnPlus" type="button" id="btnPlus1"></button>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  @endif
 
                 </div>
 
@@ -157,19 +236,19 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="note">Catatan</label>
-                  <textarea name="note" id="" cols="30" rows="5" class="form-control" required></textarea>
+                  <textarea name="note" id="" cols="30" rows="5" class="form-control">{{ $purchase_order->note ?? '' }}</textarea>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
                   <label for="grandTotalTonase">Tonase</label>
-                  <input type="number" name="grandTotalTonase" class="form-control grandTotalTonase" step="0.01" readonly value="">
+                  <input type="number" name="grandTotalTonase" class="form-control grandTotalTonase" step="0.01" readonly value="{{ $purchase_order->id ? $grandTotalTonase : '' }}">
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
                   <label for="grandTotal">Grand Total</label>
-                  <input type="number" name="grandTotal" class="form-control grandTotal" step="0.01" readonly value="">
+                  <input type="number" name="grandTotal" class="form-control grandTotal" step="0.01" readonly value="{{ $purchase_order->id ? $grandTotal : '' }}">
                 </div>
                 <button type="submit" class="btn btn-primary float-right" style="margin-top: 34px"><i class="fa fa-save"></i>&nbsp; {{ $submitButton }}</button>
               </div>
@@ -248,30 +327,10 @@
   </script>
 
   <script>
-    let supplierId  = 0;
+    let supplierId  = {{ $purchase_order->supplier_id ?? '0' }};
     let i           = {{ $i }};
-    // Change supplier -> get order number and supplier details
-    $('#supplier').on('change', function(){
-      let supplier_id = $(this).val();
-      supplierId      = supplier_id;
 
-      // Get order number
-      $.ajax({
-        type    : 'GET',
-        url     : "{{ route('purchase_order.getOrderNumber') }}",
-        data: {
-          'supplier_id': supplier_id,
-        },
-        success:function(result){
-          if (result.status == 200) {
-            $('#orderNumber').val(result.orderNumber);            
-          } else {
-            alert(result.message);
-          }
-        }
-      })
-
-      // supplier detail
+    function getDetailSupplier(supplier_id) {      
       $.ajax({
         type: 'GET',
         url: "{{ route('purchase_order.getDetailSupplier') }}",
@@ -305,8 +364,10 @@
           }
         }
       })
+    }
 
-      // Set price
+    function getItemsOrder() {      
+
       let grandTotal       = 0;
       let grandTotalTonase = 0;
       $('input[name^="item"]').each(function(){
@@ -321,12 +382,13 @@
           },
           success:function(result){
             if (result.status == 200) {             
-              let total            = 0;
-              let tonase           = 0;
+              let total    = 0;
+              let tonase   = 0;
 
               let quantity = $('.dataQuantity'+itemId).val();
               let price    = $('.dataPrice'+itemId).val(result.item.price);
               let weight   = $('.dataWeight'+itemId).val(result.item.weight);
+              let unit     = $('.dataUnit'+itemId).val(result.item.unit.name);
 
               total   = result.item.price * quantity;
               tonase  = result.item.weight * quantity;
@@ -344,29 +406,48 @@
         })
       });
 
-    });
-    
-    $(document).on('change', '.item', function(){
-      let item_id   = $(this).val();
-      let setPrice  = '.'+$(this).data('setprice');
-      let setUnit   = '.'+$(this).data('setunit');
-      let setWeight = '.'+$(this).data('setweight');
+    }
 
+    // Change supplier -> get order number and supplier details
+    $('#supplier').on('change', function(){
+      let supplier_id = $(this).val();
+      supplierId      = supplier_id;
+
+      // Get order number
       $.ajax({
-        type: 'GET',
-        url: "{{ route('purchase_order.getItemsOrder') }}",
+        type    : 'GET',
+        url     : "{{ route('purchase_order.getOrderNumber') }}",
         data: {
-          'item_id': item_id,
-          'supplier_id': supplierId
+          'supplier_id': supplier_id,
         },
         success:function(result){
           if (result.status == 200) {
-            $(setPrice).val(result.item.price);
-            $(setUnit).val(result.item.unit.name);
-            $(setWeight).val(result.item.weight);
+            $('#orderNumber').val(result.orderNumber);            
+          } else {
+            alert(result.message);
           }
         }
-      });
+      })
+
+      // supplier detail
+      getDetailSupplier(supplier_id);
+
+      // Set price
+      getItemsOrder();
+
+    });
+    
+    // fill detail supplier when edit
+    $(document).ready(function(){
+
+      @if($purchase_order->id)
+        getDetailSupplier(supplierId);
+      @endif
+
+    });
+
+    $(document).on('change', '.item', function(){
+      getItemsOrder();
     })
 
     $(document).on('click', '.btnPlus', function(){
@@ -473,6 +554,8 @@
             return $(this).val();
         }).get();
 
+        console.log(totalTonaseArr, totalArr);
+
         for (let i = 0; i < totalArr.length; i++) {
             grandTotal       += parseFloat(totalArr[i]);
             grandTotalTonase += parseFloat(totalTonaseArr[i]);            
@@ -498,6 +581,10 @@
         let quantity    = $(classQuantity).val();
         let price       = $(classPrice).val();
         let weight      = $(classWeigth).val();
+
+        console.log(classQuantity, classPrice, classWeigth);
+        console.log(quantity, price, weight);
+
         total           = quantity * price;
         tonase          = quantity * weight;
 
@@ -520,6 +607,8 @@
         $('.grandTotal').val(grandTotal);
         $('.grandTotalTonase').val(grandTotalTonase);
     });
+
+    
   </script>
 
 

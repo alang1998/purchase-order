@@ -25,6 +25,43 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
+        if (request()->ajax()) {
+            $purchase_order = PurchaseOrder::latest()->get();
+            return datatables()->of($purchase_order)
+                    ->addColumn('action', function($data){
+                        $button = '<a href="'.route('purchase_order.edit', $data).'" class="btn btn-sm btn-info mr-1"><i class="fa fa-cog"></i></a>';
+                        $button .= '<a href="'.route('purchase_order.show', $data).'" class="btn btn-sm btn-primary mr-1"><i class="fa fa-search"></i></a>';
+                        $button .= '<a href="#" class="btn btn-sm btn-danger delete" data-id="'.$data->id.'"><i class="fa fa-trash"></i></a>';
+
+                        return $button;
+                    })
+                    ->addColumn('order_date', function($data){
+                        return simpleDate($data->order_date);
+                    })
+                    ->addColumn('status', function($data){
+                        return order_status($data->status);
+                    })
+                    ->addColumn('user', function($data){
+                        return $data->user->name;
+                    })
+                    ->addColumn('store', function($data){
+                        return $data->store->name;
+                    })
+                    ->addColumn('total', function($data){
+                        $details = $data->detail_orders;
+                        $total = 0;
+                        if ($details) {
+                            foreach ($details as $key => $detail_order) {
+                                $total += $detail_order->quantity*$detail_order->price;
+                            }
+                        }
+
+                        return 'Rp. '.number_format($total, '0', '', '.').'';
+                    })
+                    ->addIndexColumn()
+                    ->rawColumns(['action', 'status'])
+                    ->make(true);
+        }
         return view('pages.purchase_order.index', [
             'title' => 'Daftar Purchase Order'
         ]);
@@ -150,6 +187,18 @@ class PurchaseOrderController extends Controller
         }
     }
 
+    public function getStatusOrders($itemOrders)
+    {        
+        $grandTotal = 0;
+        for ($i=0; $i < count($itemOrders['item']); $i++) { 
+            $grandTotal += $itemOrders['quantity'][$i]*$itemOrders['price'][$i];
+        }
+
+        $status = ($grandTotal > 20000000) ? '0' : '1';
+
+        return $status;
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -159,6 +208,7 @@ class PurchaseOrderController extends Controller
     public function store(Request $request)
     {
         $supplier = Supplier::find(request('supplier_id'));
+        $status   = $this->getStatusOrders($request->all());
         try {   
 
             if ($supplier) {
@@ -173,8 +223,8 @@ class PurchaseOrderController extends Controller
                 $newOrder = PurchaseOrder::create([
                     'order_number'  => $request->order_number,
                     'order_date'    => $request->order_date,
-                    'note'          => $request->note,
-                    'status'        => '0',
+                    'note'          => $request->note ?? '-',
+                    'status'        => $status,
                     'user_id'       => auth()->user()->id,
                     'supplier_id'   => $request->supplier_id,
                     'store_id'      => $request->store_id
@@ -190,7 +240,7 @@ class PurchaseOrderController extends Controller
                 }
             }
 
-            return redirect()->route($this->getRoute())->with('success', $newOrder->order_number.' berhasil dibuat.');
+            return redirect()->route($this->getRoute().'.show', $newOrder)->with('success', $newOrder->order_number.' berhasil dibuat.');
 
         } catch (\Throwable $th) {
             
@@ -206,8 +256,11 @@ class PurchaseOrderController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(PurchaseOrder $purchaseOrder)
-    {
-        //
+    {        
+        return view('pages.purchase_order.show', [
+            'purchase_order' => $purchaseOrder,
+            'title'          => $purchaseOrder->order_number
+        ]);
     }
 
     /**
@@ -218,7 +271,12 @@ class PurchaseOrderController extends Controller
      */
     public function edit(PurchaseOrder $purchaseOrder)
     {
-        //
+        return view('pages.purchase_order.form', [
+            'purchase_order' => $purchaseOrder,
+            'title'          => $purchaseOrder->order_number,
+            'submitButton'   => 'Simpan',
+            'action'         => $this->getRoute().'.edit'
+        ]);
     }
 
     /**
@@ -230,7 +288,53 @@ class PurchaseOrderController extends Controller
      */
     public function update(Request $request, PurchaseOrder $purchaseOrder)
     {
-        //
+        $supplier = Supplier::find($request->supplier_id);
+        $status   = $this->getStatusOrders($request->all());
+        try {
+            
+            if ($supplier) {
+
+                $syncData = [];
+
+                foreach($request->input('item_id') as $key => $id) { 
+                    $syncData[$id] = [ 'price' => $request->input('price')[$key] ];
+                }
+
+                $supplier->items()->sync($syncData, false);
+                
+                $newOrder = $purchaseOrder->update([
+                    'order_number'  => $request->order_number,
+                    'note'          => $request->note ?? '-',
+                    'status'        => $status,
+                    'supplier_id'   => $request->supplier_id,
+                    'store_id'      => $request->store_id
+                ]);
+
+                if ($newOrder) {
+                    $purchaseOrder->detail_orders()->delete();
+                    for ($i=0; $i < count($request->item); $i++) { 
+                        $purchaseOrder->detail_orders()->create([                            
+                            'order_id'  => $purchaseOrder->id,
+                            'item_id'   => $request->item_id[$i],
+                            'quantity'  => $request->quantity[$i],
+                            'price'     => $request->price[$i]
+                        ]);
+                    }
+                }
+
+                return redirect()->route($this->getRoute().'.show', $purchaseOrder)->with('success', $purchaseOrder->order_number.' berhasil diupdate');
+
+            } else {
+
+                return redirect()->route($this->getRoute().'.edit', $purchaseOrder)->with('error', 'Terjadi kesalahan.');
+
+            }
+
+        } catch (\Throwable $th) {
+            
+            return redirect()->route($this->getRoute().'.edit', $purchaseOrder)->with('error', $th->getMessage());
+
+        }
     }
 
     /**
@@ -239,8 +343,20 @@ class PurchaseOrderController extends Controller
      * @param  \App\Models\PurchaseOrder  $purchaseOrder
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PurchaseOrder $purchaseOrder)
+    public function destroy()
     {
-        //
+        $purchaseOrder = PurchaseOrder::find(request()->get('id'));
+        if ($purchaseOrder) {
+            $purchaseOrder->delete();
+            return response()->json([
+                'status'    => 200,
+                'message'   => 'success'
+            ]);
+        } else {
+            return response()->json([
+                'status'    => 400,
+                'message'   => 'fail'
+            ]);
+        }
     }
 }

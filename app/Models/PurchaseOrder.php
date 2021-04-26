@@ -13,6 +13,21 @@ class PurchaseOrder extends Model
 
     public function detail_orders()
     {
-        return $this->hasMany(DetailPurchaseOrder::class);
+        return $this->hasMany(DetailPurchaseOrder::class, 'order_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
     }
 }
