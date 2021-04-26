@@ -6,7 +6,9 @@
       <div class="card">
         <div class="card-header">
           <a href="{{ route('purchase_order') }}" class="btn btn-sm btn-info">Kembali</a>
-          <a href="" class="btn btn-sm btn-primary">Print</a>
+          @if ($purchase_order->status == 1)
+            <a href="{{ route('purchase_order.printOrder', $purchase_order) }}" class="btn btn-sm btn-primary" target="_BLANK">Print</a>            
+          @endif
           <a href="{{ route('purchase_order.edit', $purchase_order) }}" class="btn btn-sm btn-warning">Edit</a>
         </div>
         <div class="card-body">

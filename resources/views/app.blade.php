@@ -16,7 +16,7 @@
   {{-- <link href="{{ asset('assets/plugins/bootstrap-tour/bootstrap-tour-standalone.min.css') }}" rel="stylesheet" type="text/css" /> --}}
 
   <!-- App css -->
-  <link href="{{ asset('assets/css/bootstrap-custom.min.cs') }}s" rel="stylesheet" type="text/css" />
+  <link href="{{ asset('assets/css/bootstrap-custom.min.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('assets/plugins/select2/select2.min.css') }}" rel="stylesheet">

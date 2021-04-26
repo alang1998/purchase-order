@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\RoleController;
@@ -10,9 +9,10 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\Dashboard\DashboardController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -137,6 +137,8 @@ Route::middleware('auth')->group(function(){
         Route::put('edit/{purchase_order}', [PurchaseOrderController::class, 'update']);
         Route::get('show/{purchase_order}', [PurchaseOrderController::class, 'show'])->name('purchase_order.show');
         Route::delete('delete', [PurchaseOrderController::class, 'destroy'])->name('purchase_order.delete');
+
+        Route::get('print_order/{purchase_order}', [PurchaseOrderController::class, 'printOrder'])->name('purchase_order.printOrder');
 
         Route::get('getOrderNumber', [PurchaseOrderController::class, 'orderNumber'])->name('purchase_order.getOrderNumber');
         Route::get('getDetailSupplier', [PurchaseOrderController::class, 'detailSupplier'])->name('purchase_order.getDetailSupplier');

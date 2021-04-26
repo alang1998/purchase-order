@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\DetailPurchaseOrder;
 use App\Models\Item;
 use App\Models\PurchaseOrder;
@@ -261,6 +262,21 @@ class PurchaseOrderController extends Controller
             'purchase_order' => $purchaseOrder,
             'title'          => $purchaseOrder->order_number
         ]);
+    }
+
+    public function printOrder(PurchaseOrder $purchaseOrder)
+    {
+        $data = [
+            'purchase_order' => $purchaseOrder,
+            'company'        => Company::orderBy('id', 'asc')->first()
+        ];
+
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadview('pages.purchase_order.print_order', $data)->setPaper('a4', 'potrait');
+
+        return $pdf->stream();
+
+        // return view('pages.purchase_order.print_order', $data);
     }
 
     /**

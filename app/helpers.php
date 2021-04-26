@@ -106,3 +106,40 @@ if (!function_exists('beCalculated')) {
     }
     
 }
+
+if (!function_exists('getRoles')) {
+    
+    function getRoles($value) {
+        switch ($value) {
+            case '1':
+                $role = 'Super User';
+                break;
+
+            case '2':
+                $role = 'Direktur';
+                break;
+
+            case '3':                
+                $role = 'Akunting';
+                break;
+
+            case '4':                
+                $role = 'Supervisor';
+                break;
+                
+            case '5':                
+                $role = 'Wakil Supervisor';
+                break;
+
+            case '6':
+                $role = 'Staff Purchasing';
+                break;
+            
+            default:
+                $role = 'Unknown';
+                break;
+        }     		
+        return $role;
+    }
+    
+}

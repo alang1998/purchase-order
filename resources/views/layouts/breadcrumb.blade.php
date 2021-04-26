@@ -14,8 +14,8 @@
             {{-- @dump(Request::segment($i)); --}}
             @php 
               $segment    .= '/' . Request::segment($i);
+              $text        = explode('_', Request::segment($i));
               if (count(Request::segments()) < 3) {
-                $text        = explode('_', Request::segment($i));
                 if (count($text) > 1) {
                   for ($key=0; $key < count($text); $key++) { 
                     $segmentText .= $text[$key].' ';
@@ -24,7 +24,13 @@
                   $segmentText .= Request::segment($i);
                 }
               } else {
-                $segmentText = Request::segment($i);
+                if (count($text) > 1) {
+                  for ($key=0; $key < count($text); $key++) { 
+                    $segmentText .= $text[$key].' ';
+                  }
+                } else  {
+                  $segmentText = Request::segment($i);
+                }
               }
             @endphp
             @if (!is_numeric(Request::segment($i)))
