@@ -12,7 +12,9 @@ class LoginController extends Controller
         if(!empty(auth()->user()->id)){
             return redirect()->route('dashboard');
         }
-        return view('pages.auth.login');
+        return view('pages.auth.login', [
+            'title' => 'Login'
+        ]);
     }
 
     public function postlogin(LoginRequest $request)
