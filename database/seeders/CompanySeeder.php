@@ -22,8 +22,8 @@ class CompanySeeder extends Seeder
                 'fax'               => '-',
                 'email'             => 'admin@cwabali.com',
                 'person_in_charge'  => 'Hendri',
-                'logo'              => null,
-                'stamp'             => null
+                'logo'              => '-',
+                'stamp'             => '-'
             ],
         ]);
     }
