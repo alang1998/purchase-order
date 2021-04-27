@@ -58,7 +58,7 @@
               <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Tanda Tangan Digital</label>
                 <div class="col-sm-9">
-                  <input type="file" name="signature" class="form-control-file" id="userSignature" required>
+                  <input type="file" name="signature" class="form-control-file" id="userSignature">
                   @if ($user->id)
                     <input type="hidden" name="oldSignature" id="userOldSignature" class="form-control" value="{{ $user->signature }}">
                     <span class="text-danger">* Tidak perlu input gambar jika tidak ingin mengubah TTD</span>

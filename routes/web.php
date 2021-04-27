@@ -1,18 +1,20 @@
 <?php
 
-use App\Http\Controllers\BrandController;
-use App\Http\Controllers\CompanyController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
-use App\Http\Controllers\RegionController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\StoreController;
-use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\StoreController;
+use App\Http\Controllers\RegionController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\Dashboard\DashboardController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PurchaseOrderReportController;
+use App\Http\Controllers\PurchaseOrderVerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -130,6 +132,7 @@ Route::middleware('auth')->group(function(){
     });
 
     Route::group(['prefix' => 'purchase_order'], function(){
+
         Route::get('/', [PurchaseOrderController::class, 'index'])->name('purchase_order');
         Route::get('create', [PurchaseOrderController::class, 'create'])->name('purchase_order.create');
         Route::post('create', [PurchaseOrderController::class, 'store']);
@@ -143,5 +146,19 @@ Route::middleware('auth')->group(function(){
         Route::get('getOrderNumber', [PurchaseOrderController::class, 'orderNumber'])->name('purchase_order.getOrderNumber');
         Route::get('getDetailSupplier', [PurchaseOrderController::class, 'detailSupplier'])->name('purchase_order.getDetailSupplier');
         Route::get('getItemsOrder', [PurchaseOrderController::class, 'getItemsOrder'])->name('purchase_order.getItemsOrder');
+
+        Route::group(['prefix' => 'verifikasi'], function(){
+
+            Route::get('/', [PurchaseOrderVerificationController::class, 'index'])->name('purchase_order.verification');
+            Route::get('show/{purchase_order}', [PurchaseOrderVerificationController::class, 'show'])->name('purchase_order.verification.show');
+            Route::post('postVerification/{purchase_order}', [PurchaseOrderVerificationController::class, 'verification'])->name('purchase_order.verification.sendVerification');
+
+        });
+
+        Route::group(['prefix' => 'laporan'], function(){
+            Route::get('/', [PurchaseOrderReportController::class, 'index'])->name('purchase_order.report');
+            Route::get('getReports', [PurchaseOrderReportController::class, 'getReports'])->name('purchase_order.report.getReports');
+        });
+
     });
 });

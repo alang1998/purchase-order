@@ -5,12 +5,9 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <a href="{{ route('purchase_order') }}" class="btn btn-sm btn-info">Kembali</a>
+          <a href="{{ route('purchase_order.verification') }}" class="btn btn-sm btn-info">Kembali</a>
           @if ($purchase_order->status == 1)
             <a href="{{ route('purchase_order.printOrder', $purchase_order) }}" class="btn btn-sm btn-primary" target="_BLANK">Print</a>            
-          @endif
-          @if (empty($purchase_order->verification_order))
-            <a href="{{ route('purchase_order.edit', $purchase_order) }}" class="btn btn-sm btn-warning">Edit</a>            
           @endif
         </div>
         <div class="card-body">
@@ -62,7 +59,7 @@
             </div>
           </div>
           <hr>
-          @if ($purchase_order->status > 0 && $purchase_order->verification_order)
+          @if ($purchase_order->status > 0)
           <div class="row">
             <div class="col-md-2 mb-2 mb-md-0 font-weight-bold font-md-weight-normal">
               Status Verifikasi
@@ -268,6 +265,28 @@
       </div>
     </div>
   </div>
+  @if ($purchase_order->status == 0)
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5>Verifikasi PO</h5>
+          </div>
+          <div class="card-body">
+            <form action="{{ route('purchase_order.verification.sendVerification', $purchase_order) }}" method="POST">
+              @csrf
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="verifikasiSwitch" name="status" value="1">
+                <label class="custom-control-label" for="verifikasiSwitch">{{ Auth::user()->name }} <span class="badge badge-success">{{ Auth::user()->role->name }}</span></label><br>
+                <small class="mini-text text-muted">Dengan ini anda menyetujui pembuatan PO tersebut.</small>
+              </div>
+              <button type="submit" class="btn btn-primary mt-3"><i class="cil-save"></i> Simpan</button>
+            </form>
+          </div>
+        </div> 
+      </div>
+    </div>    
+  @endif
 @endsection
 
 @push('scripts')

@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PurchaseOrder extends Model
 {
@@ -14,6 +14,11 @@ class PurchaseOrder extends Model
     public function detail_orders()
     {
         return $this->hasMany(DetailPurchaseOrder::class, 'order_id');
+    }
+
+    public function verification_order()
+    {
+        return $this->hasOne(HistoryVerification::class, 'order_id');
     }
 
     public function user()

@@ -30,9 +30,11 @@ class PurchaseOrderController extends Controller
             $purchase_order = PurchaseOrder::latest()->get();
             return datatables()->of($purchase_order)
                     ->addColumn('action', function($data){
-                        $button = '<a href="'.route('purchase_order.edit', $data).'" class="btn btn-sm btn-info mr-1"><i class="fa fa-cog"></i></a>';
-                        $button .= '<a href="'.route('purchase_order.show', $data).'" class="btn btn-sm btn-primary mr-1"><i class="fa fa-search"></i></a>';
-                        $button .= '<a href="#" class="btn btn-sm btn-danger delete" data-id="'.$data->id.'"><i class="fa fa-trash"></i></a>';
+                        $button = '<a href="'.route('purchase_order.show', $data).'" class="btn btn-sm btn-primary mr-1"><i class="fa fa-search"></i></a>';
+                        if (empty($data->verification_order)) {
+                            $button .= '<a href="'.route('purchase_order.edit', $data).'" class="btn btn-sm btn-info mr-1"><i class="fa fa-cog"></i></a>';
+                            $button .= '<a href="#" class="btn btn-sm btn-danger delete" data-id="'.$data->id.'"><i class="fa fa-trash"></i></a>';                            
+                        }
 
                         return $button;
                     })
@@ -195,7 +197,7 @@ class PurchaseOrderController extends Controller
             $grandTotal += $itemOrders['quantity'][$i]*$itemOrders['price'][$i];
         }
 
-        $status = ($grandTotal > 20000000) ? '0' : '1';
+        $status = ($grandTotal >= 20000000) ? '0' : '1';
 
         return $status;
     }

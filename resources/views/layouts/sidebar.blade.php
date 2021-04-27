@@ -26,11 +26,11 @@
       <li class="menu-group">Pembelian</li>
       <li class="panel">
         <li><a href="{{ route('purchase_order') }}" class=""><i class="ti-shopping-cart"></i> <span class="title">Purchase Order ( PO )</span></a></li>
-        <li><a href="#" class=""><i class="ti-clipboard"></i> <span class="title">Verifikasi PO</span></a></li>
+        <li><a href="{{ route('purchase_order.verification') }}" class=""><i class="ti-clipboard"></i> <span class="title">Verifikasi PO</span></a></li>
       </li>
       <li class="menu-group">Laporan</li>
       <li class="panel">
-        <li><a href=""><i class="ti-clipboard"></i> <span class="title">Rekap PO</span></a></li>
+        <li><a href="{{ route('purchase_order.report') }}"><i class="ti-clipboard"></i> <span class="title">Rekap PO</span></a></li>
       </li>
 
       <li class="menu-group">Pengaturan</li>
