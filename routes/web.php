@@ -13,8 +13,10 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\HistoryReportsController;
 use App\Http\Controllers\PurchaseOrderReportController;
 use App\Http\Controllers\PurchaseOrderVerificationController;
+use App\Models\HistoryReports;
 
 /*
 |--------------------------------------------------------------------------
@@ -156,8 +158,17 @@ Route::middleware('auth')->group(function(){
         });
 
         Route::group(['prefix' => 'laporan'], function(){
+            
             Route::get('/', [PurchaseOrderReportController::class, 'index'])->name('purchase_order.report');
+            Route::get('show/{purchase_order}', [PurchaseOrderReportController::class, 'show'])->name('purchase_order.report.show');
             Route::get('getReports', [PurchaseOrderReportController::class, 'getReports'])->name('purchase_order.report.getReports');
+
+            Route::group(['prefix' => 'history'], function(){
+                
+                Route::post('receiptOfGoods/{purchase_order}', [HistoryReportsController::class, 'receiptGoods'])->name('purchase_order.report.receiptGoods');
+
+            });
+
         });
 
     });

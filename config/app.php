@@ -234,6 +234,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
 
+        'anyHelper' => App\anyHelper::class,
+
     ],
 
 ];

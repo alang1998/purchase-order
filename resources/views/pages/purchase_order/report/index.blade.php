@@ -139,8 +139,6 @@
           'supplierId': supplier_id
         },
         success:function(result){
-          console.log(result);
-          console.log(new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(result.grandTotal));
           $('.grandTotal').empty().append(new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(result.grandTotal));
           $('.grandTotalTonase').empty().append(new Intl.NumberFormat('id-ID', { style: 'decimal' }).format(result.grandTotalTonase));
           $('.supplierTitle').empty().append(result.supplier.name);

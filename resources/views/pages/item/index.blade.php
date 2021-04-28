@@ -31,7 +31,7 @@
 @endsection
 
 @section('modal')
-  {{-- Modal --}}  
+  {{-- Import Modal --}}  
   <div class="modal fade" id="modalImportProduk" tabindex="-1" role="dialog" aria-labelledby="modalImportProdukLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">

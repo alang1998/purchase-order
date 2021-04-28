@@ -21,4 +21,9 @@ class DetailPurchaseOrder extends Model
     {
         return $this->belongsTo(Item::class);
     }
+
+    public function history()
+    {
+        return $this->hasMany(HistoryReports::class, 'detail_order_id');
+    }
 }

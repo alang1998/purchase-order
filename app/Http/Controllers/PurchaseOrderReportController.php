@@ -27,7 +27,7 @@ class PurchaseOrderReportController extends Controller
             $orders = $this->getPurchaseOrder(request()->get('supplierId'));
             return datatables()->of($orders)
                 ->addColumn('action', function($data){
-                    $button = '<a href="" class="btn btn-sm btn-primary mr-1"><i class="fa fa-search"></i></a>';
+                    $button = '<a href="'.route('purchase_order.report.show', $data).'" class="btn btn-sm btn-primary mr-1" target="_BLANK"><i class="fa fa-search"></i></a>';
 
                     return $button;
                 })
@@ -68,7 +68,7 @@ class PurchaseOrderReportController extends Controller
     public function getPurchaseOrder($supplierId)
     {
         if ($supplierId) {
-            $orders = PurchaseOrder::where('supplier_id', $supplierId)->get();            
+            $orders = PurchaseOrder::where('supplier_id', $supplierId)->where('status', '1')->get();            
         } else {
             $orders = null;
         }
@@ -145,9 +145,12 @@ class PurchaseOrderReportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, PurchaseOrder $purchaseOrder)
     {
-        //
+        return view('pages.purchase_order.report.show', [
+            'purchase_order'    => $purchaseOrder,
+            'title'             => $purchaseOrder->order_number
+        ]);
     }
 
     /**
