@@ -265,7 +265,7 @@
       </div>
     </div>
   </div>
-  @if ($purchase_order->status == 0)
+  @if ($purchase_order->status == 0 && Auth::user()->role->id < 6)
     <div class="row">
       <div class="col-md-6">
         <div class="card">

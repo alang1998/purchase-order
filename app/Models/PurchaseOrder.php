@@ -35,4 +35,9 @@ class PurchaseOrder extends Model
     {
         return $this->belongsTo(Store::class);
     }
+
+    public function history_reports()
+    {
+        return $this->hasMany(HistoryReports::class, 'order_id');
+    }
 }

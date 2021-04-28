@@ -5,7 +5,15 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <a href="#" class="btn btn-sm btn-primary btnReceipt"><i class="fa fa-clipboard"></i> Terima Barang</a>
+          @if (Auth::user()->role->id > 3 || Auth::user()->role->id == 1)
+            <a href="#" class="btn btn-sm btn-primary btnReceipt {{ anyHelper::receiptOrder($purchase_order->detail_orders) ? 'disabled' : '' }}">
+              <i class="fa fa-clipboard"></i> Terima Barang
+            </a> 
+          @else
+            <a href="#" class="btn btn-sm btn-primary disabled">
+              <i class="fa fa-clipboard"></i> Terima Barang
+            </a>          
+          @endif
         </div>
         <div class="card-body">
           <div class="row">
@@ -37,7 +45,7 @@
                         <td class="text-right">{{ $detail_order->quantity }}</td>
                         <td>{{ $detail_order->item->unit->name }}</td>
                         <td class="text-right">{{ $detail_order->item->weight }}</td>
-                        <td>0</td>
+                        <td>{{ anyHelper::getQuantityReceipt($detail_order) }}</td>
                       </tr>
                       <?php 
                         $grandTotal += $detail_order->quantity * $detail_order->price;
@@ -49,22 +57,35 @@
                 <hr>
                 <h5>Histori Penerimaan Barang</h5>
                 <ul class="list-unstyled activity-timeline">
+                  @foreach ($purchase_order->history_reports as $history)
                   <li>
                     <i class="fa fa-plus activity-icon"></i>
-                    <p>Commented on post <a href="#">Prototyping</a> <span class="timestamp">2 minutes ago</span></p>
+                    <p class="font-weight-bold">Barang diterima:</p>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Nama</th>
+                          <th>Jumlah Diterima</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @foreach ($history->goods_receipt as $receipt)
+                        <tr>
+                          <td>{{ $receipt->detail_order->item->name }}</td>
+                          <td class="text-center">{{ $receipt->quantity }}</td>
+                        </tr>
+                        @endforeach
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <td colspan="2">
+                            <span class="timestamp">{{ $history->created_at }} oleh {{ $history->user->name }}</span>
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
                   </li>
-                  <li>
-                    <i class="fa fa-plus activity-icon"></i>
-                    <p>Uploaded new file <a href="#">Proposal.docx</a> to project <a href="#">New Year Campaign</a> <span class="timestamp">7 hours ago</span></p>
-                  </li>
-                  <li>
-                    <i class="fa fa-plus activity-icon"></i>
-                    <p>Added <a href="#">Martin</a> and <a href="#">3 others colleagues</a> to project repository <span class="timestamp">Yesterday</span></p>
-                  </li>
-                  <li>
-                    <i class="fa fa-check activity-icon"></i>
-                    <p>Finished 80% of all <a href="#">assigned tasks</a> <span class="timestamp">1 day ago</span></p>
-                  </li>
+                  @endforeach
                 </ul>
               </div>
             </div>
@@ -91,28 +112,34 @@
           @csrf
           <div class="modal-body">
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="namaBarang">Nama Barang</label>
               </div>
               <div class="col-md-3">
                 <label for="orderQuantity">Jumlah Order</label>
+              </div>
+              <div class="col-md-2">
+                <label for="orderQuantity">Diterima</label>
               </div>
               <div class="col-md-3">
                 <label for="orderQuantity">Datang</label>
               </div>
             </div>
             <div class="row">
-              @foreach ($purchase_order->detail_orders as $detail_order)
-              <div class="col-md-6 mb-2">
+              @foreach ($purchase_order->detail_orders as $key => $detail_order)
+                <div class="col-md-4 mb-2">
                   <input type="hidden" name="detail_id[]" value="{{ $detail_order->id }}">
-                  <input type="text" name="item" id="item" class="form-control" disabled value="{{ $detail_order->item->name }}">
+                  <input type="text" name="item" id="item" class="form-control" disabled value="{{ $detail_order->item->item_code }}">
                 </div>
                 <div class="col-md-3 mb-2">
                   <input type="number" name="quantityOrder" id="item" class="form-control" disabled value="{{ $detail_order->quantity }}">
                   <input type="hidden" name="quantity[]" value="{{ $detail_order->quantity }}">
+                </div>                
+                <div class="col-md-2 mb-2">
+                  <input type="number" name="receiptDone[]" id="receiptDone" class="form-control" readonly value="{{ anyHelper::getQuantityReceipt($detail_order) }}">
                 </div>
                 <div class="col-md-3 mb-2">
-                  <input type="number" min="0" max="{{ anyHelper::getMaxReceiptOrder($detail_order) }}" name="quantityReceipt[]" id="item" class="form-control">
+                  <input type="number" min="0" max="{{ anyHelper::getMaxReceiptOrder($detail_order) }}" name="quantityReceipt[]" id="receiptQuantity" class="form-control" value="0" required {{ $detail_order->quantity == anyHelper::getQuantityReceipt($detail_order) ? 'readonly' : '' }}>
                 </div>
               @endforeach
             </div>
@@ -129,9 +156,9 @@
 
 @push('scripts')
   <script>
-    $(document).ready((e) => {
-      $('#modalGoodsReceipt').modal('show');
-    });
+    // $(document).ready((e) => {
+    //   $('#modalGoodsReceipt').modal('show');
+    // });
 
     $('.btnReceipt').on('click', function (e) {
       $('#modalGoodsReceipt').modal('show');

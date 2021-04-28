@@ -22,8 +22,8 @@ class DetailPurchaseOrder extends Model
         return $this->belongsTo(Item::class);
     }
 
-    public function history()
+    public function receipt_history()
     {
-        return $this->hasMany(HistoryReports::class, 'detail_order_id');
+        return $this->hasMany(GoodsReceipt::class, 'detail_order_id');
     }
 }

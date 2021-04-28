@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use anyHelper;
 use App\Models\PurchaseOrder;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
@@ -35,7 +36,24 @@ class PurchaseOrderReportController extends Controller
                     return simpleDate($data->order_date);
                 })
                 ->addColumn('status', function($data){
-                    return order_status($data->status);
+                    $status = 0;
+                    $quantity = 0;
+
+                    foreach ($data->detail_orders as $detail_order) {
+                        $status += anyHelper::getQuantityReceipt($detail_order);
+                        $quantity += $detail_order->quantity;                        
+                    }
+
+                    if ($status == $quantity) {
+                        $text = '<span class="badge badge-success">Sudah Datang</span>';
+                    } else if ($status > 0) {
+                        $text = '<span class="badge badge-warning">Belum Lengkap</span>';
+                    } else {
+                        $text = '<span class="badge badge-primary">Belum Datang</span>';
+                    }
+
+                    return $text;
+
                 })
                 ->addColumn('user', function($data){
                     return $data->user->name;

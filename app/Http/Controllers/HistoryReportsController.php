@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GoodsReceipt;
 use Illuminate\Http\Request;
 use App\Models\HistoryReports;
 use App\Models\PurchaseOrder;
@@ -19,26 +20,54 @@ class HistoryReportsController extends Controller
         //
     }
 
-    public function receiptGoods(PurchaseOrder $purchaseOrder)
+    public function receiptGoods(Request $request, PurchaseOrder $purchaseOrder)
     {
-        $newHistory = request()->all();
         try {
-            for ($i=0; $i < count(request('item_id')); $i++) { 
-                HistoryReports::create([
-                    'detail_order_id' => request('detail_id')[$i],
-                    'user_id'         => Auth::user()->id,
-                    'quantity'        => request('quantity')[$i],
-                    'status'          => '0',
+
+            if ($this->sumQuantityReceipt($request->quantityReceipt) > 0) {
+                $historyReports = HistoryReports::create([
+                    'order_id'  => $purchaseOrder->id,
+                    'user_id'   => Auth::user()->id,
+                    'description' => '-'
                 ]);
             }
 
-            return redirect()->route('pages.purchase_order.report.show', $purchaseOrder)->with('success', 'Barang berhasil diterima.');
+            if ($historyReports) {
+                
+                for ($i=0; $i < count($request->detail_id); $i++) { 
+                    if ($request->quantityReceipt[$i] && $request->quantityReceipt[$i] > 0) {
+                        GoodsReceipt::create([
+                            'history_report_id' => $historyReports->id,
+                            'detail_order_id'   => $request->detail_id[$i],
+                            'quantity'          => $request->quantityReceipt[$i]
+                        ]);
+                    }
+                }
 
+                return redirect()->route('purchase_order.report.show', $purchaseOrder)->with('success', 'Barang berhasil diterima.');
+
+            } else {
+
+                return redirect()->route('purchase_order.report.show', $purchaseOrder)->with('danger', 'Terjadi kesalahan.');
+
+            }
+
+            
         } catch (\Throwable $th) {
             
-            return redirect()->route('')->with('success', $th->getMessage());
+            return redirect()->route('purchase_order.report.show', $purchaseOrder)->with('danger', $th->getMessage());
 
         }
+    }
+
+    public function sumQuantityReceipt($quantity)
+    {
+        $totalQuantity = 0;
+        foreach ($quantity as $q) {
+            $totalQuantity += $q;
+        }
+
+        return $totalQuantity;
     }
 
     /**

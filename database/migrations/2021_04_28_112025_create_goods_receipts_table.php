@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHistoryReportsTable extends Migration
+class CreateGoodsReceiptsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateHistoryReportsTable extends Migration
      */
     public function up()
     {
-        Schema::create('history_reports', function (Blueprint $table) {
+        Schema::create('goods_receipts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id');
-            $table->foreignId('user_id');
-            $table->string(('description'));
-            $table->timestamps();
+            $table->foreignId('history_report_id');
+            $table->foreignId('detail_order_id');
+            $table->integer('quantity');
         });
     }
 
@@ -29,6 +28,6 @@ class CreateHistoryReportsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('history_reports');
+        Schema::dropIfExists('goods_receipts');
     }
 }
