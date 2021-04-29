@@ -31,8 +31,9 @@ class UserController extends Controller
             return datatables()->of($user)
                     ->addColumn('action', function($data){
                         $button = '<a href="'.route('pengguna.active', $data).'" class="btn btn-sm mr-1 '.($data->status == 0 ? 'btn-success' : 'btn-danger').' " title="'.($data->status == 0 ? 'Active' : 'Nonactive').'"><i class="fa '.($data->status == 0 ? 'fa-check-circle' : 'fa-times-circle').'"></i></a>';
-                        $button .= '<a href="'.route('pengguna.edit', $data).'" class="btn btn-sm btn-info mr-1"><i class="fa fa-cog"></i></a>';
-                        $button .= '<a href="#" class="btn btn-sm btn-danger delete" data-id="'.$data->id.'"><i class="fa fa-trash"></i></a>';
+                        $button .= '<a href="'.route('pengguna.edit', $data).'" class="btn btn-sm btn-warning mr-1"><i class="fa fa-pencil"></i></a>';
+                        $button .= '<a href="'.route('pengguna.resetPassword', $data).'" class="btn btn-sm btn-success mr-1" title="Reset Password"><i class="fa fa-refresh"></i></a>';
+                        // $button .= '<a href="#" class="btn btn-sm btn-danger delete" data-id="'.$data->id.'"><i class="fa fa-trash"></i></a>';
 
                         return $button;
                     })
@@ -184,6 +185,19 @@ class UserController extends Controller
             Storage::disk('public')->delete('signature/'.$user->signature);
         }
         $user->delete();
+    }
+
+    public function resetPassword(User $user)
+    {
+        try {            
+
+            $user->password = bcrypt('123456');
+            $user->save();
+            
+            return redirect()->route($this->getRoute())->with('success', 'Password berhasil di Reset.');
+        } catch (\Throwable $th) {
+            return redirect()->route($this->getRoute())->with('danger', $th->getMessage());
+        }
     }
 
     public function active(User $user)

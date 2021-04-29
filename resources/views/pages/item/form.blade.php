@@ -5,7 +5,7 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <a href="{{ route('item') }}" class="btn btn-sm btn-info">Kembali</a>
+          <a href="{{ route('item') }}" class="btn btn-sm btn-success"><i class="fa fa-arrow-left"></i> &nbsp;Kembali</a>
         </div>
         <div class="card-body">
           <form action="{{ route($action, $item) }}" method="POST">
@@ -16,7 +16,7 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label">Merk</label>
               <div class="col-sm-9">
-                <select name="brand_id" id="itemBrand" class="form-control">
+                <select name="brand_id" id="itemBrand" class="form-control" required>
                   @if ($item->id)
                     @foreach ($brands as $brand)
                       <option value="{{ $brand->id }}" {{ $item->id ? ($brand->id == $item->brand_id ? 'selected' : '' ) : '' }}>{{ $brand->brand_code.' - '.$brand->name }}</option>
@@ -54,7 +54,7 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label">Kemasan</label>
               <div class="col-sm-9">
-                <select name="unit_id" id="itemUnit" class="form-control">
+                <select name="unit_id" id="itemUnit" class="form-control" required>
                   @if ($item->id)
                     @foreach ($units as $unit)
                       <option value="{{ $unit->id }}" {{ $item->unit_id == $unit->id ? 'selected' : '' }}>{{ $unit->name }}</option>
@@ -74,14 +74,14 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label">Berat</label>
               <div class="col-sm-9">
-                <input type="number" name="weight" id="itemWeight" class="form-control" min="1" value="{{ old('weight') ?? $item->weight }}">
+                <input type="number" name="weight" id="itemWeight" class="form-control" min="1" value="{{ old('weight') ?? $item->weight }}" required>
                 @error('weight')
                   <div class="mt-2 text-danger">{{ $message }}</div>
                 @enderror
               </div>
             </div>
             <div class="float-right">
-              <button class="btn btn-primary"><i class="ti-save"></i> &nbsp;{{ $submitButton }}</button>
+              <button class="btn btn-primary"><i class="fa fa-save"></i> &nbsp;{{ $submitButton }}</button>
             </div>
           </form>
         </div>

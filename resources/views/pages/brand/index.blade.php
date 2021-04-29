@@ -5,7 +5,7 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <a href="{{ route('brand.create') }}" class="btn btn-sm btn-info">Tambah</a>
+          <a href="{{ route('brand.create') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus-circle"></i>&nbsp;Tambah</a>
         </div>
         <div class="card-body">
           <div class="table-responsive">

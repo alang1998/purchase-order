@@ -6,7 +6,9 @@
       </li>
       <li class="menu-group">Master</li>
       <li class="panel">
-        <li><a href="{{ route('pengguna') }}" class=""><i class="ti-user"></i> <span class="title">Pengguna</span></a></li>
+        @if (Auth::user()->role->id == 1)
+        <li><a href="{{ route('pengguna') }}" class=""><i class="ti-user"></i> <span class="title">Pengguna</span></a></li>            
+        @endif
         <li><a href="{{ route('region') }}" class=""><i class="ti-location-arrow"></i> <span class="title">Wilayah</span></a></li>
         <li><a href="{{ route('store') }}" class=""><i class="ti-home"></i> <span class="title">Cabang</span></a></li>
         <li><a href="{{ route('supplier') }}" class=""><i class="ti-truck"></i> <span class="title">Supplier</span></a></li>
@@ -33,11 +35,13 @@
         <li><a href="{{ route('purchase_order.report') }}"><i class="ti-clipboard"></i> <span class="title">Rekap PO</span></a></li>
       </li>
 
+      @if (Auth::user()->role->id == 1)
       <li class="menu-group">Pengaturan</li>
       <li class="panel">
-        <li><a href="{{ route('company') }}"><i class="ti-panel"></i><span class="title">Perusahaan</span></a></li>
+        <li><a href="{{ route('company') }}"><i class="fa fa-building"></i><span class="title">Perusahaan</span></a></li>
         <li><a href="{{ route('role') }}"><i class="ti-panel"></i><span class="title">Wewenang</span></a></li>
-      </li>
+      </li>          
+      @endif
     </ul>
     <button type="button" class="btn-toggle-minified" title="Toggle Minified Menu"><i class="ti-arrows-horizontal"></i></button>
   </nav>

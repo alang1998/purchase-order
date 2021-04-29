@@ -5,7 +5,7 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <a href="{{ route('purchase_order.verification') }}" class="btn btn-sm btn-info">Kembali</a>
+          <a href="{{ route('purchase_order.verification') }}" class="btn btn-sm btn-success"><i class="fa fa-arrow-left"></i> &nbsp;Kembali</a>
           @if ($purchase_order->status == 1)
             <a href="{{ route('purchase_order.printOrder', $purchase_order) }}" class="btn btn-sm btn-primary" target="_BLANK">Print</a>            
           @endif
@@ -270,7 +270,7 @@
       <div class="col-md-6">
         <div class="card">
           <div class="card-header">
-            <h5>Verifikasi PO</h5>
+            <h5 class="mt-2">Verifikasi Pembelian</h5>
           </div>
           <div class="card-body">
             <form action="{{ route('purchase_order.verification.sendVerification', $purchase_order) }}" method="POST">
@@ -280,7 +280,7 @@
                 <label class="custom-control-label" for="verifikasiSwitch">{{ Auth::user()->name }} <span class="badge badge-success">{{ Auth::user()->role->name }}</span></label><br>
                 <small class="mini-text text-muted">Dengan ini anda menyetujui pembuatan PO tersebut.</small>
               </div>
-              <button type="submit" class="btn btn-primary mt-3"><i class="cil-save"></i> Simpan</button>
+              <button type="submit" class="btn btn-danger mt-3 btnAccept">Tolak</button>
             </form>
           </div>
         </div> 
@@ -291,6 +291,12 @@
 
 @push('scripts')
   <script>
-
+    $('#verifikasiSwitch').on('click', function () {
+      if ($(this).is(":checked")) {
+        $('.btnAccept').removeClass('btn-danger').addClass('btn-primary').empty().append('Terima');
+      } else {
+        $('.btnAccept').removeClass('btn-primary').addClass('btn-danger').empty().append('Tolak');
+      }
+    })
   </script>
 @endpush

@@ -27,8 +27,8 @@ class SupplierController extends Controller
             $supplier = Supplier::latest()->get();
             return datatables()->of($supplier)
                         ->addColumn('action', function($data){
-                            $button = '<a href="'.route('supplier.edit', $data).'" class="btn btn-sm btn-info mr-1"><i class="fa fa-cog"></i></a>';
-                            $button .= '<a href="" class="btn btn-sm btn-primary mr-1"><i class="fa fa-search"></i></a>';
+                            $button = '<a href="'.route('supplier.show', $data).'" class="btn btn-sm btn-primary mr-1" target="_BLANK"><i class="fa fa-search"></i></a>';
+                            $button .= '<a href="'.route('supplier.edit', $data).'" class="btn btn-sm btn-warning mr-1"><i class="fa fa-pencil"></i></a>';
                             $button .= '<a href="#" class="btn btn-sm btn-danger delete" data-id="'.$data->id.'"><i class="fa fa-trash"></i></a>';
 
                             return $button;
@@ -96,7 +96,10 @@ class SupplierController extends Controller
      */
     public function show(Supplier $supplier)
     {
-        //
+        return view('pages.supplier.show', [
+            'supplier'      => $supplier,
+            'title'         => $supplier->name
+        ]);
     }
 
     /**

@@ -28,7 +28,8 @@ class LoginController extends Controller
 
     public function logout()
     {
+        $message = session('success') ?? 'Terimakasih telah menggunakan sistem ini.';
         Auth::logout();
-        return redirect('/')->with('success', 'Terima kasih telah menggunakan sistem ini.');
+        return redirect()->route('login')->with('success', $message);
     }
 }

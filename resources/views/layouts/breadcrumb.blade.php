@@ -21,7 +21,7 @@
                     $segmentText .= $text[$key].' ';
                   }
                 } else {
-                  $segmentText .= Request::segment($i);
+                  $segmentText = Request::segment($i);
                 }
               } else {
                 if (count($text) > 1) {

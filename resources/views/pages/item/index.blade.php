@@ -5,8 +5,8 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <a href="{{ route('item.create') }}" class="btn btn-sm btn-info">Tambah</a>
-          <a href="" class="btn btn-sm btn-success" id="importProduk">Import Produk</a>
+          <a href="{{ route('item.create') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus-circle"></i>&nbsp;Tambah</a>
+          <a href="" class="btn btn-sm btn-success" id="importProduk"><i class="fa fa-upload"></i>&nbsp; Import Produk</a>
         </div>
         <div class="card-body">
           <div class="table-responsive">
@@ -53,8 +53,8 @@
 
             <div class="form-group">
               <label for="file">Pilih file excel</label>
-              <input type="file" name="file" id="file" class="form-control" required>
-              <small>* format file excel dapat di download <a href="#">disini</a></small>
+              <input type="file" name="file" id="file" class="form-control-file" required>
+              <small>* Format file excel dapat di download <a href="#">disini</a></small>
             </div>
           </div>
           <div class="modal-footer">

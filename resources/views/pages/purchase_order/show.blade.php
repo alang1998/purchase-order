@@ -9,7 +9,7 @@
           @if ($purchase_order->status == 1)
             <a href="{{ route('purchase_order.printOrder', $purchase_order) }}" class="btn btn-sm btn-primary" target="_BLANK">Print</a>            
           @endif
-          @if (empty($purchase_order->verification_order))
+          @if (empty($purchase_order->verification_order) && count($purchase_order->history_reports) == 0 && $purchase_order->status < 2)
             <a href="{{ route('purchase_order.edit', $purchase_order) }}" class="btn btn-sm btn-warning">Edit</a>            
           @endif
         </div>

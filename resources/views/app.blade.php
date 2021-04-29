@@ -95,8 +95,8 @@
   {{-- <script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script> --}}
   {{-- <script src="assets/js/pages/ui-dragdroppanel.init.min.js"></script> --}}
 
-  {{-- <!-- App --> --}}
-  <script src="{{ asset('assets/js/app.min.js') }}"></script>
+  <!-- App -->
+  <script src="{{ asset('assets/js/app.js') }}"></script>
   @stack('scripts')
 </body>
 </html>

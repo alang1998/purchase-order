@@ -64,5 +64,11 @@ Class anyHelper
     }
     
   }
+  
+  public static function getSupplierItemsPrice($supplier, $item)
+  {
+    $price = $supplier->items->find($item->id);
+    dd($price->pivot->price);
+  }
 
 }

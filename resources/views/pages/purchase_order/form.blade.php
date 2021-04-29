@@ -5,7 +5,7 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <a href="{{ route('purchase_order') }}" class="btn btn-sm btn-info">Kembali</a>
+          <a href="{{ route('purchase_order') }}" class="btn btn-sm btn-success"><i class="fa fa-arrow-left"></i> &nbsp;Kembali</a>
         </div>
         <div class="card-body">
           <form action="{{ route($action, $purchase_order) }}" method="POST" enctype="multipart/form-data">

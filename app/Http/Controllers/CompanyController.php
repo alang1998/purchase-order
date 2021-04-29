@@ -38,6 +38,7 @@ class CompanyController extends Controller
                     ->make(true);
         }
         return view('pages.company.index', [
+            'company' => Company::get(),
             'title' => 'Perusahaan'
         ]);
     }

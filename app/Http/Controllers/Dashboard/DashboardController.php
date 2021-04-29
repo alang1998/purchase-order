@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ChangePasswordRequest;
 
 class DashboardController extends Controller
 {
@@ -18,5 +20,36 @@ class DashboardController extends Controller
         return view('app', [
             'title' => 'Dashboard'
         ]);
+    }
+
+    public function myProfile(User $user)
+    {
+        return view('pages.dashboard.myProfile', [
+            'user'  => $user,
+            'title' => $user->name
+        ]);
+    }
+
+    public function myProfileEdit(User $user)
+    {
+        return view('pages.dashboard.myProfileEdit', [
+            'user'  => $user,
+            'title' => $user->name,
+            'submitButton' => 'Simpan'
+        ]);
+    }
+
+    public function changePassword(ChangePasswordRequest $request, User $user)
+    {
+        try {
+            $user->update([
+                'password' => bcrypt($request->newPassword)
+            ]);
+            
+            return redirect()->route('logout')->with('success', 'Ubah password berhasil.');
+           
+        } catch (\Throwable $th) {
+            return redirect()->route('dashboard.myProfile.edit', $user)->with('error', $th->getMessage());
+        }
     }
 }

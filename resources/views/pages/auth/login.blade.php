@@ -48,12 +48,12 @@
       <div class="container">        
         <div class="row vh-100 justify-content-center align-items-center">
           <div class="col-md-8">
+            @include('layouts.alert')
             <div class="card-group">
               <div class="card p-4">
                 <div class="card-body">
                   <h1>Login</h1>
                   <p class="text-muted">Masuk ke akun anda.</p>
-                  @include('layouts.alert')
                   <form method="POST" action="{{ route('login.post') }}">
                       @csrf
                       <div class="input-group mb-3">

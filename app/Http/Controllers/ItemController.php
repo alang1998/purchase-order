@@ -31,8 +31,8 @@ class ItemController extends Controller
             $item = Item::orderBy('item_code', 'asc')->get();
             return datatables()->of($item)
                     ->addColumn('action', function($data){
-                        $button = '<a href="'.route('item.edit', $data).'" class="btn btn-sm btn-info mr-1"><i class="fa fa-cog"></i></a>';
-                        $button .= '<a href="" class="btn btn-sm btn-primary mr-1"><i class="fa fa-search"></i></a>';
+                        $button = '<a href="'.route('item.show', $data).'" class="btn btn-sm btn-primary mr-1" target="_BLANK"><i class="fa fa-search"></i></a>';
+                        $button .= '<a href="'.route('item.edit', $data).'" class="btn btn-sm btn-warning mr-1"><i class="fa fa-pencil"></i></a>';
                         $button .= '<a href="#" class="btn btn-sm btn-danger delete" data-id="'.$data->id.'"><i class="fa fa-trash"></i></a>';
 
                         return $button;
@@ -101,7 +101,10 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        //
+        return view('pages.item.show', [
+            'item' => $item,
+            'title' => $item->item_code.' '.$item->name,
+        ]);
     }
 
     /**

@@ -128,9 +128,9 @@ function ($) {
       if($('.has-content-menu').length > 0) {
         $('.navbar + .main-content').css('padding-top', $('.navbar').innerHeight());
       }
-  
+      
       // for shorter main content
-      if($('.main').innerHeight() < $('#sidebar-nav').innerHeight()) {
+      if($('.main').innerHeight() < 400 && $('.main').innerHeight() < $('#sidebar-nav').innerHeight()) {
         $('.main').css('min-height', $('#sidebar-nav').innerHeight());
         navbarHeight = $('.navbar').innerHeight();
         $('.main-content').css('height', 'calc(100vh - ' + navbarHeight + 'px)');

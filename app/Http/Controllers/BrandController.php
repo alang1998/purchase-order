@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use App\Http\Requests\BrandRequest;
 
 class BrandController extends Controller
 {
@@ -26,7 +27,7 @@ class BrandController extends Controller
             $brand = Brand::orderBy('brand_code', 'asc')->get();
             return datatables()->of($brand)
                         ->addColumn('action', function($data){
-                            $button = '<a href="'.route('brand.edit', $data).'" class="btn btn-sm btn-info mr-1"><i class="fa fa-cog"></i></a>';
+                            $button = '<a href="'.route('brand.edit', $data).'" class="btn btn-sm btn-warning mr-1"><i class="fa fa-pencil"></i></a>';
                             $button .= '<a href="#" class="btn btn-sm btn-danger delete" data-id="'.$data->id.'"><i class="fa fa-trash"></i></a>';
 
                             return $button;
@@ -60,7 +61,7 @@ class BrandController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BrandRequest $request)
     {
         $newBrand = $request->all();
         try {
@@ -109,7 +110,7 @@ class BrandController extends Controller
      * @param  \App\Models\Brand  $brand
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Brand $brand)
+    public function update(BrandRequest $request, Brand $brand)
     {
         $newBrand = $request->all();
         try {

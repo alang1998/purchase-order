@@ -27,7 +27,7 @@ class StoreController extends Controller
             $store = Store::latest()->get();
             return datatables()->of($store)
                         ->addColumn('action', function($data){
-                            $button = '<a href="'.route('store.edit', $data).'" class="btn btn-sm btn-info mr-1"><i class="fa fa-cog"></i></a>';
+                            $button = '<a href="'.route('store.edit', $data).'" class="btn btn-sm btn-warning mr-1"><i class="fa fa-pencil"></i></a>';
                             $button .= '<a href="#" class="btn btn-sm btn-danger delete" data-id="'.$data->id.'"><i class="fa fa-trash"></i></a>';
 
                             return $button;

@@ -36,6 +36,14 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function(){
     Route::get('/', DashboardController::class)->name('dashboard');
+    
+    Route::group(['prefix' => 'profil'], function(){
+        
+        Route::get('/{user:name}', [DashboardController::class, 'myProfile'])->name('dashboard.myProfile');
+        Route::get('/edit/{user}', [DashboardController::class, 'myProfileEdit'])->name('dashboard.myProfile.edit');
+        Route::post('changePassword/{user}', [DashboardController::class, 'changePassword'])->name('dashboard.myProfile.changePassword');
+    });
+
 
     Route::group(['prefix' => 'wilayah'], function(){
         Route::get('/', [RegionController::class, 'index'])->name('region');
@@ -86,6 +94,7 @@ Route::middleware('auth')->group(function(){
         Route::get('edit/{supplier}', [SupplierController::class, 'edit'])->name('supplier.edit');
         Route::put('edit/{supplier}', [SupplierController::class, 'update']);
         Route::delete('delete', [SupplierController::class, 'destroy'])->name('supplier.delete');
+        Route::get('show/{supplier}', [SupplierController::class, 'show'])->name('supplier.show');
 
         Route::get('getSuppliers', [SupplierController::class, 'getSuppliers'])->name('api.getSuppliers');
     });
@@ -118,6 +127,7 @@ Route::middleware('auth')->group(function(){
         Route::put('edit/{user}', [UserController::class, 'update']);
         Route::delete('delete', [UserController::class, 'destroy'])->name('pengguna.delete');
 
+        Route::get('resetPassword/{user}', [UserController::class, 'resetPassword'])->name('pengguna.resetPassword');
         Route::get('active/{user}', [UserController::class, 'active'])->name('pengguna.active');
     });
     
@@ -127,6 +137,7 @@ Route::middleware('auth')->group(function(){
         Route::post('create', [ItemController::class, 'store']);
         Route::get('edit/{item}', [ItemController::class, 'edit'])->name('item.edit');
         Route::put('edit/{item}', [ItemController::class, 'update']);
+        Route::get('show/{item}', [ItemController::class, 'show'])->name('item.show');
         Route::delete('delete', [ItemController::class, 'destroy'])->name('item.delete');
 
         Route::post('import', [ItemController::class, 'importItems'])->name('item.import');
@@ -172,4 +183,5 @@ Route::middleware('auth')->group(function(){
         });
 
     });
+
 });
