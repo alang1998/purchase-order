@@ -6,6 +6,7 @@
       <div class="card">
         <div class="card-header">
           <a href="{{ route('supplier.create') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus-circle"></i>&nbsp;Tambah</a>
+          <a href="#" class="btn btn-sm btn-success importSupplierPrice"><i class="fa fa-upload"></i> &nbsp;Import Harga Supplier</a>
         </div>
         <div class="card-body">
           {{-- <div class=""> --}}
@@ -26,6 +27,43 @@
       </div>
     </div>
   </div>
+@endsection
+
+@section('modal')
+{{-- Import Modal --}}  
+<div class="modal fade" id="modalImportPrice" tabindex="-1" role="dialog" aria-labelledby="modalImportPriceLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalImportPriceLabel">Import Data Excel</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="{{ route('supplier.importItemsPrice') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="modal-body">
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            Pastikan barang/produk sudah dimasukkan kedalam data master dan kode barang sama dengan di excel, jika berbeda data tidak akan masuk ke sistem.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="form-group">
+            <label for="file">Pilih file excel</label>
+            <input type="file" name="file" id="file" class="form-control-file" required>
+            <small>* Format file excel dapat di download <a href="#">disini</a></small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Import</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>  
 @endsection
 
 @push('scripts')
@@ -85,6 +123,10 @@
           })
         }
       })
+    })
+
+    $('.importSupplierPrice').on('click', function (e) {
+      $('#modalImportPrice').modal('show');
     })
   </script>
 @endpush

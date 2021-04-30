@@ -97,6 +97,7 @@ Route::middleware('auth')->group(function(){
         Route::get('show/{supplier}', [SupplierController::class, 'show'])->name('supplier.show');
 
         Route::get('getSuppliers', [SupplierController::class, 'getSuppliers'])->name('api.getSuppliers');
+        Route::post('importItemsPrice', [SupplierController::class, 'importItemsPrice'])->name('supplier.importItemsPrice');
     });
     
     Route::group(['prefix' => 'merk'], function(){

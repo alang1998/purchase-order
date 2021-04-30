@@ -447,7 +447,25 @@
     });
 
     $(document).on('change', '.item', function(){
-      getItemsOrder();
+      let id = $(this).val();      
+      let setprice = '.'+$(this).data('setprice');
+      let setweight = '.'+$(this).data('setweight');
+      let setunit = '.'+$(this).data('setunit');
+
+      $.ajax({
+        type  : 'GET',
+        url   : "{{ route('purchase_order.getItemsOrder') }}",
+        data  : {
+          'item_id'     : id,
+          'supplier_id' : supplierId
+        },
+        success: function(result){
+          $(setprice).val(result.item.price);
+          $(setweight).val(result.item.weight);
+          $(setunit).val(result.item.unit.name);
+        }
+
+      });
     })
 
     $(document).on('click', '.btnPlus', function(){
@@ -455,7 +473,7 @@
       let itemInput = `        
         <div id="row`+ i +`">
           <input type="hidden" name="item[]" value="`+ i +`">
-          <div class="form-row mb-2 formChange" data-classQuantity="dataQuantity`+ i +`" data-classPrice="dataPrice`+ i +`" data-classweight="dataWeight`+ i +`" data-classTotal="dataTotal`+ i +`" data-classtotaltonase="dataTotalTonase`+ i +`">
+          <div class="form-row mb-2 formChange" data-classquantity="dataQuantity`+ i +`" data-classprice="dataPrice`+ i +`" data-classweight="dataWeight`+ i +`" data-classtotal="dataTotal`+ i +`" data-classtotaltonase="dataTotalTonase`+ i +`">
             <div class="col-md-5">
               <select name="item_id[]" id="itemId`+ i +`" class="item form-control" data-setprice="price`+ i +`" data-setunit="setUnit`+ i +`" data-setweight="setWeight`+ i +`" required>
 

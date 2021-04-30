@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Region;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use App\Imports\ItemsSupplierImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SupplierController extends Controller
 {
@@ -172,5 +174,20 @@ class SupplierController extends Controller
         $data = Supplier::where('name', 'like', '%'.$search.'%')->orWhere('supplier_code', 'LIKE', '%'.$search.'%')->get();
         
         return response()->json($data);
+    }
+
+    public function importItemsPrice(Request $request)
+    {
+        $this->validate($request, [
+            'file' => 'required|mimes:csv,xlsx,xls'
+        ]);
+
+        $file = $request->file('file');
+        $fileName = date('Y-m-d').'-items_supplier.'.$file->getClientOriginalExtension();
+        $file->move(public_path('import/items_supplier'), $fileName);
+
+        Excel::import(new ItemsSupplierImport, public_path('/import/items_supplier/'.$fileName));
+
+        return redirect()->route($this->getRoute())->with('success', 'Import data berhasil.');
     }
 }
