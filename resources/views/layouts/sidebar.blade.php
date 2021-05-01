@@ -4,7 +4,7 @@
       <li class="panel">
         <li><a href="{{ route('dashboard') }}" class=""><i class="ti-home"></i> <span class="title">Dashboard</span></a></li>
       </li>
-      @if (Auth::user()->role->id < 6 && Auth::user()->role->id != 2)
+      @if (Auth::user()->role->id < 6 && Auth::user()->role->id != 2 && Auth::user()->role->id != 3)
       <li class="menu-group">Master</li>
       <li class="panel">
         @if (Auth::user()->role->id == 1)
@@ -25,7 +25,7 @@
         </li>        
       </li>
       @endif
-      @if (Auth::user()->role->id > 2 || Auth::user()->role->id == 1)
+      @if (Auth::user()->role->id > 3 || Auth::user()->role->id == 1)
         <li class="menu-group">Pembelian</li>
         <li class="panel">
           @if (Auth::user()->role->id > 4 || Auth::user()->role->id == 1)

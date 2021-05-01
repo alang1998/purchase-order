@@ -37,15 +37,14 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function(){
     Route::get('/', DashboardController::class)->name('dashboard');
     
-    Route::group(['prefix' => 'profil'], function(){
-        
+    Route::group(['prefix' => 'profil'], function(){        
         Route::get('/{user:name}', [DashboardController::class, 'myProfile'])->name('dashboard.myProfile');
         Route::get('/edit/{user}', [DashboardController::class, 'myProfileEdit'])->name('dashboard.myProfile.edit');
         Route::post('changePassword/{user}', [DashboardController::class, 'changePassword'])->name('dashboard.myProfile.changePassword');
     });
 
 
-    Route::group(['prefix' => 'wilayah'], function(){
+    Route::group(['prefix' => 'wilayah', 'middleware' => ['role:super-user,supervisor,wakil-supervisor']], function(){
         Route::get('/', [RegionController::class, 'index'])->name('region');
         Route::get('create', [RegionController::class, 'create'])->name('region.create');
         Route::post('create', [RegionController::class, 'store']);
@@ -53,10 +52,10 @@ Route::middleware('auth')->group(function(){
         Route::put('edit/{region}', [RegionController::class, 'update']);
         Route::delete('delete', [RegionController::class, 'destroy'])->name('region.delete');
     
-        Route::get('getRegions', [RegionController::class, 'getRegion'])->name('api.getRegion');
     });
+    Route::get('getRegions', [RegionController::class, 'getRegion'])->name('api.getRegion');
     
-    Route::group(['prefix' => 'wewenang'], function(){
+    Route::group(['prefix' => 'wewenang', 'middleware' => ['role:super-user']], function(){
         Route::get('/', [RoleController::class, 'index'])->name('role');
         Route::get('create', [RoleController::class, 'create'])->name('role.create');
         Route::post('create', [RoleController::class, 'store']);
@@ -65,18 +64,17 @@ Route::middleware('auth')->group(function(){
         Route::delete('delete', [RoleController::class, 'destroy'])->name('role.delete');
     });
     
-    Route::group(['prefix' => 'unit'], function(){
+    Route::group(['prefix' => 'unit', 'middleware' => ['role:super-user,supervisor,wakil-supervisor']], function(){
         Route::get('/', [UnitController::class, 'index'])->name('unit');
         Route::get('create', [UnitController::class, 'create'])->name('unit.create');
         Route::post('create', [UnitController::class, 'store']);
         Route::get('edit/{unit}', [UnitController::class, 'edit'])->name('unit.edit');
         Route::put('edit/{unit}', [UnitController::class, 'update']);
         Route::delete('delete', [UnitController::class, 'destroy'])->name('unit.delete');
-    
-        Route::get('getUnits', [UnitController::class, 'getUnit'])->name('api.getUnit');
+        
     });
     
-    Route::group(['prefix' => 'cabang'], function(){
+    Route::group(['prefix' => 'cabang', 'middleware' => ['role:super-user,supervisor,wakil-supervisor']], function(){
         Route::get('/', [StoreController::class, 'index'])->name('store');
         Route::get('create', [StoreController::class, 'create'])->name('store.create');
         Route::post('create', [StoreController::class, 'store']);
@@ -84,10 +82,9 @@ Route::middleware('auth')->group(function(){
         Route::put('edit/{store}', [StoreController::class, 'update']);
         Route::delete('delete', [StoreController::class, 'destroy'])->name('store.delete');
 
-        Route::get('getStores', [StoreController::class, 'getStores'])->name('api.getStores');
     });
     
-    Route::group(['prefix' => 'supplier'], function(){
+    Route::group(['prefix' => 'supplier', 'middleware' => ['role:super-user,supervisor,wakil-supervisor']], function(){
         Route::get('/', [SupplierController::class, 'index'])->name('supplier');
         Route::get('create', [SupplierController::class, 'create'])->name('supplier.create');
         Route::post('create', [SupplierController::class, 'store']);
@@ -96,11 +93,10 @@ Route::middleware('auth')->group(function(){
         Route::delete('delete', [SupplierController::class, 'destroy'])->name('supplier.delete');
         Route::get('show/{supplier}', [SupplierController::class, 'show'])->name('supplier.show');
 
-        Route::get('getSuppliers', [SupplierController::class, 'getSuppliers'])->name('api.getSuppliers');
         Route::post('importItemsPrice', [SupplierController::class, 'importItemsPrice'])->name('supplier.importItemsPrice');
     });
     
-    Route::group(['prefix' => 'merk'], function(){
+    Route::group(['prefix' => 'merk', 'middleware' => ['role:super-user,supervisor,wakil-supervisor']], function(){
         Route::get('/', [BrandController::class, 'index'])->name('brand');
         Route::get('create', [BrandController::class, 'create'])->name('brand.create');
         Route::post('create', [BrandController::class, 'store']);
@@ -108,10 +104,9 @@ Route::middleware('auth')->group(function(){
         Route::put('edit/{brand}', [BrandController::class, 'update']);
         Route::delete('delete', [BrandController::class, 'destroy'])->name('brand.delete');
     
-        Route::get('getBrands', [BrandController::class, 'getBrand'])->name('api.getBrand');
     });
     
-    Route::group(['prefix' => 'company'], function(){
+    Route::group(['prefix' => 'company', 'middleware' => ['role:super-user']], function(){
         Route::get('/', [CompanyController::class, 'index'])->name('company');
         Route::get('create', [CompanyController::class, 'create'])->name('company.create');
         Route::post('create', [CompanyController::class, 'store']);
@@ -120,7 +115,7 @@ Route::middleware('auth')->group(function(){
         Route::delete('delete', [CompanyController::class, 'destroy'])->name('company.delete');
     });
 
-    Route::group(['prefix' => 'pengguna'], function(){
+    Route::group(['prefix' => 'pengguna', 'middleware' => ['role:super-user']], function(){
         Route::get('/', [UserController::class, 'index'])->name('pengguna');
         Route::get('create', [UserController::class, 'create'])->name('pengguna.create');
         Route::post('create', [UserController::class, 'store']);
@@ -132,7 +127,7 @@ Route::middleware('auth')->group(function(){
         Route::get('active/{user}', [UserController::class, 'active'])->name('pengguna.active');
     });
     
-    Route::group(['prefix' => 'produk'], function(){
+    Route::group(['prefix' => 'produk', 'middleware' => ['role:super-user,supervisor,wakil-supervisor']], function(){
         Route::get('/', [ItemController::class, 'index'])->name('item');
         Route::get('create', [ItemController::class, 'create'])->name('item.create');
         Route::post('create', [ItemController::class, 'store']);
@@ -142,18 +137,21 @@ Route::middleware('auth')->group(function(){
         Route::delete('delete', [ItemController::class, 'destroy'])->name('item.delete');
 
         Route::post('import', [ItemController::class, 'importItems'])->name('item.import');
-        Route::get('getItems', [ItemController::class, 'getItems'])->name('api.getItems');
     });
 
     Route::group(['prefix' => 'purchase_order'], function(){
 
-        Route::get('/', [PurchaseOrderController::class, 'index'])->name('purchase_order');
-        Route::get('create', [PurchaseOrderController::class, 'create'])->name('purchase_order.create');
-        Route::post('create', [PurchaseOrderController::class, 'store']);
-        Route::get('edit/{purchase_order}', [PurchaseOrderController::class, 'edit'])->name('purchase_order.edit');
-        Route::put('edit/{purchase_order}', [PurchaseOrderController::class, 'update']);
-        Route::get('show/{purchase_order}', [PurchaseOrderController::class, 'show'])->name('purchase_order.show');
-        Route::delete('delete', [PurchaseOrderController::class, 'destroy'])->name('purchase_order.delete');
+        Route::group(['middleware' => ['role:super-user,wakil-supervisor,staff-purchasing']], function(){
+
+            Route::get('/', [PurchaseOrderController::class, 'index'])->name('purchase_order');
+            Route::get('create', [PurchaseOrderController::class, 'create'])->name('purchase_order.create');
+            Route::post('create', [PurchaseOrderController::class, 'store']);
+            Route::get('edit/{purchase_order}', [PurchaseOrderController::class, 'edit'])->name('purchase_order.edit');
+            Route::put('edit/{purchase_order}', [PurchaseOrderController::class, 'update']);
+            Route::get('show/{purchase_order}', [PurchaseOrderController::class, 'show'])->name('purchase_order.show');
+            Route::delete('delete', [PurchaseOrderController::class, 'destroy'])->name('purchase_order.delete');
+
+        });
 
         Route::get('print_order/{purchase_order}', [PurchaseOrderController::class, 'printOrder'])->name('purchase_order.printOrder');
 
@@ -161,7 +159,7 @@ Route::middleware('auth')->group(function(){
         Route::get('getDetailSupplier', [PurchaseOrderController::class, 'detailSupplier'])->name('purchase_order.getDetailSupplier');
         Route::get('getItemsOrder', [PurchaseOrderController::class, 'getItemsOrder'])->name('purchase_order.getItemsOrder');
 
-        Route::group(['prefix' => 'verifikasi'], function(){
+        Route::group(['prefix' => 'verifikasi', 'middleware' => ['role:super-user,supervisor,wakil-supervisor']], function(){
 
             Route::get('/', [PurchaseOrderVerificationController::class, 'index'])->name('purchase_order.verification');
             Route::get('show/{purchase_order}', [PurchaseOrderVerificationController::class, 'show'])->name('purchase_order.verification.show');
@@ -175,7 +173,7 @@ Route::middleware('auth')->group(function(){
             Route::get('show/{purchase_order}', [PurchaseOrderReportController::class, 'show'])->name('purchase_order.report.show');
             Route::get('getReports', [PurchaseOrderReportController::class, 'getReports'])->name('purchase_order.report.getReports');
 
-            Route::group(['prefix' => 'history'], function(){
+            Route::group(['prefix' => 'history', 'middleware' => ['role:super-user,supervisor,wakil-supervisor,staff-purchasing']], function(){
                 
                 Route::post('receiptOfGoods/{purchase_order}', [HistoryReportsController::class, 'receiptGoods'])->name('purchase_order.report.receiptGoods');
 
@@ -184,5 +182,11 @@ Route::middleware('auth')->group(function(){
         });
 
     });
+    
+    Route::get('getItems', [ItemController::class, 'getItems'])->name('api.getItems');
+    Route::get('getUnits', [UnitController::class, 'getUnit'])->name('api.getUnit');
+    Route::get('getStores', [StoreController::class, 'getStores'])->name('api.getStores');
+    Route::get('getBrands', [BrandController::class, 'getBrand'])->name('api.getBrand');
+    Route::get('getSuppliers', [SupplierController::class, 'getSuppliers'])->name('api.getSuppliers');
 
 });

@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -48,5 +49,14 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class)->withTrashed();
+    }
+
+    public function hasRole($role)
+    {
+        $user = Auth::user();
+        if ($role == $user->role->slug) 
+            return true;
+        
+        return false;
     }
 }
