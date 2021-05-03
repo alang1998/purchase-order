@@ -14,6 +14,9 @@
   <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet" type="text/css" />
 
+  {{-- ChartJS --}}
+  <link href="{{ asset('assets/plugins/chart.js/Chart.min.css') }}" rel="stylesheet" type="text/css" />
+
   <link href="{{ asset('assets/plugins/select2/select2.min.css') }}" rel="stylesheet">
   <link href="{{ asset('assets/plugins/datatables.net-bs4/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 
@@ -90,6 +93,8 @@
   <script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
   <script src="{{ asset('assets/plugins/sweetalert2/sweetalert2.all.min.js') }}"></script>
   <script src="{{ asset('assets/plugins/select2/select2.min.js') }}"></script>
+
+  <script src="{{ asset('assets/plugins/chart.js/Chart.min.js') }}"></script>
 
   {{-- <!-- Init --> --}}
   {{-- <script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script> --}}

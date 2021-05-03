@@ -10,6 +10,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\Dashboard\DashboardChartController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\Dashboard\DashboardController;
@@ -36,6 +37,9 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function(){
     Route::get('/', DashboardController::class)->name('dashboard');
+    Route::get('getWeeklyPurchaseOrder', [DashboardChartController::class, 'getWeeklyPurchaseOrder'])->name('dashboard.getWeeklyPurchaseOrder');
+    Route::get('getBestProduct', [DashboardChartController::class, 'getBestProduct'])->name('dashboard.getBestProduct');
+    Route::get('getWeeklyNominalPurchaseOrder', [DashboardChartController::class, 'getWeeklyNominalPurchaseOrder'])->name('dashboard.getWeeklyNominalPurchaseOrder');
     
     Route::group(['prefix' => 'profil'], function(){        
         Route::get('/{user:name}', [DashboardController::class, 'myProfile'])->name('dashboard.myProfile');

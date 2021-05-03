@@ -14,7 +14,7 @@ class DetailPurchaseOrder extends Model
 
     public function orders()
     {
-        return $this->belongsTo(PurchaseOrder::class);
+        return $this->belongsTo(PurchaseOrder::class, 'order_id');
     }
 
     public function item()

@@ -22,6 +22,8 @@ class CreatePurchaseOrdersTable extends Migration
             $table->foreignId('user_id');
             $table->foreignId('supplier_id');
             $table->foreignId('store_id');
+            $table->double('grand_total');
+            $table->double('grand_total_tonase');
             $table->timestamps();
             $table->softDeletes();
         });

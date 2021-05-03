@@ -214,6 +214,8 @@ class PurchaseOrderController extends Controller
     {
         $supplier = Supplier::find(request('supplier_id'));
         $status   = $this->getStatusOrders($request->all());
+        $grandTotal = $this->getGrandTotal($request->all());
+
         try {   
 
             if ($supplier) {
@@ -232,7 +234,9 @@ class PurchaseOrderController extends Controller
                     'status'        => $status,
                     'user_id'       => auth()->user()->id,
                     'supplier_id'   => $request->supplier_id,
-                    'store_id'      => $request->store_id
+                    'store_id'      => $request->store_id,
+                    'grand_total'    => $grandTotal['grandTotal'],
+                    'grand_total_tonase'    => $grandTotal['grandTotalTonase']
                 ]);
                 
                 for ($i=0; $i < count($request->item); $i++) {
@@ -252,6 +256,21 @@ class PurchaseOrderController extends Controller
             return redirect()->route($this->getRoute().'.create')->with('error', $th->getMessage());
 
         }
+    }
+
+    public function getGrandTotal($request)
+    {
+        $grandTotal = 0;
+        $grandTotalTonase = 0;
+        for ($i=0; $i < count($request['item']); $i++) {
+            $grandTotal += $request['total'][$i];
+            $grandTotalTonase += $request['totalTonase'][$i];
+        }
+
+        return [
+            'grandTotal' => $grandTotal,
+            'grandTotalTonase' => $grandTotalTonase
+        ];
     }
 
     /**
@@ -310,6 +329,7 @@ class PurchaseOrderController extends Controller
     {
         $supplier = Supplier::find($request->supplier_id);
         $status   = $this->getStatusOrders($request->all());
+        $grandTotal = $this->getGrandTotal($request->all());
         try {
             
             if ($supplier) {
@@ -327,7 +347,9 @@ class PurchaseOrderController extends Controller
                     'note'          => $request->note ?? '-',
                     'status'        => $status,
                     'supplier_id'   => $request->supplier_id,
-                    'store_id'      => $request->store_id
+                    'store_id'      => $request->store_id,
+                    'grand_total'   => $grandTotal['grandTotal'],
+                    'grand_total_tonase' => $grandTotal['grandTotalTonase']
                 ]);
 
                 if ($newOrder) {
