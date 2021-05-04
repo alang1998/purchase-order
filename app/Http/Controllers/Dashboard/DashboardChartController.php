@@ -80,6 +80,40 @@ class DashboardChartController extends Controller
         return $weekly_po_data;
     }
 
+    public function weightPurchaseOrder()
+    {
+        $weight_po_index = array();
+        $weight_po_count = array();
+        $purchase_orders = PurchaseOrder::select([
+            // This aggregates the data and makes available a 'count' attribute
+            // This throws away the timestamp portion of the date
+            DB::raw('SUM(grand_total_tonase) as grand_total_tonase'),
+            DB::raw('DATE(created_at) as day'),
+          // Group these records according to that day
+          ])->groupBy('day')
+          // And restrict these results to only those created in the last week
+          ->where('created_at', '>=', Carbon::now()->subWeeks(1))
+          ->whereNull('deleted_at')
+          ->get();
+        $purchase_orders = json_decode($purchase_orders);
+
+        foreach($purchase_orders as $entry) {
+            array_push($weight_po_index, date('D', strtotime($entry->day)));
+            array_push($weight_po_count, $entry->grand_total_tonase);
+        }
+
+        $max_no = max($weight_po_count);
+        $max = round(($max_no * 10 / 2) / 10) * 10;
+
+        $weekly_po_data = array(
+            'day' => $weight_po_index,
+            'po_count_data' => $weight_po_count,
+            'max' => $max
+        );
+
+        return $weekly_po_data;
+    }
+
     public function getBestProduct()
     {
         $best_product_count_array = array();

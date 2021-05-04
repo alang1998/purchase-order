@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function(){
     Route::get('getWeeklyPurchaseOrder', [DashboardChartController::class, 'getWeeklyPurchaseOrder'])->name('dashboard.getWeeklyPurchaseOrder');
     Route::get('getBestProduct', [DashboardChartController::class, 'getBestProduct'])->name('dashboard.getBestProduct');
     Route::get('getWeeklyNominalPurchaseOrder', [DashboardChartController::class, 'getWeeklyNominalPurchaseOrder'])->name('dashboard.getWeeklyNominalPurchaseOrder');
+    Route::get('weightPurchaseOrder', [DashboardChartController::class, 'weightPurchaseOrder'])->name('dashboard.weightPurchaseOrder');
     
     Route::group(['prefix' => 'profil'], function(){        
         Route::get('/{user:name}', [DashboardController::class, 'myProfile'])->name('dashboard.myProfile');

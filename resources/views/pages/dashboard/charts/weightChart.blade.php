@@ -2,14 +2,14 @@
 <!-- pembelian perminggu chart -->
 <div class="card">
   <div class="card-header">
-    <h2 class="card-title">Grafik Nominal Pembelian</h2>
+    <h2 class="card-title">Grafik Tonase Pembelian</h2>
   </div>
   <div class="card-body">
-    <canvas id="nominal-chart" height="150"></canvas>
+    <canvas id="tonase-chart" height="150"></canvas>
   </div>
   <div class="card-footer">
     <small class="text-secondary">
-      Grafik nominal pembelian yang dibuat dalam 1 minggu terakhir.
+      Grafik tonase pembelian yang dibuat dalam 1 minggu terakhir.
     </small>
   </div>
 </div>
@@ -24,7 +24,7 @@
       
     $.ajax({
       type: 'GET',
-      url: "{{ route('dashboard.getWeeklyNominalPurchaseOrder') }}",
+      url: "{{ route('dashboard.weightPurchaseOrder') }}",
       dataType: 'json',
       success:function(result){
         console.log(result);
@@ -47,7 +47,7 @@
         
         let chartWeeklyLabels = result.day;
         let chartWeeklyData = result.po_count_data;
-        let ctxLineChart = document.getElementById("nominal-chart").getContext("2d");
+        let ctxLineChart = document.getElementById("tonase-chart").getContext("2d");
         let lineChart = new Chart(ctxLineChart, {
           type: 'line',
           data: {
