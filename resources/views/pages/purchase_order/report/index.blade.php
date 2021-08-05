@@ -5,12 +5,28 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <select name="supplier_id" id="supplierId" class="form-control mb-2">
-
-          </select>
-          <small class="text-secondary">
-            Pilih Supplier untuk melihat Laporan Rekap Pembelian.
-          </small>
+          <div class="row" id="filterForm">
+            <div class="col-md-3">
+              <input type="date" name="startDate" id="startDate" class="form-control">
+              <small>
+                Pilih tanggal mulai periode
+              </small>
+            </div>
+            <div class="col-md-3">
+              <input type="date" name="endDate" id="endDate" class="form-control">
+              <small>
+                Pilih tanggal selesai periode
+              </small>
+            </div>
+            <div class="col-md-6">
+              <select name="supplier_id" id="supplierId" class="form-control mb-2">
+    
+              </select>
+              <small class="text-secondary">
+                Pilih Supplier untuk melihat Laporan Rekap Pembelian.
+              </small>
+            </div>
+          </div>
         </div>
       </div>
       
@@ -100,7 +116,7 @@
       }
     });
 
-    function setDataTable(supplierId = null) {
+    function setDataTable(startDate = null, endDate = null, supplierId = null) {
       
       $('.tablePurchaseOrder').DataTable({
         processing: true,
@@ -109,6 +125,8 @@
           url: "{{ route('purchase_order.report') }}",
           type: 'GET',
           data: {
+            'startDate' : startDate,
+            'endDate'   : endDate,
             'supplierId': supplierId
           }
         },
@@ -128,14 +146,30 @@
 
     $('.tablePurchaseOrder').DataTable();
 
+    let startDate = '';
+    let endDate = '';
+    let supplier_id = '';
+
+    $('#startDate').on('change', function (e) {
+      startDate = e.target.value;
+    })
+
+    $('#endDate').on('change', function (e) {
+      endDate = e.target.value;
+    })
+
     $('#supplierId').on('change', function(e) {
-      let supplier_id = $(this).val();
-      
+      supplier_id = $(this).val();
+    })
+
+    $('#filterForm').on('change', function (e) { 
       $.ajax({
         type: 'GET',
         url: "{{ route('purchase_order.report.getReports') }}",
         dataType: 'json',
         data: {
+          'startDate' : startDate,
+          'endDate'   : endDate,
           'supplierId': supplier_id
         },
         success:function(result){
@@ -147,7 +181,7 @@
       })
 
       $('.tablePurchaseOrder').DataTable().destroy();
-      setDataTable(supplier_id);
+      setDataTable(startDate, endDate, supplier_id);
     })
 
   </script>

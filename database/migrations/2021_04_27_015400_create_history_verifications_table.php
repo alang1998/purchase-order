@@ -15,8 +15,8 @@ class CreateHistoryVerificationsTable extends Migration
     {
         Schema::create('history_verifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id');
-            $table->foreignId('user_id');
+            $table->foreignId('order_id')->constrained('purchase_orders')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->enum('status', ['0', '1']);
             $table->string('description')->nullable();
             $table->timestamps();

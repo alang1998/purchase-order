@@ -19,9 +19,9 @@ class CreatePurchaseOrdersTable extends Migration
             $table->date('order_date');
             $table->text('note');
             $table->enum('status', ['0', '1', '2', '3']);
-            $table->foreignId('user_id');
-            $table->foreignId('supplier_id');
-            $table->foreignId('store_id');
+            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('supplier_id')->constrained('suppliers')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('store_id')->constrained('stores')->onUpdate('cascade')->onDelete('cascade');
             $table->double('grand_total');
             $table->double('grand_total_tonase');
             $table->timestamps();

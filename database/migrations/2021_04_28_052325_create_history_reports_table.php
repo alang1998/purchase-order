@@ -15,8 +15,8 @@ class CreateHistoryReportsTable extends Migration
     {
         Schema::create('history_reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id');
-            $table->foreignId('user_id');
+            $table->foreignId('order_id')->constrained('purchase_orders')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->string(('description'));
             $table->timestamps();
         });

@@ -2,7 +2,7 @@
 <!-- pembelian perminggu chart -->
   <div class="card">
     <div class="card-header">
-      <h2 class="card-title">Grafik Pembelian</h2>
+      <h2 class="card-title">Grafik Purchase Order</h2>
     </div>
     <div class="card-body">
       <canvas id="nomial-weekly-chart" height="150"></canvas>
@@ -22,19 +22,17 @@
       
       Chart.defaults.global.defaultFontColor = '#a0aeba';  
         
-      $.ajax({
-        type: 'GET',
-        url: "{{ route('dashboard.getWeeklyPurchaseOrder') }}",
-        dataType: 'json',
-        success:function(result){
+      // $.ajax({
+      //   type: 'GET',
+      //   url: "{{ route('dashboard.getWeeklyPurchaseOrder') }}",
+      //   dataType: 'json',
+      //   success:function(result){
           let scalesOptions = {
             xAxes: [{
               gridLines: { display: false }
             }],
             yAxes: [{
               ticks: {
-                min: 0,
-                max: result.max,
                 maxTicksLimit: 5
               },
               gridLines: { 
@@ -44,8 +42,8 @@
             }]
           };
           
-          let chartWeeklyLabels = result.day;
-          let chartWeeklyData = result.po_count_data;
+          let chartWeeklyLabels = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+          let chartWeeklyData = ['20', '12', '18', '8', '7', '9', '12'];
           let ctxLineChart = document.getElementById("nomial-weekly-chart").getContext("2d");
           let lineChart = new Chart(ctxLineChart, {
             type: 'line',
@@ -54,7 +52,7 @@
               datasets: [
                 {
                   data: chartWeeklyData,
-                  label: 'Pembelian',
+                  label: 'Purchase Order',
                   borderWidth: 2,
                   pointRadius: 3,
                   pointHoverRadius: 5,
@@ -76,8 +74,8 @@
 
 
 
-        }
-      });
+      //   }
+      // });
 
     })
   </script>

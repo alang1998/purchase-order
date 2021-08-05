@@ -53,7 +53,7 @@
           <div class="form-group">
             <label for="file">Pilih file excel</label>
             <input type="file" name="file" id="file" class="form-control-file" required>
-            <small>* Format file excel dapat di download <a href="#">disini</a></small>
+            <small>* Format file excel dapat di download <a href="{{ asset('format/import-item-supplier.xlsx') }}">disini</a></small>
           </div>
         </div>
         <div class="modal-footer">

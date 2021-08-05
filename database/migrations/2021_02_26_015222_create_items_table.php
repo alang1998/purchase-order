@@ -18,8 +18,8 @@ class CreateItemsTable extends Migration
             $table->string('item_code', 50)->unique();
             $table->string('name', 100);
             $table->double('weight');
-            $table->foreignId('unit_id');
-            $table->foreignId('brand_id');
+            $table->foreignId('unit_id')->constrained('units')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('brand_id')->constrained('brands')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

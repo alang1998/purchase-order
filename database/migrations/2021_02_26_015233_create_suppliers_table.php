@@ -21,7 +21,7 @@ class CreateSuppliersTable extends Migration
             $table->string('phone', 15);
             $table->string('email', 254);
             $table->string('person_in_charge', 100);
-            $table->foreignId('region_id');
+            $table->foreignId('region_id')->constrained('regions')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

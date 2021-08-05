@@ -22,20 +22,21 @@
     
     Chart.defaults.global.defaultFontColor = '#a0aeba';  
       
-    $.ajax({
-      type: 'GET',
-      url: "{{ route('dashboard.getWeeklyNominalPurchaseOrder') }}",
-      dataType: 'json',
-      success:function(result){
-        console.log(result);
-        let scalesOptions = {
+    // $.ajax({
+    //   type: 'GET',
+    //   url: "{{ route('dashboard.getWeeklyNominalPurchaseOrder') }}",
+    //   dataType: 'json',
+    //   success:function(result){
+    //   }
+    // });
+
+    
+    let scalesOptions = {
           xAxes: [{
             gridLines: { display: false }
           }],
           yAxes: [{
             ticks: {
-              min: 0,
-              max: result.max,
               maxTicksLimit: 5
             },
             gridLines: { 
@@ -45,8 +46,8 @@
           }]
         };
         
-        let chartWeeklyLabels = result.day;
-        let chartWeeklyData = result.po_count_data;
+        let chartWeeklyLabels = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+        let chartWeeklyData = ['5', '10', '8', '12', '13', '17', '5'];
         let ctxLineChart = document.getElementById("nominal-chart").getContext("2d");
         let lineChart = new Chart(ctxLineChart, {
           type: 'line',
@@ -55,7 +56,7 @@
             datasets: [
               {
                 data: chartWeeklyData,
-                label: '',
+                label: 'Nominal Pembelian',
                 borderWidth: 2,
                 pointRadius: 3,
                 pointHoverRadius: 5,
@@ -74,8 +75,6 @@
             }
           }
         });
-      }
-    });
 
   })
 </script>

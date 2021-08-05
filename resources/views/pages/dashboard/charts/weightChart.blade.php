@@ -22,20 +22,18 @@
     
     Chart.defaults.global.defaultFontColor = '#a0aeba';  
       
-    $.ajax({
-      type: 'GET',
-      url: "{{ route('dashboard.weightPurchaseOrder') }}",
-      dataType: 'json',
-      success:function(result){
-        console.log(result);
+    // $.ajax({
+    //   type: 'GET',
+    //   url: "{{ route('dashboard.weightPurchaseOrder') }}",
+    //   dataType: 'json',
+    //   success:function(result){
+    //     console.log(result);
         let scalesOptions = {
           xAxes: [{
             gridLines: { display: false }
           }],
           yAxes: [{
             ticks: {
-              min: 0,
-              max: result.max,
               maxTicksLimit: 5
             },
             gridLines: { 
@@ -45,8 +43,8 @@
           }]
         };
         
-        let chartWeeklyLabels = result.day;
-        let chartWeeklyData = result.po_count_data;
+        let chartWeeklyLabels = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+        let chartWeeklyData = ['15', '10', '18', '12', '9', '17', '15'];
         let ctxLineChart = document.getElementById("tonase-chart").getContext("2d");
         let lineChart = new Chart(ctxLineChart, {
           type: 'line',
@@ -74,8 +72,8 @@
             }
           }
         });
-      }
-    });
+    //   }
+    // });
 
   })
 </script>

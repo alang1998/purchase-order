@@ -15,8 +15,8 @@ class CreateDetailPurchaseOrdersTable extends Migration
     {
         Schema::create('detail_purchase_orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id');
-            $table->foreignId('item_id');
+            $table->foreignId('order_id')->constrained('purchase_orders')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('item_id')->constrained('items')->onUpdate('cascade')->onDelete('cascade');
             $table->integer('quantity');
             $table->double('price');
         });

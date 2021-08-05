@@ -19,7 +19,6 @@ class CreateUsersTable extends Migration
             $table->string('username', 100)->unique();
             $table->string('password');
             $table->string('signature', 100)->nullable();
-            $table->foreignId('role_id');
             $table->enum('status', ['0', '1']);
             $table->rememberToken();
             $table->timestamps();

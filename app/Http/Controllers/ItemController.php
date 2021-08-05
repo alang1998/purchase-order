@@ -171,6 +171,8 @@ class ItemController extends Controller
 
         Excel::import(new ProductImport, public_path('/import/items/'.$fileName));
 
+        unlink(public_path('/import/items/'.$fileName));
+
         return redirect()->route($this->getRoute())->with('success', 'Import data berhasil.');
     }
 

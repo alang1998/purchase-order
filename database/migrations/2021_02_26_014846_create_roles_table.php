@@ -20,6 +20,13 @@ class CreateRolesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('role_id')
+                ->constrained('roles')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+        });
     }
 
     /**

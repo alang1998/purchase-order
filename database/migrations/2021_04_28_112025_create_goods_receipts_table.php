@@ -15,8 +15,8 @@ class CreateGoodsReceiptsTable extends Migration
     {
         Schema::create('goods_receipts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('history_report_id');
-            $table->foreignId('detail_order_id');
+            $table->foreignId('history_report_id')->constrained('history_reports')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('detail_order_id')->constrained('detail_purchase_orders')->onUpdate('cascade')->onDelete('cascade');
             $table->integer('quantity');
         });
     }

@@ -25,7 +25,7 @@ class PurchaseOrderReportController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $orders = $this->getPurchaseOrder(request()->get('supplierId'));
+            $orders = $this->getPurchaseOrder(request()->startDate, request()->endDate ,request()->get('supplierId'));
             return datatables()->of($orders)
                 ->addColumn('action', function($data){
                     $button = '<a href="'.route('purchase_order.report.show', $data).'" class="btn btn-sm btn-primary mr-1" target="_BLANK"><i class="fa fa-search"></i></a>';
@@ -83,12 +83,14 @@ class PurchaseOrderReportController extends Controller
         ]);
     }
 
-    public function getPurchaseOrder($supplierId)
+    public function getPurchaseOrder($startDate, $endDate, $supplierId)
     {
-        if ($supplierId) {
-            $orders = PurchaseOrder::where('supplier_id', $supplierId)->where('status', '1')->get();            
+        if ($startDate && $endDate && $supplierId) {
+            $orders = PurchaseOrder::where('supplier_id', $supplierId)->whereBetween('order_date', [$startDate, $endDate])->where('status', '1')->get();
+        } else if ($startDate && $endDate) {
+            $orders = PurchaseOrder::whereBetween('order_date', [$startDate, $endDate])->where('status', '1')->get();
         } else {
-            $orders = null;
+            $orders = PurchaseOrder::where('supplier_id', $supplierId)->where('status', '1')->get();
         }
 
         return $orders;
@@ -97,10 +99,17 @@ class PurchaseOrderReportController extends Controller
     public function getReports()
     {
         $supplier = Supplier::find(request('supplierId'));
-        $orders = PurchaseOrder::where('supplier_id', $supplier->id)->get();
-
+        if (request()->startDate && request()->endDate && request()->supplier_id) {
+            $orders = PurchaseOrder::whereBetween('order_date', [request()->startDate, request()->endDate])->where('supplier_id', $supplier->id)->where('status', '1')->get();
+        } else if (request()->startDate && request()->endDate) {
+            $orders = PurchaseOrder::whereBetween('order_date', [request()->startDate, request()->endDate])->where('status', '1')->get();
+        } else {
+            $orders = PurchaseOrder::where('supplier_id', $supplier->id)->where('status', '1')->get();
+        }
+        
         try {
-            if ($supplier && $orders) {
+
+            if (count($orders) > 0) {
 
                 $grandTotal = 0;
                 $grandTotalTonase = 0;
