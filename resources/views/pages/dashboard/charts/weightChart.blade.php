@@ -49,11 +49,11 @@
         let lineChart = new Chart(ctxLineChart, {
           type: 'line',
           data: {
-            labels: chartWeeklyLabels,
+            labels: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
             datasets: [
               {
-                data: chartWeeklyData,
-                label: '',
+                data: [1523, 235, 658, 778, 856, 876, 2198],
+                label: 'Tonase',
                 borderWidth: 2,
                 pointRadius: 3,
                 pointHoverRadius: 5,

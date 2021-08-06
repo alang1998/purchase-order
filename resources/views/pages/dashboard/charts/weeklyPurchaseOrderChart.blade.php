@@ -33,7 +33,7 @@
             }],
             yAxes: [{
               ticks: {
-                maxTicksLimit: 5
+                maxTicksLimit: 10
               },
               gridLines: { 
                 color: '#eff3f6', 
@@ -48,10 +48,10 @@
           let lineChart = new Chart(ctxLineChart, {
             type: 'line',
             data: {
-              labels: chartWeeklyLabels,
+              labels: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
               datasets: [
                 {
-                  data: chartWeeklyData,
+                  data: [30, 26, 38, 59, 17, 77, 45],
                   label: 'Purchase Order',
                   borderWidth: 2,
                   pointRadius: 3,

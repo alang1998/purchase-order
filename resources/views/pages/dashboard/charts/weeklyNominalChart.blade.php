@@ -52,10 +52,10 @@
         let lineChart = new Chart(ctxLineChart, {
           type: 'line',
           data: {
-            labels: chartWeeklyLabels,
+            labels: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
             datasets: [
               {
-                data: chartWeeklyData,
+                data: [5785456, 2589743, 4878965, 3254168, 1700000, 7700000, 9854782],
                 label: 'Nominal Pembelian',
                 borderWidth: 2,
                 pointRadius: 3,

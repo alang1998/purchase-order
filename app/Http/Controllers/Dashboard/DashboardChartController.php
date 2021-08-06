@@ -34,13 +34,13 @@ class DashboardChartController extends Controller
             array_push($weekly_po_count, $entry->count);
         }
 
-        $max_no = max($weekly_po_count);
-        $max = round(($max_no + 10/2) / 10) * 10;
+        // $max_no = max($weekly_po_count);
+        // $max = round(($max_no + 10/2) / 10) * 10;
 
         $weekly_po_data = array(
             'day' => $weekly_po_index,
             'po_count_data' => $weekly_po_count,
-            'max' => $max
+            'max' => 10
         );
 
         return $weekly_po_data;
@@ -68,13 +68,13 @@ class DashboardChartController extends Controller
             array_push($weekly_po_nominal, $entry->grand_total);
         }
 
-        $max_no = max($weekly_po_nominal);
-        $max = round(($max_no * 10 / 2) / 10) * 10;
+        // $max_no = max($weekly_po_nominal);
+        // $max = round(($max_no * 10 / 2) / 10) * 10;
 
         $weekly_po_data = array(
             'day' => $weekly_po_index,
             'po_count_data' => $weekly_po_nominal,
-            'max' => $max
+            // 'max' => $max
         );
 
         return $weekly_po_data;
@@ -102,13 +102,13 @@ class DashboardChartController extends Controller
             array_push($weight_po_count, $entry->grand_total_tonase);
         }
 
-        $max_no = max($weight_po_count);
-        $max = round(($max_no * 10 / 2) / 10) * 10;
+        // $max_no = max($weight_po_count);
+        // $max = round(($max_no * 10 / 2) / 10) * 10;
 
         $weekly_po_data = array(
             'day' => $weight_po_index,
             'po_count_data' => $weight_po_count,
-            'max' => $max
+            // 'max' => $max
         );
 
         return $weekly_po_data;
