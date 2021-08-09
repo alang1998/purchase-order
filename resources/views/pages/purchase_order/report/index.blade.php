@@ -28,6 +28,9 @@
             </div>
           </div>
         </div>
+        <div class="card-header">
+          <button id="exportToExcel" class="btn btn-sm btn-success">Export to excel</button>
+        </div>
       </div>
       
       <div class="card">
@@ -35,6 +38,7 @@
           <h5 class="mt-2 supplierTitle">
 
           </h5>
+          <span class="periode"></span>
         </div>
         <div class="card-body">
           <div class="table-responsive">
@@ -61,6 +65,7 @@
           <h5 class="mt-2 rekapTitle">
             Rekap Total Order
           </h5>
+          <span class="rekapPeriode text-secondary"></span>
         </div>
         <div class="card-body">          
           <div class="row">
@@ -175,13 +180,27 @@
         success:function(result){
           $('.grandTotal').empty().append(new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(result.grandTotal));
           $('.grandTotalTonase').empty().append(new Intl.NumberFormat('id-ID', { style: 'decimal' }).format(result.grandTotalTonase));
-          $('.supplierTitle').empty().append(result.supplier.name);
-          $('.rekapTitle').empty().append('Rekap Total Order (' + result.supplier.name + ')');
+
+          if (result.supplier != null) {
+            $('.supplierTitle').empty().append(result.supplier.name);
+            $('.rekapTitle').empty().append('Rekap Total Order (' + result.supplier.name + ')');
+          }
+
+          if (startDate != '' && endDate != '') {
+            console.log();
+            $('.periode').empty().append($.datepicker.formatDate( "dd/mm/yy", new Date(startDate))+' - '+$.datepicker.formatDate( "dd/mm/yy", new Date(endDate)));
+            $('.rekapPeriode').empty().append($.datepicker.formatDate( "dd/mm/yy", new Date(startDate))+' - '+$.datepicker.formatDate( "dd/mm/yy", new Date(endDate)));
+          }
+
         }
       })
 
       $('.tablePurchaseOrder').DataTable().destroy();
       setDataTable(startDate, endDate, supplier_id);
+    })
+
+    $('#exportToExcel').on('click', function () {
+      console.log(startDate);
     })
 
   </script>

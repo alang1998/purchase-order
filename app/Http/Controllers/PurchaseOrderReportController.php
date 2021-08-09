@@ -99,13 +99,7 @@ class PurchaseOrderReportController extends Controller
     public function getReports()
     {
         $supplier = Supplier::find(request('supplierId'));
-        if (request()->startDate && request()->endDate && request()->supplier_id) {
-            $orders = PurchaseOrder::whereBetween('order_date', [request()->startDate, request()->endDate])->where('supplier_id', $supplier->id)->where('status', '1')->get();
-        } else if (request()->startDate && request()->endDate) {
-            $orders = PurchaseOrder::whereBetween('order_date', [request()->startDate, request()->endDate])->where('status', '1')->get();
-        } else {
-            $orders = PurchaseOrder::where('supplier_id', $supplier->id)->where('status', '1')->get();
-        }
+        $orders = $this->getPurchaseOrder(request()->startDate, request()->endDate, request()->get('supplierId'));
         
         try {
 
@@ -134,6 +128,12 @@ class PurchaseOrderReportController extends Controller
                 ];
 
                 return response()->json($data);
+            } else {
+                return response()->json([
+                    'supplier' => $supplier,
+                    'grandTotal'        => 0,
+                    'grandTotalTonase'  => 0,
+                ]);
             }
         } catch (\Throwable $th) {
             
@@ -143,6 +143,11 @@ class PurchaseOrderReportController extends Controller
             ]);
 
         }
+    }
+
+    public function exportToExcel()
+    {
+        dd(request()->all());
     }
 
     /**

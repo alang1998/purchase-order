@@ -178,6 +178,8 @@ Route::middleware('auth')->group(function(){
             Route::get('show/{purchase_order}', [PurchaseOrderReportController::class, 'show'])->name('purchase_order.report.show');
             Route::get('getReports', [PurchaseOrderReportController::class, 'getReports'])->name('purchase_order.report.getReports');
 
+            Route::get('exportToExcel', [PurchaseOrderReportController::class, 'exportToExcel'])->name('purchase_order.report.exportToExcel');
+
             Route::group(['prefix' => 'history', 'middleware' => ['role:super-user,supervisor,wakil-supervisor,staff-purchasing']], function(){
                 
                 Route::post('receiptOfGoods/{purchase_order}', [HistoryReportsController::class, 'receiptGoods'])->name('purchase_order.report.receiptGoods');
