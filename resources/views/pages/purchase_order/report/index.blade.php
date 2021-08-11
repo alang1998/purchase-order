@@ -20,7 +20,7 @@
             </div>
             <div class="col-md-6">
               <select name="supplier_id" id="supplierId" class="form-control mb-2">
-    
+
               </select>
               <small class="text-secondary">
                 Pilih Supplier untuk melihat Laporan Rekap Pembelian.
@@ -187,10 +187,11 @@
           }
 
           if (startDate != '' && endDate != '') {
-            console.log();
             $('.periode').empty().append($.datepicker.formatDate( "dd/mm/yy", new Date(startDate))+' - '+$.datepicker.formatDate( "dd/mm/yy", new Date(endDate)));
             $('.rekapPeriode').empty().append($.datepicker.formatDate( "dd/mm/yy", new Date(startDate))+' - '+$.datepicker.formatDate( "dd/mm/yy", new Date(endDate)));
           }
+
+          exportButton();
 
         }
       })
@@ -200,8 +201,28 @@
     })
 
     $('#exportToExcel').on('click', function () {
-      console.log(startDate);
+      
+      var url = "{{ route('purchase_order.report.exportToExcel') }}";    
+      $(location).attr('href', url+'?startDate='+startDate+'&endDate='+endDate+'&supplierId='+supplier_id);
+
     })
+
+
+    $(document).ready(function () {
+      exportButton();
+    })
+
+    function exportButton() {
+      
+      if ((startDate != '' && endDate != '') || supplier_id != '') {
+        $('#exportToExcel').removeClass('disabled');
+        $('#exportToExcel').attr('disabled', false);
+      } else {
+        $('#exportToExcel').addClass('disabled');
+        $('#exportToExcel').attr('disabled', true);
+      }
+      
+    }
 
   </script>
 @endpush

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use anyHelper;
-use App\Models\PurchaseOrder;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use App\Models\PurchaseOrder;
+use Illuminate\Support\Facades\Auth;
+use App\Exports\PurchaseOrderReportExport;
 
 class PurchaseOrderReportController extends Controller
 {
@@ -29,6 +31,10 @@ class PurchaseOrderReportController extends Controller
             return datatables()->of($orders)
                 ->addColumn('action', function($data){
                     $button = '<a href="'.route('purchase_order.report.show', $data).'" class="btn btn-sm btn-primary mr-1" target="_BLANK"><i class="fa fa-search"></i></a>';
+
+                    if (Auth::user()->role_id == 2) {
+                        $button .= '<a href="'.route('purchase_order.printOrder', $data).'" class="btn btn-sm btn-success mr-1" target="_BLANK"><i class="fa fa-print"></i></a>';
+                    }
 
                     return $button;
                 })
@@ -147,7 +153,24 @@ class PurchaseOrderReportController extends Controller
 
     public function exportToExcel()
     {
-        dd(request()->all());
+        $fileName = $this->getFileName($_GET['startDate'], $_GET['endDate'], $_GET['supplierId']);
+
+        return (new PurchaseOrderReportExport)->download($fileName.'.xlsx');
+
+    }
+
+    public function getFileName($startDate, $endDate, $supplierId)
+    {
+        $supplier = Supplier::find($supplierId);
+        if ($startDate && $endDate && $supplierId) {
+            $fileName = 'Laporan PO ('.$startDate.' - '.$endDate.') '.$supplier->supplier_code;
+        } else if ($startDate && $endDate) {
+            $fileName = 'Laporan PO ('.$startDate.' - '.$endDate.') ';
+        } else {
+            $fileName = 'Laporan PO '.$supplier->supplier_code;
+        }
+
+        return $fileName;
     }
 
     /**
