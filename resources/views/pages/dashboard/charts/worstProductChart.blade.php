@@ -2,14 +2,14 @@
 <!-- pembelian perminggu chart -->
 <div class="card">
   <div class="card-header">
-    <h2 class="card-title">Grafik Produk Terbaik</h2>
+    <h2 class="card-title">Grafik Produk Terendah</h2>
   </div>
   <div class="card-body">
-    <canvas id="donut-chart" height="150"></canvas>
+    <canvas id="worst-product" height="150"></canvas>
   </div>
   <div class="card-footer">
     <small class="text-secondary">
-      Grafik 5 produk yang paling sering dibeli dari keseluruhan pembelian.
+      Grafik 5 produk yang paling jarang dibeli dari keseluruhan pembelian.
     </small>
   </div>
 </div>
@@ -24,11 +24,11 @@
       
     $.ajax({
       type: 'GET',
-      url: "{{ route('dashboard.getBestProduct') }}",
+      url: "{{ route('dashboard.getWorstProduct') }}",
       dataType: 'json',
       success:function(result){
         console.log(result);
-        var ctxDonutChart = document.getElementById("donut-chart").getContext("2d");
+        var ctxDonutChart = document.getElementById("worst-product").getContext("2d");
         var donutChart = new Chart(ctxDonutChart, {
           type: 'doughnut',
           data: {

@@ -22,40 +22,22 @@
     
     Chart.defaults.global.defaultFontColor = '#a0aeba';  
       
-    // $.ajax({
-    //   type: 'GET',
-    //   url: "{{ route('dashboard.getWeeklyNominalPurchaseOrder') }}",
-    //   dataType: 'json',
-    //   success:function(result){
-    //   }
-    // });
-
-    
-    let scalesOptions = {
-          xAxes: [{
-            gridLines: { display: false }
-          }],
-          yAxes: [{
-            ticks: {
-              maxTicksLimit: 5
-            },
-            gridLines: { 
-              color: '#eff3f6', 
-              drawBorder: false,
-            },
-          }]
-        };
-        
-        let chartWeeklyLabels = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
-        let chartWeeklyData = ['5', '10', '8', '12', '13', '17', '5'];
+    $.ajax({
+      type: 'GET',
+      url: "{{ route('dashboard.getWeeklyNominalPurchaseOrder') }}",
+      dataType: 'json',
+      success:function(result){
+        console.log(result);
+        let chartWeeklyLabels = result.day;
+        let chartWeeklyData = result.po_count_data;
         let ctxLineChart = document.getElementById("nominal-chart").getContext("2d");
         let lineChart = new Chart(ctxLineChart, {
           type: 'line',
           data: {
-            labels: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+            labels: chartWeeklyLabels,
             datasets: [
               {
-                data: [5785456, 2589743, 4878965, 3254168, 1700000, 7700000, 9854782],
+                data: chartWeeklyData,
                 label: 'Nominal Pembelian',
                 borderWidth: 2,
                 pointRadius: 3,
@@ -75,6 +57,26 @@
             }
           }
         });
+      }
+    });
+
+    
+    let scalesOptions = {
+          xAxes: [{
+            gridLines: { display: true }
+          }],
+          yAxes: [{
+            ticks: {
+              min: 0,
+              max: 10,
+              stepSize: 2
+            },
+            gridLines: { 
+              color: '#eff3f6', 
+              drawBorder: false,
+            },
+          }]
+        };
 
   })
 </script>

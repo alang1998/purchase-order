@@ -43,8 +43,8 @@
           }]
         };
         
-        let chartWeeklyLabels = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
-        let chartWeeklyData = ['15', '10', '18', '12', '9', '17', '15'];
+        let chartWeeklyLabels = result.day;
+        let chartWeeklyData = result.po_count_data;
         let ctxLineChart = document.getElementById("tonase-chart").getContext("2d");
         let lineChart = new Chart(ctxLineChart, {
           type: 'line',

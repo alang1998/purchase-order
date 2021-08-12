@@ -65,7 +65,7 @@ class DashboardChartController extends Controller
 
         foreach($purchase_orders as $entry) {
             array_push($weekly_po_index, date('D', strtotime($entry->day)));
-            array_push($weekly_po_nominal, $entry->grand_total);
+            array_push($weekly_po_nominal, $entry->grand_total/10000000);
         }
 
         // $max_no = max($weekly_po_nominal);
@@ -136,6 +136,30 @@ class DashboardChartController extends Controller
         );
 
         return $best_product_data;
+    }
+
+    public function getWorstProduct()
+    {
+        $worst_product_count_array = array();
+        $worst_product_name = array();
+        $purchased_items = DetailPurchaseOrder::with('item')->select([
+            DB::raw('count(id) as `count`'), 
+            DB::raw('item_id'),
+          ])->groupBy('item_id')
+          ->orderBy('count', 'ASC')
+          ->limit(5)->get();
+        
+        foreach ($purchased_items as $item) {
+            array_push($worst_product_count_array, $item->count);
+            array_push($worst_product_name, $item->item->name);
+        }
+
+        $worst_product_data = array(
+            'labels' => $worst_product_name,
+            'count'  => $worst_product_count_array
+        );
+
+        return $worst_product_data;
     }
 
     public function getAllMonthsPurchaseOrder()
