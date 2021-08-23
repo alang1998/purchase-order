@@ -32,6 +32,7 @@ class UserRequest extends FormRequest
             'name' => 'required',
             'username' => 'required|unique:users,username,'.optional($this->user)->id,
             'role_id' => 'required',
+            'store_id' => 'required',
             'signature' => $check
         ];
     }

@@ -45,8 +45,17 @@
             <div class="d-none d-md-block">
               :
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
               {{ $purchase_order->user->name }}
+            </div>
+            <div class="col-md-2 mb-2 mb-md-0 font-weight-bold font-md-weight-normal">
+              Cabang
+            </div>
+            <div class="d-none d-md-block">
+              :
+            </div>
+            <div class="col-md-3">
+              {{ $purchase_order->user->store->name }}
             </div>
           </div>
           <hr>

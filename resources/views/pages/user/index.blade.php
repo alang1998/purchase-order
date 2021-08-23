@@ -16,6 +16,7 @@
                   <th>Nama</th>
                   <th>Username</th>
                   <th>Role</th>
+                  <th>Cabang</th>
                   <th>TTD</th>
                   <th>Status</th>
                   <th>Aksi</th>
@@ -43,6 +44,7 @@
         { data: 'name', name: 'name' },
         { data: 'username', name: 'username' },
         { data: 'role', name: 'role' },
+        { data: 'store', name: 'store' },
         { data: 'ttd', name: 'ttd' },
         { data: 'status', name: 'status' },
         { data: 'action', name: 'action' }

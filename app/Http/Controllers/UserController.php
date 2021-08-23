@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
+use App\Models\Store;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -42,6 +43,9 @@ class UserController extends Controller
                     ->addColumn('role', function($data){
                         return $data->role->name;
                     })
+                    ->addColumn('store', function($data){
+                        return $data->store->name;
+                    })
                     ->addColumn('ttd', function($data){
                         $contents = asset('storage/signature/'.$data->signature);
                         if ($contents) {
@@ -76,6 +80,7 @@ class UserController extends Controller
         return view('pages.user.form', [
             'user'          => new User,
             'roles'         => Role::latest()->get(),
+            'stores'        => Store::get(),
             'title'         => 'Tambah Pengguna',
             'submitButton'  => 'Tambah',
             'action'        => $this->getRoute().'.create'
@@ -136,6 +141,7 @@ class UserController extends Controller
         return view('pages.user.form', [
             'user'          => $user,
             'roles'         => Role::latest()->get(),
+            'stores'        => Store::get(),
             'title'         => 'Edit Pengguna',
             'submitButton'  => 'Simpan',
             'action'        => $this->getRoute().'.edit'

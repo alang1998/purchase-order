@@ -22,6 +22,14 @@ class CreateStoresTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('store_id')
+                ->constrained('stores')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+        });
     }
 
     /**

@@ -46,10 +46,26 @@
                 <select name="role_id" id="userRole" class="form-control">
                   <option value="">== Pilih ==</option>
                   @foreach ($roles as $role)
-                    <option value="{{ $role->id }}" {{ old('role_id') ? 'selected' : ($user->role_id == $role->id ? 'selected' : '') }}>{{ $role->name }}</option>
+                    @if ($role->id != 1)
+                      <option value="{{ $role->id }}" {{ ($user->id ? ($user->role_id == $role->id ? 'selected' : '') : old('role_id') == $role->id ? 'selected' : '') }}>{{ $role->name }}</option>                        
+                    @endif
                   @endforeach
                 </select>
                 @error('role_id')
+                  <div class="mt-2 text-danger">{{ $message }}</div>
+                @enderror
+              </div>
+            </div>              
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Cabang</label>
+              <div class="col-sm-9">
+                <select name="store_id" id="userStore" class="form-control">
+                  <option value="">== Pilih ==</option>
+                  @foreach ($stores as $store)
+                    <option value="{{ $store->id }}" {{ ($user->id ? ($user->store_id == $store->id ? 'selected' : '') : old('store_id') == $store->id ? 'selected' : '') }}>{{ $store->name }}</option>
+                  @endforeach
+                </select>
+                @error('store_id')
                   <div class="mt-2 text-danger">{{ $message }}</div>
                 @enderror
               </div>

@@ -62,7 +62,7 @@ class PurchaseOrderReportController extends Controller
 
                 })
                 ->addColumn('user', function($data){
-                    return $data->user->name;
+                    return $data->user->name.' - '.$data->user->store->name;
                 })
                 ->addColumn('store', function($data){
                     return $data->store->name;

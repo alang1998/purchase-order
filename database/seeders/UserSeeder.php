@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
                 'username'      => 'admin',
                 'password'      => bcrypt('admin'),
                 'role_id'       => '1',
+                'store_id'      => '1',
                 'status'        => '1',
                 'created_at' => Carbon::now()->format("Y-m-d H:i:s"),
                 'updated_at' => Carbon::now()->format("Y-m-d H:i:s")
@@ -30,6 +31,7 @@ class UserSeeder extends Seeder
                 'username'      => 'hendri',
                 'password'      => bcrypt('123456'),
                 'role_id'       => '2',
+                'store_id'      => '1',
                 'status'        => '0',
                 'created_at' => Carbon::now()->format("Y-m-d H:i:s"),
                 'updated_at' => Carbon::now()->format("Y-m-d H:i:s")
@@ -39,6 +41,7 @@ class UserSeeder extends Seeder
                 'username'      => 'wawan',
                 'password'      => bcrypt('123456'),
                 'role_id'       => '3',
+                'store_id'      => '1',
                 'status'        => '0',
                 'created_at' => Carbon::now()->format("Y-m-d H:i:s"),
                 'updated_at' => Carbon::now()->format("Y-m-d H:i:s")
@@ -48,6 +51,7 @@ class UserSeeder extends Seeder
                 'username'      => 'bondodi',
                 'password'      => bcrypt('123456'),
                 'role_id'       => '4',
+                'store_id'      => '1',
                 'status'        => '0',
                 'created_at' => Carbon::now()->format("Y-m-d H:i:s"),
                 'updated_at' => Carbon::now()->format("Y-m-d H:i:s")
@@ -57,6 +61,7 @@ class UserSeeder extends Seeder
                 'username'      => 'sukary',
                 'password'      => bcrypt('123456'),
                 'role_id'       => '5',
+                'store_id'      => '1',
                 'status'        => '0',
                 'created_at' => Carbon::now()->format("Y-m-d H:i:s"),
                 'updated_at' => Carbon::now()->format("Y-m-d H:i:s")
@@ -66,6 +71,7 @@ class UserSeeder extends Seeder
                 'username'      => 'pendo',
                 'password'      => bcrypt('123456'),
                 'role_id'       => '6',
+                'store_id'      => '1',
                 'status'        => '0',
                 'created_at' => Carbon::now()->format("Y-m-d H:i:s"),
                 'updated_at' => Carbon::now()->format("Y-m-d H:i:s")

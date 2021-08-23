@@ -47,7 +47,7 @@ class PurchaseOrderController extends Controller
                         return order_status($data->status);
                     })
                     ->addColumn('user', function($data){
-                        return $data->user->name;
+                        return $data->user->name.' - '.$data->user->store->name;
                     })
                     ->addColumn('store', function($data){
                         return $data->store->name;

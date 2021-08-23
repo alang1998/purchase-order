@@ -106,8 +106,8 @@
         </tr>
       </table>
     </div>
-    <div class="column">
-      <table class="float-right">
+    <div class="" style="float: left;">
+      <table class="float-right" width="60%">
         <tr>
           <td>Tanggal PO</td>
           <td>:</td>
@@ -117,6 +117,11 @@
           <td>Kontak</td>
           <td>:</td>
           <td>{{ $purchase_order->user->name }}</td>
+        </tr>
+        <tr>
+          <td>Cabang</td>
+          <td>:</td>
+          <td>{{ $purchase_order->user->store->name }}</td>
         </tr>
         <tr>
           <td>E-mail</td>

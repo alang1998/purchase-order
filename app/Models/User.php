@@ -24,6 +24,7 @@ class User extends Authenticatable
         'password',
         'signature',
         'role_id',
+        'store_id',
         'status'
     ];
 
@@ -58,5 +59,10 @@ class User extends Authenticatable
             return true;
         
         return false;
+    }
+
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
     }
 }
