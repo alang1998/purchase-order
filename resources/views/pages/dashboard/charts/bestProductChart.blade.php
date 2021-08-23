@@ -18,16 +18,15 @@
 @push('scripts')
 <script>
 
-  $(document).ready(function() {
-    
-    Chart.defaults.global.defaultFontColor = '#a0aeba';  
-      
+$(document).ready(function() {  
+
+    Chart.defaults.global.defaultFontColor = '#a0aeba';
+
     $.ajax({
       type: 'GET',
       url: "{{ route('dashboard.getBestProduct') }}",
       dataType: 'json',
       success:function(result){
-        console.log(result);
         var ctxDonutChart = document.getElementById("donut-chart").getContext("2d");
         var donutChart = new Chart(ctxDonutChart, {
           type: 'doughnut',
@@ -41,14 +40,29 @@
               
             ]
           },
+          plugins: [ChartDataLabels],
           options: {
             responsive: true,
             legend: {
               position: 'right',
             },
+            plugins: {
+              datalabels: {
+                formatter: (value, ctx) => {
+                  let sum = 0;
+                  let dataArr = ctx.chart.data.datasets[0].data;
+                  dataArr.map(data => {
+                      sum += data;
+                  });
+                  let percentage = (value*100 / sum).toFixed(2)+"%";
+                  return percentage;
+                },
+                color: '#fff',
+              }
+            }
+
           }
         });
-
       }
     });
 

@@ -95,7 +95,7 @@
   <script src="{{ asset('assets/plugins/select2/select2.min.js') }}"></script>
 
   <script src="{{ asset('assets/plugins/chart.js/Chart.min.js') }}"></script>
-
+  <script src="{{ asset('assets/plugins/chart.js/chartjs-plugin-datalabels.js') }}"></script>
   {{-- <!-- Init --> --}}
   {{-- <script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script> --}}
   {{-- <script src="assets/js/pages/ui-dragdroppanel.init.min.js"></script> --}}

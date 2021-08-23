@@ -40,11 +40,28 @@
               
             ]
           },
+          plugins: [ChartDataLabels],
           options: {
             responsive: true,
             legend: {
               position: 'right',
             },
+            plugins: {
+              datalabels: {
+                formatter: (value, ctx) => {
+                  let sum = 0;
+                  let dataArr = ctx.chart.data.datasets[0].data;
+                  dataArr.map(data => {
+                    console.log(data);
+                    sum += data;
+                  });
+                  let percentage = (value*100 / sum).toFixed(2)+"%";
+                  console.log(percentage);
+                  return percentage;
+                },
+                color: '#fff',
+              }
+            }
           }
         });
 
