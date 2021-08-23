@@ -48,12 +48,11 @@
             },
             plugins: {
               datalabels: {
-                formatter: (value, ctx) => {
+                formatter: (value, ctxDonutChart) => {
                   let sum = 0;
-                  let dataArr = ctx.chart.data.datasets[0].data;
+                  let dataArr = result.count;
                   dataArr.map(data => {
-                    console.log(data);
-                    sum += data;
+                    sum += parseInt(data);
                   });
                   let percentage = (value*100 / sum).toFixed(2)+"%";
                   console.log(percentage);
