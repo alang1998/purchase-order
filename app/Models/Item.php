@@ -26,4 +26,9 @@ class Item extends Model
     {
         return $this->belongsToMany(Supplier::class)->withPivot('price');
     }
+
+    public function detail_orders()
+    {
+        return $this->hasMany(DetailPurchaseOrder::class, 'item_id');
+    }
 }

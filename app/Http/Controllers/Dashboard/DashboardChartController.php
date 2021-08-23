@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Dashboard;
 
 use Carbon\Carbon;
+use App\Models\Item;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\PurchaseOrder;
 use Illuminate\Support\Facades\DB;
@@ -99,7 +101,7 @@ class DashboardChartController extends Controller
 
         foreach($purchase_orders as $entry) {
             array_push($weight_po_index, date('D', strtotime($entry->day)));
-            array_push($weight_po_count, $entry->grand_total_tonase);
+            array_push($weight_po_count, $entry->grand_total_tonase / 100);
         }
 
         // $max_no = max($weight_po_count);
@@ -118,16 +120,23 @@ class DashboardChartController extends Controller
     {
         $best_product_count_array = array();
         $best_product_name = array();
-        $purchased_items = DetailPurchaseOrder::with('item')->select([
-            DB::raw('count(id) as `count`'), 
-            DB::raw('item_id'),
-          ])->groupBy('item_id')
-          ->orderBy('count', 'DESC')
-          ->limit(5)->get();
-        
+        // $purchased_items = DetailPurchaseOrder::with('item')->select([
+        //     DB::raw('count(id) as `count`'), 
+        //     DB::raw('item_id'),
+        //   ])->groupBy('item_id')
+        //   ->orderBy('count', 'DESC')
+        //   ->limit(7)->get();
+
+        $purchased_items = DetailPurchaseOrder::whereHas('orders', function($query) {
+                                $query->where('status', '1');
+                            })
+                            ->groupBy('item_id')
+                            ->selectRaw('sum(quantity) as sum, item_id')
+                            ->orderBy('sum', 'DESC')->limit(7)->get();
+
         foreach ($purchased_items as $item) {
-            array_push($best_product_count_array, $item->count);
-            array_push($best_product_name, $item->item->name);
+            array_push($best_product_count_array, $item->sum);
+            array_push($best_product_name, Str::limit($item->item->name, 30, '...'));
         }
 
         $best_product_data = array(
@@ -142,16 +151,23 @@ class DashboardChartController extends Controller
     {
         $worst_product_count_array = array();
         $worst_product_name = array();
-        $purchased_items = DetailPurchaseOrder::with('item')->select([
-            DB::raw('count(id) as `count`'), 
-            DB::raw('item_id'),
-          ])->groupBy('item_id')
-          ->orderBy('count', 'ASC')
-          ->limit(5)->get();
-        
+        // $purchased_items = DetailPurchaseOrder::with('item')->select([
+        //     DB::raw('count(id) as `count`'), 
+        //     DB::raw('item_id'),
+        //   ])->groupBy('item_id')
+        //   ->orderBy('count', 'ASC')
+        //   ->limit(7)->get();
+
+        $purchased_items = DetailPurchaseOrder::whereHas('orders', function($query) {
+                                $query->where('status', '1');
+                            })
+                            ->groupBy('item_id')
+                            ->selectRaw('sum(quantity) as sum, item_id')
+                            ->orderBy('sum', 'ASC')->limit(7)->get();
+
         foreach ($purchased_items as $item) {
-            array_push($worst_product_count_array, $item->count);
-            array_push($worst_product_name, $item->item->name);
+            array_push($worst_product_count_array, $item->sum);
+            array_push($worst_product_name, Str::limit($item->item->name, 30, '...'));
         }
 
         $worst_product_data = array(

@@ -22,19 +22,20 @@
     
     Chart.defaults.global.defaultFontColor = '#a0aeba';  
       
-    // $.ajax({
-    //   type: 'GET',
-    //   url: "{{ route('dashboard.weightPurchaseOrder') }}",
-    //   dataType: 'json',
-    //   success:function(result){
-    //     console.log(result);
+    $.ajax({
+      type: 'GET',
+      url: "{{ route('dashboard.weightPurchaseOrder') }}",
+      dataType: 'json',
+      success:function(result){
         let scalesOptions = {
           xAxes: [{
-            gridLines: { display: false }
+            gridLines: { display: true }
           }],
           yAxes: [{
             ticks: {
-              maxTicksLimit: 5
+              min: 0,
+              max: 10,
+              stepSize: 2              
             },
             gridLines: { 
               color: '#eff3f6', 
@@ -49,11 +50,11 @@
         let lineChart = new Chart(ctxLineChart, {
           type: 'line',
           data: {
-            labels: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+            labels: chartWeeklyLabels,
             datasets: [
               {
-                data: [1523, 235, 658, 778, 856, 876, 2198],
-                label: 'Tonase',
+                data: chartWeeklyData,
+                label: 'Tonase Pembelian',
                 borderWidth: 2,
                 pointRadius: 3,
                 pointHoverRadius: 5,
@@ -72,8 +73,8 @@
             }
           }
         });
-    //   }
-    // });
+      }
+    });
 
   })
 </script>

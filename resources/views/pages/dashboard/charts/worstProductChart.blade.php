@@ -9,7 +9,7 @@
   </div>
   <div class="card-footer">
     <small class="text-secondary">
-      Grafik 5 produk yang paling jarang dibeli dari keseluruhan pembelian.
+      Grafik 7 produk yang paling jarang dibeli dari keseluruhan pembelian.
     </small>
   </div>
 </div>
@@ -27,7 +27,6 @@
       url: "{{ route('dashboard.getWorstProduct') }}",
       dataType: 'json',
       success:function(result){
-        console.log(result);
         var ctxDonutChart = document.getElementById("worst-product").getContext("2d");
         var donutChart = new Chart(ctxDonutChart, {
           type: 'doughnut',

@@ -27,7 +27,6 @@
       url: "{{ route('dashboard.getWeeklyNominalPurchaseOrder') }}",
       dataType: 'json',
       success:function(result){
-        console.log(result);
         let chartWeeklyLabels = result.day;
         let chartWeeklyData = result.po_count_data;
         let ctxLineChart = document.getElementById("nominal-chart").getContext("2d");

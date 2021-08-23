@@ -194,4 +194,10 @@ class ItemController extends Controller
         return response()->json($formatted_users);
     }
 
+    // public function deleteItems()
+    // {
+    //     $item = Item::doesntHave('detail_orders')->orderBy('item_code', 'asc')->delete();
+    //     dd($item);
+    // }
+
 }

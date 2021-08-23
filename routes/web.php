@@ -198,3 +198,6 @@ Route::middleware('auth')->group(function(){
     Route::get('getSuppliers', [SupplierController::class, 'getSuppliers'])->name('api.getSuppliers');
 
 });
+
+
+// Route::get('deleteItems', [ItemController::class, 'deleteItems']);

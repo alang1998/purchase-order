@@ -2,14 +2,14 @@
 <!-- pembelian perminggu chart -->
 <div class="card">
   <div class="card-header">
-    <h2 class="card-title">Grafik Produk Terbaik</h2>
+    <h2 class="card-title">Grafik Produk Tertinggi</h2>
   </div>
   <div class="card-body">
     <canvas id="donut-chart" height="150"></canvas>
   </div>
   <div class="card-footer">
     <small class="text-secondary">
-      Grafik 5 produk yang paling sering dibeli dari keseluruhan pembelian.
+      Grafik 7 produk yang paling sering dibeli dari keseluruhan pembelian.
     </small>
   </div>
 </div>
