@@ -8,7 +8,7 @@
           <a href="{{ route('pengguna') }}" class="btn btn-sm btn-success"><i class="fa fa-arrow-left"></i> &nbsp;Kembali</a>
         </div>
         <div class="card-body">
-          <form action="{{ route($action, $user) }}" method="POST" enctype="multipart/form-data">
+          <form action="{{ route($action, $user) }}" method="POST" enctype="multipart/form-data" novalidate>
             @csrf
             @if ($user->id)
               @method('put')
@@ -47,7 +47,11 @@
                   <option value="">== Pilih ==</option>
                   @foreach ($roles as $role)
                     @if ($role->id != 1)
-                      <option value="{{ $role->id }}" {{ ($user->id ? ($user->role_id == $role->id ? 'selected' : '') : old('role_id') == $role->id ? 'selected' : '') }}>{{ $role->name }}</option>                        
+                      <option value="{{ $role->id }}"
+                          {{ (empty($user->id) && old('role_id') == $role->id) ? 'selected' : ($user->role_id == $role->id ? 'selected' : '') }}  
+                        >
+                        {{ $role->name }}
+                      </option>                        
                     @endif
                   @endforeach
                 </select>
@@ -62,7 +66,11 @@
                 <select name="store_id" id="userStore" class="form-control">
                   <option value="">== Pilih ==</option>
                   @foreach ($stores as $store)
-                    <option value="{{ $store->id }}" {{ ($user->id ? ($user->store_id == $store->id ? 'selected' : '') : old('store_id') == $store->id ? 'selected' : '') }}>{{ $store->name }}</option>
+                    <option value="{{ $store->id }}" 
+                      {{ (empty($user->id) && old('store_id') == $store->id) ? 'selected' : ($user->store_id == $store->id ? 'selected' : '') }}
+                      >
+                      {{ $store->name }}
+                    </option>
                   @endforeach
                 </select>
                 @error('store_id')

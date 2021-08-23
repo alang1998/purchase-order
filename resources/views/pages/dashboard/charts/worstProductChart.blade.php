@@ -58,7 +58,7 @@
                   console.log(percentage);
                   return percentage;
                 },
-                color: '#fff',
+                color: '#333',
               }
             }
           }
