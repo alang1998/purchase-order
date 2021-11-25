@@ -67,7 +67,7 @@
                   Password sudah sesuai.
                 </div>
                 <div class="invalid-feedback">
-                    Password tidak sesuai.
+                  Password tidak sesuai.
                 </div>
               </div>
             </div> 

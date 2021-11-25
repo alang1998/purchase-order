@@ -8,7 +8,7 @@
           <a href="{{ route('supplier') }}" class="btn btn-sm btn-success"><i class="fa fa-arrow-left"></i> &nbsp;Kembali</a>
         </div>
         <div class="card-body">
-          <form action="{{ route($action, $supplier) }}" method="POST">
+          <form action="{{ route($action, $supplier) }}" method="POST" novalidate>
             @csrf
             @if ($supplier->id)
               @method('put')
